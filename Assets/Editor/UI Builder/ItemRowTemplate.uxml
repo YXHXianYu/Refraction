@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Row" style="flex-grow: 0; height: 60px; flex-direction: row;">
+        <ui:VisualElement name="Icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/M%20Studio/Art/Items/Icons/icon_Hoe.png?fileID=2800000&amp;guid=71ca9227166f34790bb8b1c7948d491f&amp;type=3#icon_Hoe&quot;); height: 40px; width: 40px; align-self: center; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;" />
+        <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Name" style="align-self: center;" />
+    </ui:VisualElement>
+</ui:UXML>
