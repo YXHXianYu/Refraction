@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TimeManager : Singleton<TimeManager> {
-
     public bool IsPaused { get; private set; } = false;
     public int Day { get; private set; } = 0;
     public int TickInDay { get; private set; } = 0;
@@ -16,6 +15,7 @@ public class TimeManager : Singleton<TimeManager> {
     public const float SecondPerTick = Settings.SecondPerTick;
 
     private float timer = 0f;
+
     private void Update() {
         if (!IsPaused) {
             timer += Time.deltaTime;
@@ -50,11 +50,14 @@ public class TimeManager : Singleton<TimeManager> {
 
                 if (CurrentSeason == Season.春天) {
                     CurrentSeason = Season.夏天;
-                } else if (CurrentSeason == Season.夏天) {
+                }
+                else if (CurrentSeason == Season.夏天) {
                     CurrentSeason = Season.秋天;
-                } else if (CurrentSeason == Season.秋天) {
+                }
+                else if (CurrentSeason == Season.秋天) {
                     CurrentSeason = Season.冬天;
-                } else if (CurrentSeason == Season.冬天) {
+                }
+                else if (CurrentSeason == Season.冬天) {
                     CurrentSeason = Season.春天;
                     Year++; // New Year!
                 }

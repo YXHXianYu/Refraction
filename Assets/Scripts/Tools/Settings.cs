@@ -10,6 +10,7 @@ public class Settings {
     public const float dayNightImageRotateDuration = 2.0f;
 
     public const int dayPerSeason = 4; // 20min per season
+
     // public const int tickPerDay = 20; // 2s per day
     public const int tickPerDay = 6000; // 5min per day
     public const int tickPerSecond = 10;

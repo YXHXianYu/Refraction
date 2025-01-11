@@ -25,41 +25,38 @@ public class SlotInventory :
 
     private ItemInventory previousItemInventory;
 
-    void Awake() {
+    private void Awake() {
         highlight.SetActive(false);
     }
 
-    void Start() {
+    private void Start() {
         InitData();
         UpdateData();
     }
 
-    void Update() {
+    private void Update() {
         UpdateData();
     }
 
-    void UpdateData() {
-        if (slotType == SlotType.PlayerBackpack) {
-            UpdatePlayerBackpack();
-        }
+    private void UpdateData() {
+        if (slotType == SlotType.PlayerBackpack) UpdatePlayerBackpack();
     }
 
-    void InitData() {
-        if (slotType == SlotType.PlayerBackpack) {
-            InitPlayerBackpack();
-        }
+    private void InitData() {
+        if (slotType == SlotType.PlayerBackpack) InitPlayerBackpack();
     }
 
-    void InitPlayerBackpack() {
+    private void InitPlayerBackpack() {
     }
 
-    void UpdatePlayerBackpack() {
-        ItemInventory item = GetPlayerBackpackItemBySlotIndex();
+    private void UpdatePlayerBackpack() {
+        var item = GetPlayerBackpackItemBySlotIndex();
         if (item == null) return;
 
         if (previousItemInventory != null && item.Equals(previousItemInventory)) {
             // do nothing
-        } else if (item.id == 0) {
+        }
+        else if (item.id == 0) {
             previousItemInventory = item.Clone();
 
             image.sprite = null;
@@ -68,11 +65,10 @@ public class SlotInventory :
             text.enabled = false;
             button.interactable = false;
 
-            if (highlight.activeSelf) {
-                UIManager.Instance.SetSelectedHighlight(highlight);
-            }
-        } else {
-            ItemDetails itemDetails = InventoryManager.Instance.GetItemDetailsById(item.id);
+            if (highlight.activeSelf) UIManager.Instance.SetSelectedHighlight(highlight);
+        }
+        else {
+            var itemDetails = InventoryManager.Instance.GetItemDetailsById(item.id);
 
             image.sprite = itemDetails.icon;
             image.color = new Color(1, 1, 1, 1);
@@ -87,11 +83,12 @@ public class SlotInventory :
     }
 
     private ItemInventory GetPlayerBackpackItemBySlotIndex() {
-        if (slotIndex < 0) { return null; }
-        if (InventoryManager.Instance == null) {
+        if (slotIndex < 0) return null;
+
+        if (InventoryManager.Instance == null)
             // Debug.LogWarning("InventoryManager.Instance is null");
             return null;
-        }
+
         return InventoryManager.Instance.GetPlayerBackpackItemByIndex(slotIndex);
     }
 
@@ -100,28 +97,25 @@ public class SlotInventory :
 
         UIManager.Instance.SetSelectedHighlight(highlight);
         if (slotType.Equals(SlotType.PlayerBackpack)) {
-            ItemInventory item = GetPlayerBackpackItemBySlotIndex();
-            if (item != null) {
+            var item = GetPlayerBackpackItemBySlotIndex();
+            if (item != null)
                 DefaultEventEmitter.Instance.Emit(
-                    "Select Player Backpack Slot", 
+                    "Select Player Backpack Slot",
                     InventoryManager.Instance.GetItemDetailsById(item.id),
                     highlight.activeSelf
                 );
-            }
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
-        ItemInventory item = InventoryManager.Instance.GetPlayerBackpackItemByIndex(slotIndex);
+        var item = InventoryManager.Instance.GetPlayerBackpackItemByIndex(slotIndex);
         if (item == null || item.amount == 0) return;
 
         UIManager.Instance.dragImage.gameObject.SetActive(true);
         UIManager.Instance.dragImage.sprite = image.sprite;
         UIManager.Instance.dragImage.SetNativeSize();
 
-        if (!highlight.activeSelf) {
-            UIManager.Instance.SetSelectedHighlight(highlight);
-        }
+        if (!highlight.activeSelf) UIManager.Instance.SetSelectedHighlight(highlight);
     }
 
     public void OnDrag(PointerEventData eventData) {
@@ -131,7 +125,7 @@ public class SlotInventory :
     public void OnEndDrag(PointerEventData eventData) {
         UIManager.Instance.dragImage.gameObject.SetActive(false);
 
-        ItemInventory item = InventoryManager.Instance.GetPlayerBackpackItemByIndex(slotIndex);
+        var item = InventoryManager.Instance.GetPlayerBackpackItemByIndex(slotIndex);
         if (
             eventData.pointerCurrentRaycast.gameObject != null
             && eventData.pointerCurrentRaycast.gameObject.TryGetComponent<SlotInventory>(out var slotInventory)
@@ -140,25 +134,28 @@ public class SlotInventory :
             InventoryManager.Instance.SetPlayerBackpackItemByIndex(slotIndex, new ItemInventory());
             // add
             InventoryManager.Instance.SetPlayerBackpackItemByIndex(slotInventory.slotIndex, item);
-        } else {
+        }
+        else {
             // Map
-            var pos_in_screen = new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z);
+            var pos_in_screen = new Vector3(Input.mousePosition.x, Input.mousePosition.y,
+                -Camera.main.transform.position.z);
             var pos = Camera.main.ScreenToWorldPoint(pos_in_screen);
 
             // Debug.Log("Drop item: " + item.id + " at " + pos);
 
-            ItemDetails itemDetails = InventoryManager.Instance.GetItemDetailsById(item.id);
+            var itemDetails = InventoryManager.Instance.GetItemDetailsById(item.id);
             if (itemDetails.canDropped == false) {
                 Debug.Log("Cannot drop item: " + itemDetails.name);
-            } else {
+            }
+            else {
                 // remove
                 InventoryManager.Instance.SetPlayerBackpackItemByIndex(slotIndex, new ItemInventory());
                 // add
-                for (int i = 0; i < item.amount; i++) {
+                for (var i = 0; i < item.amount; i++) {
                     var pos_d = new Vector2(pos.x + Random.Range(-0.5f, 0.5f), pos.y + Random.Range(-0.5f, 0.5f));
                     ItemOnWorld itemOnWorld = new(
                         ItemManager.Instance.GetCurrectMapSceneName(),
-                        new(pos_d.x, pos_d.y),
+                        new Vector2(pos_d.x, pos_d.y),
                         Quaternion.identity,
                         item.id
                     );
@@ -172,15 +169,15 @@ public class SlotInventory :
         // if (eventData.delta == Vector2.zero) return; // 避免反复触发（之前这个bug是由于鼠标准心指在tooltip上，已修复）
         if (button.interactable == false) return;
 
-        ItemInventory item = InventoryManager.Instance.GetPlayerBackpackItemByIndex(slotIndex);
+        var item = InventoryManager.Instance.GetPlayerBackpackItemByIndex(slotIndex);
         if (item == null || item.amount == 0) return;
 
-        ItemDetails itemDetails = InventoryManager.Instance.GetItemDetailsById(item.id);
+        var itemDetails = InventoryManager.Instance.GetItemDetailsById(item.id);
 
         // Debug.Log("In : " + slotIndex);
         var pos = GetComponent<RectTransform>().position;
         var size = GetComponent<RectTransform>().sizeDelta;
-        UIManager.Instance.ShowTooltip(itemDetails, new(pos.x + size.x / 2, pos.y + size.y));
+        UIManager.Instance.ShowTooltip(itemDetails, new Vector2(pos.x + size.x / 2, pos.y + size.y));
     }
 
     public void OnPointerExit(PointerEventData eventData) {

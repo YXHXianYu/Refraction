@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DefaultEventEmitter : Singleton<DefaultEventEmitter> {
-
     protected override void Awake() {
         base.Awake();
     }
 
-    private EventEmitter eventEmitter = new EventEmitter();
+    private EventEmitter eventEmitter = new();
 
     public void On(string eventName, EventEmitter.EventListener listener) {
         eventEmitter.On(eventName, listener);
@@ -21,5 +20,4 @@ public class DefaultEventEmitter : Singleton<DefaultEventEmitter> {
     public void Off(string eventName, EventEmitter.EventListener listener) {
         eventEmitter.Off(eventName, listener);
     }
-
 }

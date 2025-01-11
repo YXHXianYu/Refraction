@@ -3,23 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum ItemType {
-    Seed, Commodity, Furniture,
-    HoeTool, ChopTool, BreakTool, ReapTool, WaterTool, CollectTool,
+    Seed,
+    Commodity,
+    Furniture,
+    HoeTool,
+    ChopTool,
+    BreakTool,
+    ReapTool,
+    WaterTool,
+    CollectTool,
     ReapableScenery
 }
 
 public enum SlotType {
-    PlayerBackpack,
+    PlayerBackpack
 }
 
 public enum AnimatorChangingItemType {
-    None, Carry, 
+    None,
+    Carry
 }
 
 public enum AnimatorChangingBodyType {
-    Body, Hair, Arm, Tool,
+    Body,
+    Hair,
+    Arm,
+    Tool
 }
 
 public enum Season {
-    春天, 夏天, 秋天, 冬天
+    春天,
+    夏天,
+    秋天,
+    冬天
 }

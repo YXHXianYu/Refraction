@@ -8,8 +8,7 @@ public class PlayerAnimatorOverride : MonoBehaviour {
 
     public SpriteRenderer holdItem;
 
-    [Header("Carry动画列表")]
-    public List<AnimatorChangingInformation> animatorChangingInformationList;
+    [Header("Carry动画列表")] public List<AnimatorChangingInformation> animatorChangingInformationList;
 
     private Dictionary<string, Animator> animatorNameDict = new();
 
@@ -18,15 +17,11 @@ public class PlayerAnimatorOverride : MonoBehaviour {
     private void Awake() {
         animators = GetComponentsInChildren<Animator>();
 
-        foreach (var animator in animators) {
-            animatorNameDict.Add(animator.name, animator);
-        }
+        foreach (var animator in animators) animatorNameDict.Add(animator.name, animator);
     }
 
     private void OnEnable() {
-        eventListener = (args) => {
-            EventSelectPlayerBackpackSlot((ItemDetails)args[0], (bool)args[1]);
-        };
+        eventListener = (args) => { EventSelectPlayerBackpackSlot((ItemDetails)args[0], (bool)args[1]); };
         DefaultEventEmitter.Instance.On("Select Player Backpack Slot", eventListener);
     }
 
@@ -42,10 +37,11 @@ public class PlayerAnimatorOverride : MonoBehaviour {
             var tmp = itemDetails.type switch {
                 ItemType.Seed => AnimatorChangingItemType.Carry,
                 // ItemType.Commodity => AnimatorChangingItemType.Carry,
-                _ => AnimatorChangingItemType.None,
+                _ => AnimatorChangingItemType.None
             };
             animatorChangingItemType = tmp;
-        } else {
+        }
+        else {
             animatorChangingItemType = AnimatorChangingItemType.None;
         }
 
@@ -53,7 +49,8 @@ public class PlayerAnimatorOverride : MonoBehaviour {
         if (animatorChangingItemType == AnimatorChangingItemType.Carry) {
             holdItem.enabled = true;
             holdItem.sprite = itemDetails.iconOnWorld;
-        } else if (animatorChangingItemType == AnimatorChangingItemType.None) {
+        }
+        else if (animatorChangingItemType == AnimatorChangingItemType.None) {
             holdItem.enabled = false;
         }
 
@@ -61,10 +58,9 @@ public class PlayerAnimatorOverride : MonoBehaviour {
     }
 
     private void SwitchAnimator(AnimatorChangingItemType animatorChangingItemType) {
-        foreach (var record in animatorChangingInformationList) {
-            if (record.carryItemType == animatorChangingItemType) {
-                animatorNameDict[record.carryBodyType.ToString()].runtimeAnimatorController = record.animatorOverrideController;
-            }
-        }
+        foreach (var record in animatorChangingInformationList)
+            if (record.carryItemType == animatorChangingItemType)
+                animatorNameDict[record.carryBodyType.ToString()].runtimeAnimatorController =
+                    record.animatorOverrideController;
     }
 }

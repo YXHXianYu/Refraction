@@ -24,7 +24,7 @@ public class ItemManager : Singleton<ItemManager> {
         // scene
         Destroy(go);
     }
-    
+
     public string GetCurrectMapSceneName() {
         return targetScene.name;
     }
@@ -34,7 +34,7 @@ public class ItemManager : Singleton<ItemManager> {
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
-    
+
     private void Start() {
         // Debug.Log("Currect scene name: " + targetScene.name);
         LoadItemsToScene();
@@ -49,11 +49,11 @@ public class ItemManager : Singleton<ItemManager> {
         // already has a map scene
         if (targetScene.name != null) return;
         // its not a map scene
-        if (!int.TryParse(scene.name.Split('.')[0], out var _)) return;
+        if (!int.TryParse(scene.name.Split('.')[0], out _)) return;
         // setup
         targetScene = scene;
     }
-    
+
     private void OnSceneUnloaded(Scene scene) {
         Debug.Log("Scene unloaded: " + scene.name);
         // its not the current target scene
@@ -72,7 +72,8 @@ public class ItemManager : Singleton<ItemManager> {
 
         // generate items
         foreach (var item in itemOnWorldList_SO.itemOnWorldList) {
-            GenerateItemInScene(item);;
+            GenerateItemInScene(item);
+            ;
         }
     }
 

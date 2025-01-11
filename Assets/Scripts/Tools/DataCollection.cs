@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class ItemDetails {
     public uint id;
     public string name;
@@ -20,8 +20,7 @@ public class ItemDetails {
     public bool canCarried;
 
     public uint price;
-    [Range(0, 1)]
-    public float sellPercentage;
+    [Range(0, 1)] public float sellPercentage;
 
     public ItemDetails() {
         id = 0;
@@ -37,7 +36,9 @@ public class ItemDetails {
         price = 0;
         sellPercentage = 0.5f;
     }
-    public ItemDetails(uint id, string name, ItemType type, Sprite icon, Sprite iconOnWorld, string description, uint itemUseRadius, bool canPickedUp, bool canDropped, bool canCarried, uint price, float sellPercentage) {
+
+    public ItemDetails(uint id, string name, ItemType type, Sprite icon, Sprite iconOnWorld, string description,
+        uint itemUseRadius, bool canPickedUp, bool canDropped, bool canCarried, uint price, float sellPercentage) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -51,12 +52,14 @@ public class ItemDetails {
         this.price = price;
         this.sellPercentage = sellPercentage;
     }
+
     public ItemDetails Clone() {
-        return new ItemDetails(id, name, type, icon, iconOnWorld, description, itemUseRadius, canPickedUp, canDropped, canCarried, price, sellPercentage);
+        return new ItemDetails(id, name, type, icon, iconOnWorld, description, itemUseRadius, canPickedUp, canDropped,
+            canCarried, price, sellPercentage);
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class ItemInventory {
     public uint id;
     public uint amount;
@@ -65,19 +68,22 @@ public class ItemInventory {
         id = 0;
         amount = 0;
     }
+
     public ItemInventory(uint id, uint amount) {
         this.id = id;
         this.amount = amount;
     }
+
     public ItemInventory Clone() {
         return new ItemInventory(id, amount);
     }
+
     public bool Equals(ItemInventory itemInventory) {
         return id == itemInventory.id && amount == itemInventory.amount;
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class AnimatorChangingInformation {
     public AnimatorChangingItemType carryItemType;
     public AnimatorChangingBodyType carryBodyType;

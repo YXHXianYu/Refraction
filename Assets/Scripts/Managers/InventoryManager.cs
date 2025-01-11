@@ -2,12 +2,9 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 public class InventoryManager : Singleton<InventoryManager> {
+    [Header("Item Data")] public ItemDataList_SO itemDataList_SO;
 
-    [Header("Item Data")]
-    public ItemDataList_SO itemDataList_SO;
-
-    [Header("Player Backpack Data")]
-    public Inventory_SO playerBackpack_SO;
+    [Header("Player Backpack Data")] public Inventory_SO playerBackpack_SO;
 
 
     /// <summary>
@@ -22,15 +19,15 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// </summary>
     /// <returns>是否成功</returns>
     public bool ModifyPlayerBackpackItem(uint itemId, int amount_delta) {
-
         if (amount_delta == 0) {
             Debug.LogWarning("ChangeItemAmount: amount_delta is 0");
             return false;
-
-        } else if (amount_delta > 0) {
-            int index = GetPlayerBackpackItemIndexByItemId(itemId);
+        }
+        else if (amount_delta > 0) {
+            var index = GetPlayerBackpackItemIndexByItemId(itemId);
             if (index != -1) {
-                playerBackpack_SO.itemList[index].amount = (uint)(amount_delta + (int)playerBackpack_SO.itemList[index].amount);
+                playerBackpack_SO.itemList[index].amount =
+                    (uint)(amount_delta + (int)playerBackpack_SO.itemList[index].amount);
                 return true;
             }
 
@@ -44,25 +41,27 @@ public class InventoryManager : Singleton<InventoryManager> {
             // backpack is full
             Debug.LogWarning("ChangeItemAmount: backpack is full");
             return false;
-
-        } else {
+        }
+        else {
             Assert.IsTrue(amount_delta < 0);
 
-            int index = GetPlayerBackpackItemIndexByItemId(itemId);
+            var index = GetPlayerBackpackItemIndexByItemId(itemId);
             if (index == -1) {
                 Debug.LogWarning("ChangeItemAmount: item not found");
                 return false;
             }
 
-            int sum = (int)playerBackpack_SO.itemList[index].amount + amount_delta;
+            var sum = (int)playerBackpack_SO.itemList[index].amount + amount_delta;
             if (sum < 0) {
                 Debug.LogWarning("ChangeItemAmount: amount is negative");
                 return false;
-            } else if (sum == 0) {
+            }
+            else if (sum == 0) {
                 playerBackpack_SO.itemList[index].id = 0;
                 playerBackpack_SO.itemList[index].amount = 0;
                 return true;
-            } else {
+            }
+            else {
                 Assert.IsTrue(sum > 0);
                 playerBackpack_SO.itemList[index].amount = (uint)sum;
                 return true;
@@ -71,11 +70,10 @@ public class InventoryManager : Singleton<InventoryManager> {
     }
 
     public bool IsPlayerBackpackEmpty() {
-        foreach (ItemInventory item in playerBackpack_SO.itemList) {
-            if (item.id != 0) {
+        foreach (var item in playerBackpack_SO.itemList)
+            if (item.id != 0)
                 return false;
-            }
-        }
+
         return true;
     }
 
@@ -87,11 +85,10 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// return -1 if backpack is full
     /// </summary>
     public int GetPlayerBackpackFirstEmptyIndex() {
-        for (int i = 0; i < playerBackpack_SO.itemList.Count; i++) {
-            if (playerBackpack_SO.itemList[i].id == 0) {
+        for (var i = 0; i < playerBackpack_SO.itemList.Count; i++)
+            if (playerBackpack_SO.itemList[i].id == 0)
                 return i;
-            }
-        }
+
         return -1;
     }
 
@@ -99,16 +96,16 @@ public class InventoryManager : Singleton<InventoryManager> {
     /// return -1 if not found
     /// </summary>
     public int GetPlayerBackpackItemIndexByItemId(uint itemId) {
-        for (int i = 0; i < playerBackpack_SO.itemList.Count; i++) {
-            if (playerBackpack_SO.itemList[i].id == itemId) {
+        for (var i = 0; i < playerBackpack_SO.itemList.Count; i++)
+            if (playerBackpack_SO.itemList[i].id == itemId)
                 return i;
-            }
-        }
+
         return -1;
     }
 
     public ItemInventory GetPlayerBackpackItemByIndex(int index) {
-        Assert.IsTrue(index >= 0 && index < playerBackpack_SO.itemList.Count && playerBackpack_SO.itemList[index] != null);
+        Assert.IsTrue(index >= 0 && index < playerBackpack_SO.itemList.Count &&
+                      playerBackpack_SO.itemList[index] != null);
         return playerBackpack_SO.itemList[index];
     }
 

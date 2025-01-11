@@ -21,17 +21,12 @@ public class GameTimeUI : MonoBehaviour {
     private EventEmitter.EventListener eventListener = null;
 
     private void OnEnable() {
-        eventListener = (args) => {
-            UpdateGameTimeUI();
-        };
+        eventListener = (args) => { UpdateGameTimeUI(); };
         DefaultEventEmitter.Instance.On("Tick", eventListener);
     }
 
     private void Start() {
-        for (int i = 0; i < clocks.Length; i++) {
-            clocks[i].gameObject.SetActive(false);
-        }
-
+        for (var i = 0; i < clocks.Length; i++) clocks[i].gameObject.SetActive(false);
     }
 
     private void OnDisable() {
@@ -39,66 +34,66 @@ public class GameTimeUI : MonoBehaviour {
     }
 
     private void UpdateGameTimeUI() {
-        yearAndSeasonText.text = "第" + (TimeManager.Instance.Year+1) + "年 " + TimeManager.Instance.CurrentSeason.ToString();
-        dayText.text = "第" + (TimeManager.Instance.Day+1) + "天";
+        yearAndSeasonText.text =
+            "第" + (TimeManager.Instance.Year + 1) + "年 " + TimeManager.Instance.CurrentSeason;
+        dayText.text = "第" + (TimeManager.Instance.Day + 1) + "天";
 
         seasonImage.sprite = seasonSprites[(int)TimeManager.Instance.CurrentSeason];
 
-        int chunk = (int)(1.0f * TimeManager.Instance.TickInDay / (1.0f * TimeManager.tickPerDay / 24.0f));
+        var chunk = (int)(1.0f * TimeManager.Instance.TickInDay / (1.0f * TimeManager.tickPerDay / 24.0f));
         // chunk in [0, 23]
 
         // Debug.Log("chunk: " + chunk + "; TickInDay: " + TimeManager.Instance.TickInDay);
 
         UpdateClocks(chunk % 6 + 1);
-        
+
         if (lstDayTimePosition != chunk / 6) {
             lstDayTimePosition = chunk / 6;
             StartCoroutine(
                 RotateDayNightImage(dayNightImage, chunk / 6)
             );
         }
-
     }
 
     private void UpdateClocks(int clockCount) {
-        for (int i = 0; i < clocks.Length; i++) {
+        for (var i = 0; i < clocks.Length; i++)
             if (isClockUIActive[i] != i < clockCount) {
                 isClockUIActive[i] = i < clockCount;
                 StartCoroutine(
                     FadeClockPart(clocks[i].gameObject, clocks[i].GetComponent<Image>(), i < clockCount)
                 );
             }
-        }
     }
 
     private IEnumerator FadeClockPart(GameObject clockPart, Image clockPartImage, bool isToActive) {
-        float timer = 0f;
+        var timer = 0f;
         if (isToActive) {
             clockPart.SetActive(true);
             clockPartImage.color = new Color(1f, 1f, 1f, 0f);
         }
+
         while (timer < clockUIFadeDuration) {
             timer += Time.deltaTime;
-            float alpha = isToActive
+            var alpha = isToActive
                 ? Mathf.Lerp(0f, 1f, timer / clockUIFadeDuration)
                 : Mathf.Lerp(1f, 0f, timer / clockUIFadeDuration);
             clockPartImage.color = new Color(1f, 1f, 1f, alpha);
             yield return null;
         }
-        if (isToActive) {
+
+        if (isToActive)
             clockPartImage.color = new Color(1f, 1f, 1f, 1f);
-        } else {
+        else
             clockPart.SetActive(false);
-        }
     }
 
     private IEnumerator RotateDayNightImage(RectTransform dayNightImage, int position) {
-        float timer = 0f;
-        float startAngle = (position - 1) * 90f;
-        float endAngle = position * 90f;
+        var timer = 0f;
+        var startAngle = (position - 1) * 90f;
+        var endAngle = position * 90f;
         while (timer < dayNightImageRotateDuration) {
             timer += Time.deltaTime;
-            float angle = Mathf.Lerp(startAngle, endAngle, timer / dayNightImageRotateDuration);
+            var angle = Mathf.Lerp(startAngle, endAngle, timer / dayNightImageRotateDuration);
             dayNightImage.localEulerAngles = new Vector3(0f, 0f, angle);
             yield return null;
         }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class ItemOnWorld {
     public string sceneName;
     public Vector2 position;
@@ -16,6 +16,7 @@ public class ItemOnWorld {
         this.rotation = rotation;
         this.id = id;
     }
+
     public override bool Equals(object obj) {
         return obj is ItemOnWorld world &&
                sceneName == world.sceneName &&
@@ -23,6 +24,7 @@ public class ItemOnWorld {
                rotation.Equals(world.rotation) &&
                id == world.id;
     }
+
     public override int GetHashCode() {
         return HashCode.Combine(sceneName, position, rotation, id);
     }
