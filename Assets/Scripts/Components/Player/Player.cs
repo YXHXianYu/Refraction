@@ -8,6 +8,8 @@ public class Player : MonoBehaviour {
     public float move_speed;
     private Vector2 move_input;
 
+    // modify test for svn.
+
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
         AwakeAnimation();
