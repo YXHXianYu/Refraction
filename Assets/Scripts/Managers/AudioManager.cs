@@ -30,22 +30,21 @@ public class AudioManager : Singleton<AudioManager>
 
     public List<SceneAudioDetail> sceneAudioList;
 
-    private void OnEnable() {
-        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
+    private void OnEnable()
+    {
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnLoaded;
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnLoaded;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode _mode) {
         SceneAudioDetail sceneAudio = sceneAudioList.Find(x => x.sceneName == scene.name);
-
         if (sceneAudio != null) {
-            Debug.Log("[AudioManager] OnSceneLoaded: " + scene.name + "; bgmName: " + sceneAudio.bgmClip.name + "]");
             if (bgmSource.isActiveAndEnabled) {
                 // Maybe this is redundant
                 if (bgmSource.isPlaying) {
