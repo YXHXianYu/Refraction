@@ -23,21 +23,18 @@ using UnityEngine.SceneManagement;
 /// TODO: Therefore, a separate class will be needed to store the relation
 /// TODO: between the enum and the clip.
 /// </summary>
-public class AudioManager : Singleton<AudioManager>
-{
+public class AudioManager : Singleton<AudioManager> {
     public AudioSource bgmSource;
     public AudioSource ambientSource;
 
     public List<SceneAudioDetail> sceneAudioList;
 
-    private void OnEnable()
-    {
+    private void OnEnable() {
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnLoaded;
     }
 
-    private void OnDisable()
-    {
+    private void OnDisable() {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnLoaded;
     }
@@ -50,17 +47,20 @@ public class AudioManager : Singleton<AudioManager>
                 if (bgmSource.isPlaying) {
                     bgmSource.Stop();
                 }
+
                 if (sceneAudio.bgmClip != null) {
                     bgmSource.clip = sceneAudio.bgmClip;
                     bgmSource.volume = sceneAudio.bgmVolume;
                     bgmSource.Play();
                 }
             }
+
             if (ambientSource.isActiveAndEnabled) {
                 // Maybe this is redundant
                 if (ambientSource.isPlaying) {
                     ambientSource.Stop();
                 }
+
                 if (sceneAudio.ambientClip != null) {
                     ambientSource.clip = sceneAudio.ambientClip;
                     ambientSource.volume = sceneAudio.ambientVolume;
@@ -77,24 +77,25 @@ public class AudioManager : Singleton<AudioManager>
                 bgmSource.Stop();
                 bgmSource.clip = null; // Maybe this is redundant
             }
+
             if (ambientSource.isActiveAndEnabled && ambientSource.isPlaying) {
                 ambientSource.Stop();
                 ambientSource.clip = null; // Maybe this is redundant
             }
         }
     }
-
 }
 
 [Serializable]
 public class SceneAudioDetail {
     public string sceneName;
+
     // Bgm
     public AudioClip bgmClip;
-    [Range(0.0f, 1.0f)]
-    public float bgmVolume;
+
+    [Range(0.0f, 1.0f)] public float bgmVolume;
+
     // Ambient
     public AudioClip ambientClip;
-    [Range(0.0f, 1.0f)]
-    public float ambientVolume;
+    [Range(0.0f, 1.0f)] public float ambientVolume;
 }
