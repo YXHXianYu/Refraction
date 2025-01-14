@@ -6,6 +6,7 @@ TagManager:
   tags:
   - VirtualCameraBounds
   - ItemParent
+  - FootstepTilemap
   layers:
   - Default
   - TransparentFX
