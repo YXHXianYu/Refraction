@@ -49,7 +49,7 @@ public class Player : MonoBehaviour {
     private void UpdateAnimation() {
         foreach (var animator in animators) {
             animator.SetBool("isMoving", isMoving);
-            if(Input.GetKeyDown(KeyCode.T)) animator.SetBool("isSkillPlaying", true);
+            if(isMoving && Input.GetKeyDown(KeyCode.T)) animator.SetBool("isSkillPlaying", true);
             if (isMoving) {
                 // 使用isMoving是为了让角色停止时，仍然会面朝移动方向
                 animator.SetFloat("inputX", move_input.x);
