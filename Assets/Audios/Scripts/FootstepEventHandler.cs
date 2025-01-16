@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class FootstepManager : MonoBehaviour {
-    public AudioSource footstepSource;
-
-    public List<AudioClip> grassSteps = new List<AudioClip>();
-    public List<AudioClip> dirtSteps = new List<AudioClip>();
-    private List<AudioClip> currentList;
+public class FootstepEventHandler : MonoBehaviour {
+    public SoundData grassSoundData;
+    public SoundData dirtSoundData;
+    private SoundData currentSoundData;
 
     // Since we only have one map, and the ground player can actually step
     // on only has 2 types: dirt and grass. So I only take the middle tilemap which contains grass blocks
@@ -48,10 +46,10 @@ public class FootstepManager : MonoBehaviour {
         TileBase tile = middleTilemap.GetTile(cellPos);
         // See the comments on the `middleTilemap` filed
         if (tile == null) {
-            currentList = dirtSteps;
+            currentSoundData = dirtSoundData;
         }
         else {
-            currentList = grassSteps;
+            currentSoundData = grassSoundData;
         }
 
         if (isDebouncing) {
@@ -64,11 +62,13 @@ public class FootstepManager : MonoBehaviour {
     }
 
     public void PlayFootStep() {
-        if (currentList == null || isDebouncing)
+        if (currentSoundData == null || isDebouncing)
             return;
 
         isDebouncing = true;
-        AudioClip clip = currentList[Random.Range(0, currentList.Count)];
-        footstepSource.PlayOneShot(clip);
+        SoundManager.Instance.CreateSound()
+            .WithSoundData(currentSoundData)
+            .WithPosition(player.transform.position)
+            .Play();
     }
 }

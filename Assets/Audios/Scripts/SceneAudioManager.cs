@@ -23,7 +23,7 @@ using UnityEngine.SceneManagement;
 /// TODO: Therefore, a separate class will be needed to store the relation
 /// TODO: between the enum and the clip.
 /// </summary>
-public class AudioManager : Singleton<AudioManager> {
+public class SceneAudioManager : Singleton<SceneAudioManager> {
     public AudioSource bgmSource;
     public AudioSource ambientSource;
 
@@ -44,7 +44,7 @@ public class AudioManager : Singleton<AudioManager> {
         SceneAudioDetail sceneAudio = sceneAudioList.Find(x => x.sceneName == scene.name);
 
         if (sceneAudio != null) {
-            Debug.Log("[AudioManager] OnSceneLoaded: " + scene.name + "; bgmName: " + sceneAudio.bgmClip.name + "]");
+            // Debug.Log("[AudioManager] OnSceneLoaded: " + scene.name + "; bgmName: " + sceneAudio.bgmClip.name + "]");
             if (bgmSource.isActiveAndEnabled) {
                 // Maybe this is redundant
                 if (bgmSource.isPlaying) {
@@ -53,7 +53,7 @@ public class AudioManager : Singleton<AudioManager> {
 
                 if (sceneAudio.bgmClip != null) {
                     bgmSource.clip = sceneAudio.bgmClip;
-                    bgmSource.volume = sceneAudio.bgmVolume;
+                    // bgmSource.volume = sceneAudio.bgmVolume;
                     bgmSource.Play();
                 }
             }
@@ -66,7 +66,7 @@ public class AudioManager : Singleton<AudioManager> {
 
                 if (sceneAudio.ambientClip != null) {
                     ambientSource.clip = sceneAudio.ambientClip;
-                    ambientSource.volume = sceneAudio.ambientVolume;
+                    // ambientSource.volume = sceneAudio.ambientVolume;
                     ambientSource.Play();
                 }
             }
@@ -96,9 +96,9 @@ public class SceneAudioDetail {
     // Bgm
     public AudioClip bgmClip;
 
-    [Range(0.0f, 1.0f)] public float bgmVolume;
+    // [Range(0.0f, 1.0f)] public float bgmVolume;
 
     // Ambient
     public AudioClip ambientClip;
-    [Range(0.0f, 1.0f)] public float ambientVolume;
+    // [Range(0.0f, 1.0f)] public float ambientVolume;
 }
