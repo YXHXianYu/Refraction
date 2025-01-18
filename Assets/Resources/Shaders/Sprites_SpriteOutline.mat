@@ -32,8 +32,10 @@ Material:
     - PixelSnap: 0
     - _CheckAccuracy: 0.99
     - _CheckRange: 1
-    - _LineWidth: 5.83
+    - _LineWidth: 4
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 1, g: 0, b: 0, a: 1}
+    - _OutlineColorX: {r: 1, g: 0, b: 0, a: 1}
+    - _OutlineColorY: {r: 0, g: 0.31733632, b: 1, a: 1}
   m_BuildTextureStacks: []

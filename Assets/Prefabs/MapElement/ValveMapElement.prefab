@@ -63,6 +63,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1511670738016451583, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4890411314437362028}
+    - targetCorrespondingSourceObject: {fileID: 1511670738016451583, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8274277960686659074}
   m_SourcePrefab: {fileID: 100100000, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
 --- !u!1 &5591187133397875883 stripped
 GameObject:
@@ -86,9 +89,30 @@ MonoBehaviour:
   isSelectable: 0
   selectionType: 0
   lightTransmittanceType: 1
-  animatorController: {fileID: 0}
+  animatorController: {fileID: 9100000, guid: a248d207b1d5f244ebe84c9cb5d87bc5, type: 2}
   valveDirection: 0
   bubbleDirection: 0
   isOpen: 0
   maxSizeCouldPass: 0
   sizeNeedToOpen: 0
+--- !u!95 &8274277960686659074
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5591187133397875883}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a248d207b1d5f244ebe84c9cb5d87bc5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

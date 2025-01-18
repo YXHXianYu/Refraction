@@ -5,7 +5,8 @@
         [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
         [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
-        _OutlineColor("OutlineColor",Color) = (1,1,1,1)
+        _OutlineColorX("OutlineColorX",Color) = (1,1,1,1)
+        _OutlineColorY("OutlineColorY",Color) = (1,1,1,1)
         _CheckRange("CheckRange",Range(0,1)) = 0
         _LineWidth("LineWidth",Float) = 0.39
         _CheckAccuracy("CheckAccuracy",Range(0.1,0.99)) = 0.9
@@ -14,10 +15,10 @@
     SubShader
     {
         Tags
-        { 
-            "Queue"="Transparent" 
-            "IgnoreProjector"="True" 
-            "RenderType"="Transparent" 
+        {
+            "Queue"="Transparent"
+            "IgnoreProjector"="True"
+            "RenderType"="Transparent"
             "PreviewType"="Plane"
             "CanUseSpriteAtlas"="True"
         }
@@ -40,28 +41,26 @@
             float4 _MainTex_TexelSize;
             sampler2D _AlphaTex;
             fixed4 _Color;
-            fixed4 _OutlineColor;
+            fixed4 _OutlineColorX;
+            fixed4 _OutlineColorY;
             float _CheckRange;
             float _LineWidth;
             float _CheckAccuracy;
-            struct appdata_t
-            {
-                float4 vertex   : POSITION;
-                float4 color    : COLOR;
+
+            struct appdata_t {
+                float4 vertex : POSITION;
+                float4 color : COLOR;
                 float2 texcoord : TEXCOORD0;
             };
 
-            struct v2f
-            {
-                float4 vertex   : SV_POSITION;
-                fixed4 color    : COLOR;
-                float2 texcoord  : TEXCOORD0;
-            };//
-            
-            
+            struct v2f {
+                float4 vertex : SV_POSITION;
+                fixed4 color : COLOR;
+                float2 texcoord : TEXCOORD0;
+            }; //
 
-            v2f vert(appdata_t IN)
-            {
+
+            v2f vert(appdata_t IN) {
                 v2f OUT;
                 OUT.vertex = UnityObjectToClipPos(IN.vertex);
                 OUT.texcoord = IN.texcoord;
@@ -72,39 +71,34 @@
                 return OUT;
             }
 
-            
 
-            fixed4 SampleSpriteTexture (float2 uv)
-            {
-                fixed4 color = tex2D (_MainTex, uv);
+            fixed4 SampleSpriteTexture(float2 uv) {
+                fixed4 color = tex2D(_MainTex, uv);
 
-#if ETC1_EXTERNAL_ALPHA//
+                #if ETC1_EXTERNAL_ALPHA//
                 // get the color from an external texture (usecase: Alpha support for ETC1 on android)
                 color.a = tex2D (_AlphaTex, uv).r;
-#endif //ETC1_EXTERNAL_ALPHA
+                #endif //ETC1_EXTERNAL_ALPHA
 
                 return color;
             }
 
-            fixed4 frag(v2f IN) : SV_Target
-            {
-                fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
+            fixed4 frag(v2f IN) : SV_Target {
+                fixed4 c = SampleSpriteTexture(IN.texcoord) * IN.color;
                 c.rgb *= c.a;
-                float isOut = step(abs(1/_LineWidth),c.a);
-                if(isOut != 0)
-                {
-                    fixed4 pixelUp = tex2D(_MainTex, IN.texcoord + fixed2(0, _MainTex_TexelSize.y*_CheckRange));  
-                    fixed4 pixelDown = tex2D(_MainTex, IN.texcoord - fixed2(0, _MainTex_TexelSize.y*_CheckRange));  
-                    fixed4 pixelRight = tex2D(_MainTex, IN.texcoord + fixed2(_MainTex_TexelSize.x*_CheckRange, 0));  
-                    fixed4 pixelLeft = tex2D(_MainTex, IN.texcoord - fixed2(_MainTex_TexelSize.x*_CheckRange, 0));  
-                    float bOut = step((1-_CheckAccuracy),pixelUp.a*pixelDown.a*pixelRight.a*pixelLeft.a);
-                    c = lerp(_OutlineColor,c,bOut);
-                    return c;
-                }
+                // 获取物体的世界坐标
+                float2 worldPos = IN.texcoord.xy; // 假设只使用X和Y坐标
+                // 计算插值因子，基于世界坐标的X和Y分量
+                float mixFactor = (worldPos.x + worldPos.y) * 0.5; // 归一化到[0, 1]的范围
+                // 确保mixFactor在[0, 1]之间
+                mixFactor = clamp(mixFactor, 0.0, 1.0);
+                // 根据mixFactor插值两种颜色
+                fixed4 mixedColor = lerp(_OutlineColorX, _OutlineColorY, mixFactor);
+                // 应用混合颜色
+                c = lerp(mixedColor, c, 0.8);
                 return c;
-                
             }
-        ENDCG
+            ENDCG
         }
     }
 }
