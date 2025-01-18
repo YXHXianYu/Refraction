@@ -738,6 +738,22 @@ PrefabInstance:
       propertyPath: direction
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8593078168785444137, guid: 9f2b59fa5a6f0c74bbfc82b3ff3b3bba, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973440558502934125, guid: 9f2b59fa5a6f0c74bbfc82b3ff3b3bba, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973440558502934125, guid: 9f2b59fa5a6f0c74bbfc82b3ff3b3bba, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973440558502934125, guid: 9f2b59fa5a6f0c74bbfc82b3ff3b3bba, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 90
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1886,6 +1902,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: RayReceiver0
       objectReference: {fileID: 0}
+    - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f02798b1fb8f7d740bb38497184621b5, type: 3}
+    - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2597,7 +2633,7 @@ SpriteRenderer:
   m_Size: {x: 10, y: 10}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1001 &1107782332
@@ -2659,6 +2695,30 @@ PrefabInstance:
     - target: {fileID: 7257650427079344308, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: m_Name
       value: RayReceiver1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 58e5b93e5f286e944be15b3f928088e4, type: 3}
+    - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 270
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2930,6 +2990,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: RayReceiver3
       objectReference: {fileID: 0}
+    - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: cf867aa44eb03184484354d5fa6ab632, type: 3}
+    - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2994,6 +3074,10 @@ PrefabInstance:
     - target: {fileID: 2994187974079510620, guid: 6f1e78c13ce9e1248a35792fbc34f4d1, type: 3}
       propertyPath: m_Name
       value: InflatorMapElement
+      objectReference: {fileID: 0}
+    - target: {fileID: 4802022925860208088, guid: 6f1e78c13ce9e1248a35792fbc34f4d1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4285,6 +4369,26 @@ PrefabInstance:
     - target: {fileID: 7257650427079344308, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: m_Name
       value: RayReceiver2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 652ad2c09b9c6084881fb35ae803ad8a, type: 3}
+    - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8081789461446122687, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 180
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
