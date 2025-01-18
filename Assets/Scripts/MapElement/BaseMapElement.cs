@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -46,6 +47,11 @@ public class BaseMapElement : MonoBehaviour {
     public RuntimeAnimatorController animatorController;
 
     /// <summary>
+    /// 该元素所在的关卡控制器
+    /// </summary>
+    protected BaseLevelController levelController;
+
+    /// <summary>
     /// 构造函数
     /// </summary>
     public BaseMapElement(EMapElementType mapElementType) {
@@ -59,5 +65,9 @@ public class BaseMapElement : MonoBehaviour {
 
     public ELightTransmittanceType GetLightTransmittanceType() {
         return lightTransmittanceType;
+    }
+
+    public void SetLevelController(BaseLevelController levelController) {
+        this.levelController = levelController;
     }
 }

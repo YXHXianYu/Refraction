@@ -35,7 +35,10 @@ public class BaseLevelController : MonoBehaviour {
             var pos_x = (int)(element.transform.position.x + 0.5);
             var pos_y = (int)(element.transform.position.y + 0.5);
             var pos = new Vector2Int(pos_x, pos_y);
+
             element.position = pos;
+            element.SetLevelController(this);
+
             mapElements.Add(pos, element);
             elementsStr += " [" + pos + ": " + element.GetMapElementType() + "]";
         }
@@ -64,7 +67,263 @@ public class BaseLevelController : MonoBehaviour {
             Debug.LogError("Map size is not correct. levelSize: " + levelSize + "; max_x/y: " + max_x + "/" + max_y + "; min_x/y: " + min_x + "/" + min_y);
         }
     }
+    
 
+    // MARK: Update Funcs
+
+    private void Update() {
+        UpdateMouseControl();
+        UpdateRays();
+    }
+
+    #region Input Controller
+
+    private void UpdateMouseControl() {
+        if (Input.GetMouseButtonDown(0)) {
+            var world_pos = MouseTools.GetMouseWorldPosition();
+
+            var pos = new Vector2Int((int)(world_pos.x + 0.5), (int)(world_pos.y + 0.5));
+            if (mapElements.ContainsKey(pos)) {
+                var element = mapElements[pos];
+                // Debug.Log("Mouse clicked, " + pos + ": " + element.GetMapElementType());
+                MapElementIsClicked(element);
+            } else {
+                // Debug.Log("Mouse clicked, but no element found at " + pos);
+            }
+        }
+    }
+
+    private void MapElementIsClicked(BaseMapElement element) {
+
+        // TODO: isMapChanged = true;
+
+        if (element is ValveMapElement valve) {
+            // TODO: 
+        }
+    }
+
+    #endregion
+
+    #region Scene Controller
+
+    public Result MoveBubble(Vector2Int source, Vector2Int target) {
+        var res = IsBubbleMovable(source, target);
+        if (!res.isSuc) return res;
+
+        var bubble = mapElements[source] as BubbleMapElement;
+        if (!bubble) Assert.IsTrue(false, "Bubble is not found at " + source);
+
+        mapElements.Remove(source);
+        mapElements.Add(target, bubble);
+
+        bubble.position = target;
+        // bubble.transform.position = new Vector3(target.x, target.y, 0);
+
+        isMapChanged = true;
+        return UpdateValves(target);
+    }
+
+    public Result SplitBubble(Vector2Int source) {
+        if (!mapElements.ContainsKey(source)) return new Result(false, "在起始位置找不到气泡哦。");
+
+        var bubble = mapElements[source] as BubbleMapElement;
+        if (!bubble) return new Result(false, "在起始位置找不到气泡哦。");
+
+        if (bubble.bubbleSize <= 1) return new Result(false, "气泡大小不足，无法分裂。");
+
+        var dx = new int[] {1, -1, 0, 0};
+        var dy = new int[] {0, 0, -1, 1};
+
+        var target = new Vector2Int(-1, -1);
+        for (uint i = 0; i < 4; i++) {
+            var tmp = new Vector2Int(source.x + dx[i], source.y + dy[i]);
+            if (tmp.x < 0 || tmp.x >= levelSize.x || tmp.y < 0 || tmp.y >= levelSize.y) continue;
+            if (!mapElements.ContainsKey(tmp)) {
+                target = tmp;
+                break;
+            }
+        }
+
+        if (target.x == -1) return new Result(false, "周围没有空位，无法分裂。");
+
+        // 修改旧泡泡
+        bubble.bubbleSize -= 1;
+
+        // 增加并初始化新泡泡
+        var newBubble = Instantiate(
+            bubble.gameObject, new Vector3(target.x, target.y, 0), Quaternion.identity
+        ).GetComponent<BubbleMapElement>();
+
+        newBubble.position = target;
+        newBubble.SetLevelController(this);
+
+        mapElements.Add(target, newBubble);
+
+        isMapChanged = true;
+        return new Result(true, "");
+    }
+
+    public Result ApplyInflator(Vector2Int inflatorPos) {
+        if (!mapElements.ContainsKey(inflatorPos)) return new Result(false, "在起始位置找不到充气机哦。");
+        
+        var inflator = mapElements[inflatorPos] as InflatorMapElement;
+        if (!inflator) return new Result(false, "在起始位置找不到充气机哦。");
+
+        var bubblePos = new Vector2Int(-1, -1);
+        if (inflator.direction == EDirection4.Top) {
+            bubblePos = new Vector2Int(inflatorPos.x, inflatorPos.y + 1);
+        } else if (inflator.direction == EDirection4.Bottom) {
+            bubblePos = new Vector2Int(inflatorPos.x, inflatorPos.y - 1);
+        } else if (inflator.direction == EDirection4.Left) {
+            bubblePos = new Vector2Int(inflatorPos.x - 1, inflatorPos.y);
+        } else if (inflator.direction == EDirection4.Right) {
+            bubblePos = new Vector2Int(inflatorPos.x + 1, inflatorPos.y);
+        } else {
+            Assert.IsTrue(false, "Invalid inflator direction: " + inflator.direction);
+        }
+
+        if (!mapElements.ContainsKey(bubblePos)) return new Result(false, "在充气机方向找不到气泡哦。");
+
+        var bubble = mapElements[bubblePos] as BubbleMapElement;
+        if (!bubble) return new Result(false, "在充气机方向找不到气泡哦。");
+
+        if (gasCount <= 0) return new Result(false, "气体数量不足，无法充气。");
+        if (bubble.bubbleThickness <= 1) return new Result(false, "气泡厚度不足，无法充气。");
+
+        gasCount -= 1;
+
+        bubble.bubbleSize += 1;
+        bubble.bubbleThickness -= 1;
+
+        isMapChanged = true;
+        return new Result(true, "");
+    }
+
+    public Result ApplyExtractor(Vector2Int extractorPos) {
+        if (!mapElements.ContainsKey(extractorPos)) return new Result(false, "在起始位置找不到抽气机哦。");
+
+        var extractor = mapElements[extractorPos] as ExtractorMapElement;
+        if (!extractor) return new Result(false, "在起始位置找不到抽气机哦。");
+
+        var bubblePos = new Vector2Int(-1, -1);
+        if (extractor.direction == EDirection4.Top) {
+            bubblePos = new Vector2Int(extractorPos.x, extractorPos.y + 1);
+        } else if (extractor.direction == EDirection4.Bottom) {
+            bubblePos = new Vector2Int(extractorPos.x, extractorPos.y - 1);
+        } else if (extractor.direction == EDirection4.Left) {
+            bubblePos = new Vector2Int(extractorPos.x - 1, extractorPos.y);
+        } else if (extractor.direction == EDirection4.Right) {
+            bubblePos = new Vector2Int(extractorPos.x + 1, extractorPos.y);
+        } else {
+            Assert.IsTrue(false, "Invalid extractor direction: " + extractor.direction);
+        }
+
+        if (!mapElements.ContainsKey(bubblePos)) return new Result(false, "在抽气机方向找不到气泡哦。");
+
+        var bubble = mapElements[bubblePos] as BubbleMapElement;
+        if (!bubble) return new Result(false, "在抽气机方向找不到气泡哦。");
+
+        if (bubble.bubbleSize <= 1) return new Result(false, "气泡大小不足，无法抽气。");
+
+        gasCount += 1;
+
+        bubble.bubbleSize -= 1;
+        bubble.bubbleThickness += 1;
+
+        isMapChanged = true;
+        return new Result(true, "");
+    }
+
+    private Result IsBubbleMovable(Vector2Int source, Vector2Int target) {
+        if (source == target) return new Result(false, "起始位置和目标位置相同。");
+
+        if (mapElements.ContainsKey(target)) return new Result(false, "目标位置已经有其他东西了咯。");
+        if (!mapElements.ContainsKey(source)) return new Result(false, "在起始位置找不到气泡哦。");
+        
+        var bubble = mapElements[source] as BubbleMapElement;
+        if (!bubble) return new Result(false, "在起始位置找不到气泡哦。");
+
+        // bfs
+
+        var queue = new Queue<Vector2Int>();
+        var visited = new HashSet<Vector2Int>();
+
+        queue.Enqueue(source);
+        visited.Add(source);
+
+        var dx = new int[] {0, 0, 1, -1};
+        var dy = new int[] {1, -1, 0, 0};
+
+        while(queue.Count > 0) {
+            var cur = queue.Dequeue();
+
+            for (uint i = 0; i < 4; i++) {
+                var cx = cur.x + dx[i];
+                var cy = cur.y + dy[i];
+
+                if (cx < 0 || cx >= levelSize.x || cy < 0 || cy >= levelSize.y) continue;
+
+                var next = new Vector2Int(cx, cy);
+                if (visited.Contains(next)) continue;
+
+                if (next == target) return new Result(true, "");
+
+                if (mapElements.ContainsKey(next)) {
+                    var element = mapElements[next];
+                    if (element is WallMapElement) continue;
+                    if (element is ValveMapElement valve && (!valve.isGameLogicActive || !valve.isOpen)) continue;
+                }
+
+                queue.Enqueue(next);
+                visited.Add(next);
+            }
+        }
+
+        return new Result(false, "气泡无法到达目标位置唔。");
+    }
+
+    private Result UpdateValves(Vector2Int bubblePos) {
+        foreach (var element in mapElements.Values) {
+            if (element is ValveMapElement valve) {
+                if (!valve.isGameLogicActive) continue;
+                
+                var pos = valve.position;
+                var target = new Vector2Int(-1, -1);
+
+                if (valve.bubbleDirection == EDirectionDiagnal4.TopLeft) {
+                    target = new Vector2Int(pos.x - 1, pos.y + 1);
+                } else if (valve.bubbleDirection == EDirectionDiagnal4.TopRight) {
+                    target = new Vector2Int(pos.x + 1, pos.y + 1);
+                } else if (valve.bubbleDirection == EDirectionDiagnal4.BottomLeft) {
+                    target = new Vector2Int(pos.x - 1, pos.y - 1);
+                } else if (valve.bubbleDirection == EDirectionDiagnal4.BottomRight) {
+                    target = new Vector2Int(pos.x + 1, pos.y - 1);
+                } else {
+                    Assert.IsTrue(false, "Invalid valve direction: " + valve.bubbleDirection);
+                }
+
+                if (target == bubblePos) {
+                    var bubble = mapElements[bubblePos] as BubbleMapElement;
+                    Assert.IsTrue(bubble, "Bubble is not found at " + bubblePos);
+
+                    if (bubble.bubbleSize >= valve.sizeNeedToOpen) {
+                        valve.isOpen = true;
+                        return new Result(true, "");
+
+                    } else {
+                        valve.isOpen = false;
+                        return new Result(false, "气泡大小不足，无法打开阀门。");
+                    }
+                }
+            }
+        }
+
+        return new Result(true, "");
+    }
+
+    #endregion
+
+    #region About Rays
 
     private class LogicalRayKey {
         public Vector2Int position;
@@ -112,55 +371,17 @@ public class BaseLevelController : MonoBehaviour {
         raySet = new HashSet<LogicalRayKey>();
     }
 
-    // MARK: Update Funcs
-
-    private void Update() {
-        UpdateMouseControl();
-        UpdateRays();
-    }
-
-    private void UpdateMouseControl() {
-        if (Input.GetMouseButtonDown(0)) {
-            var mouse_pos = new Vector3(
-                Input.mousePosition.x,
-                Input.mousePosition.y,
-                Camera.main.transform.position.z
-            );
-            var world_pos = Camera.main.ScreenToWorldPoint(mouse_pos);
-
-            var pos = new Vector2Int((int)(world_pos.x + 0.5), (int)(world_pos.y + 0.5));
-            if (mapElements.ContainsKey(pos)) {
-                var element = mapElements[pos];
-                Debug.Log("Mouse clicked, " + pos + ": " + element.GetMapElementType());
-                MapElementIsClicked(element);
-            } else {
-                Debug.Log("Mouse clicked, but no element found at " + pos);
-            }
-        }
-    }
-
-
-    // MARK: Other Funcs
-
-    private void MapElementIsClicked(BaseMapElement element) {
-
-        // TODO: isMapChanged = true;
-
-        Debug.Log("Map element is clicked: " + element.GetMapElementType());
-        if (element is ValveMapElement valve) {
-            // TODO: 
-        }
-    }
-
-
-    #region Update Rays
-
     // 只在incident的时候添加 RayElement(实际的可见光线)，outgoing的时候只是逻辑判断
     private void UpdateRays() {
         if (!isMapChanged) {
             return;
         }
         isMapChanged = false;
+
+        // remove old rays
+        foreach (Transform child in rayParent.transform) {
+            Destroy(child.gameObject);
+        }
 
         // init
         raySet = new HashSet<LogicalRayKey>();
@@ -383,6 +604,8 @@ public class BaseLevelController : MonoBehaviour {
             new Vector3(ray.position.x, ray.position.y, 0),
             Quaternion.identity
         );
+
+        rayElement.transform.SetParent(rayParent.transform);
 
         var rayElementComponent = rayElement.GetComponent<RayElement>();
         rayElementComponent.position = ray.position;

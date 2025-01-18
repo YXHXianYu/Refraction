@@ -65,6 +65,14 @@ PrefabInstance:
       value: Bubble
       objectReference: {fileID: 0}
     - target: {fileID: 3600531152693844526, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_Size.x
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600531152693844526, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_Size.y
+      value: 3.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3600531152693844526, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 4.98
       objectReference: {fileID: 0}
