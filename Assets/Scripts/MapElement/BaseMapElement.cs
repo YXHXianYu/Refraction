@@ -43,7 +43,7 @@ public class BaseMapElement : MonoBehaviour {
     /// <summary>
     /// 绑定到该物体上的Animator
     /// </summary>
-    public Animator animator;
+    public RuntimeAnimatorController animatorController;
     
     /// <summary>
     /// 构造函数
