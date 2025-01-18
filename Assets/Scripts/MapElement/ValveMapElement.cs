@@ -20,6 +20,6 @@ public class ValveMapElement : BaseMapElement {
     }
 
     private void UpdateRenderInfo() {
-        debugText.text = "Vlv|" + (isOpen ? "Open" : "Close");
+        debugText.text = "V|>=" + sizeNeedToOpen + "|<=" + maxSizeCouldPass + "|" + (isOpen ? "Op" : "Cl");
     }
 }

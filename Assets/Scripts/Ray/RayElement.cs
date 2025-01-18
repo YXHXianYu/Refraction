@@ -17,7 +17,7 @@ public class RayElement : MonoBehaviour {
         get { return logicalRay.rayType; }
         set { logicalRay.rayType = value; }
     }
-    public bool isMatch;
+    public bool isMatched;
     public uint rayLevel;
 
     // render

@@ -17,6 +17,11 @@ public class BaseLevelController : MonoBehaviour {
     [SerializeField]
     private GameObject mapElementsParent;
 
+    private bool isLevelPassed;
+    public bool GetIsLevelPassed() {
+        return isLevelPassed;
+    }
+
     // ray prefab
     public GameObject rayPrefab;
 
@@ -68,43 +73,27 @@ public class BaseLevelController : MonoBehaviour {
             Debug.LogError("Map size is not correct. levelSize: " + levelSize + "; max_x/y: " + max_x + "/" + max_y + "; min_x/y: " + min_x + "/" + min_y);
         }
     }
-    
 
     // MARK: Update Funcs
 
-    private void Update() {
-        UpdateMouseControl();
+    protected virtual void Update() {
         UpdateValves();
         UpdateRays();
+        UpdateIsLevelPassed();
     }
 
-    #region Input Controller
+    private void UpdateIsLevelPassed() {
+        if (isLevelPassed) return;
 
-    private void UpdateMouseControl() {
-        if (Input.GetMouseButtonDown(0)) {
-            var world_pos = MouseTools.GetMouseWorldPosition();
-
-            var pos = new Vector2Int((int)(world_pos.x + 0.5), (int)(world_pos.y + 0.5));
-            if (mapElements.ContainsKey(pos)) {
-                var element = mapElements[pos];
-                // Debug.Log("Mouse clicked, " + pos + ": " + element.GetMapElementType());
-                MapElementIsClicked(element);
-            } else {
-                // Debug.Log("Mouse clicked, but no element found at " + pos);
+        foreach (var element in mapElements.Values) {
+            if (element is RayReceiverMapElement receiver && !receiver.isRayReceived) {
+                return;
             }
         }
+
+        isLevelPassed = true;
+        Debug.Log("Level is passed!");
     }
-
-    private void MapElementIsClicked(BaseMapElement element) {
-
-        // TODO: isMapChanged = true;
-
-        if (element is ValveMapElement valve) {
-            // TODO: 
-        }
-    }
-
-    #endregion
 
     #region Scene Controller
 
@@ -277,7 +266,13 @@ public class BaseLevelController : MonoBehaviour {
                 if (mapElements.ContainsKey(next)) {
                     var element = mapElements[next];
                     if (element is WallMapElement) continue;
-                    if (element is ValveMapElement valve && (!valve.isGameLogicActive || !valve.isOpen)) continue;
+                    if (element is ValveMapElement valve) {
+                        if (
+                            !valve.isGameLogicActive
+                            || !valve.isOpen
+                            || bubble.BubbleSize > valve.maxSizeCouldPass
+                        ) continue;
+                    }
                 }
 
                 queue.Enqueue(next);
@@ -377,11 +372,13 @@ public class BaseLevelController : MonoBehaviour {
         }
         isMapChanged = false;
 
-        // reset bubbles
+        // reset bubbles, rayReceivers
         foreach (var element in mapElements.Values) {
             if (element is BubbleMapElement bubble) {
                 bubble.BubbleXRay = -1;
                 bubble.BubbleYRay = -1;
+            } else if (element is RayReceiverMapElement receiver) {
+                receiver.isRayReceived = false;
             }
         }
 
@@ -395,6 +392,7 @@ public class BaseLevelController : MonoBehaviour {
 
         // bfs
         var queue = new List<LogicalRay>();
+        var rayElementQ = new List<RayElement>();
         var rayLevelQ = new List<uint>();
         var father = new List<int>(); // for 回溯
         var tail = 0;
@@ -409,7 +407,7 @@ public class BaseLevelController : MonoBehaviour {
                     rayForwardDirection = source.direction
                 };
 
-                PushbackRay(ray, source.initialRayLevel, -1, queue, rayLevelQ, father, ref tail);
+                PushbackRay(ray, null, source.initialRayLevel, -1, queue, rayElementQ, rayLevelQ, father, ref tail);
             }
         }
 
@@ -430,7 +428,7 @@ public class BaseLevelController : MonoBehaviour {
                         InstantiateRayElement(ray, rayLevel);
 
                     } else if (element is BubbleMapElement bubble) {
-                        IncidentToOutgoingAndRefract(ray, rayLevel, bubble.BubbleThickness, head, queue, rayLevelQ, father, ref tail);
+                        IncidentToOutgoingAndRefract(ray, rayLevel, bubble.BubbleThickness, head, queue, rayElementQ, rayLevelQ, father, ref tail);
 
                         if (ray.rayForwardDirection == EDirection4.Top || ray.rayForwardDirection == EDirection4.Bottom) {
                             bubble.BubbleXRay = (int)(rayLevel + bubble.BubbleThickness);
@@ -445,7 +443,7 @@ public class BaseLevelController : MonoBehaviour {
                     } else if (element is ValveMapElement valve) {
 
                         if (valve.isOpen && valve.isGameLogicActive) { // can pass
-                            IncidentToOutgoing(ray, rayLevel, head, queue, rayLevelQ, father, ref tail);
+                            IncidentToOutgoing(ray, rayLevel, head, queue, rayElementQ, rayLevelQ, father, ref tail);
 
                         } else { // cannot pass
                             // 被关闭的Valve阻挡，只生成当前incident的光线，而不生成outgoing的光线
@@ -453,17 +451,38 @@ public class BaseLevelController : MonoBehaviour {
                         }
 
                     } else if (element is MirrorMapElement mirror) {
-                        IncidentToMirror(ray, rayLevel, mirror, head, queue, rayLevelQ, father, ref tail);
+                        IncidentToMirror(ray, rayLevel, mirror, head, queue, rayElementQ, rayLevelQ, father, ref tail);
+
+                    } else if (element is RayReceiverMapElement rayReceiver) {
+
+                        if (
+                            rayLevel == rayReceiver.targetRayLevel
+                            && ray.rayForwardDirection == RayTools.ReverseDirection(rayReceiver.direction)
+                        ) {
+                            rayReceiver.isRayReceived = true;
+
+                            // trace back 回溯
+                            var cur = head;
+                            while (cur != -1) {
+                                if (rayElementQ[cur] != null) {
+                                    rayElementQ[cur].isMatched = true;
+                                }
+                                cur = father[cur];
+                            }
+
+                            // Debug.Log("RayReceiver at " + rayReceiver.position + " with targetLevel " + rayReceiver.targetRayLevel + " MATCHED!");
+                        }
+                        // InstantiateRayElement(ray, rayLevel);
 
                     } else {
                         // 被完整方块阻挡，只生成当前incident的光线，而不生成outgoing的光线
                         // TODO: 光线应该比较短或者直接不生成
-                        InstantiateRayElement(ray, rayLevel);
+                        // InstantiateRayElement(ray, rayLevel);
 
                     }
 
                 } else { // no element
-                    IncidentToOutgoing(ray, rayLevel, head, queue, rayLevelQ, father, ref tail);
+                    IncidentToOutgoing(ray, rayLevel, head, queue, rayElementQ, rayLevelQ, father, ref tail);
                 }
 
             } else { // outgoing
@@ -478,7 +497,7 @@ public class BaseLevelController : MonoBehaviour {
                 if (!raySet.Contains(key)) {
                     raySet.Add(key);
 
-                    PushbackRay(new_ray, rayLevel, head, queue, rayLevelQ, father, ref tail);
+                    PushbackRay(new_ray, null, rayLevel, head, queue, rayElementQ, rayLevelQ, father, ref tail);
                 } else {
                     // Debug.Log("Ray already exists: " + new_ray);
                 }
@@ -487,7 +506,10 @@ public class BaseLevelController : MonoBehaviour {
 
     }
 
-    private void IncidentToOutgoing(LogicalRay ray, uint rayLevel, int head, List<LogicalRay> queue, List<uint> rayLevelQ, List<int> father, ref int tail) {
+    private void IncidentToOutgoing(
+        LogicalRay ray, uint rayLevel, int head, List<LogicalRay> queue, List<RayElement> rayElementQ,
+        List<uint> rayLevelQ, List<int> father, ref int tail
+    ) {
         var new_ray = new LogicalRay {
             position = ray.position,
             rayType = RayTools.NextRayType(ray.rayType),
@@ -499,17 +521,21 @@ public class BaseLevelController : MonoBehaviour {
         if (!raySet.Contains(key)) {
             raySet.Add(key);
 
-            InstantiateRayElement(ray, rayLevel);
-            InstantiateRayElement(new_ray, rayLevel);
+            var rayE = InstantiateRayElement(ray, rayLevel);
+            var rayFE = InstantiateRayElement(new_ray, rayLevel);
 
-            PushbackRay(new_ray, rayLevel, head, queue, rayLevelQ, father, ref tail);
+            rayElementQ[head] = rayE;
+            PushbackRay(new_ray, rayFE, rayLevel, head, queue, rayElementQ, rayLevelQ, father, ref tail);
         } else {
             // Debug.Log("Ray already exists: " + new_ray);
         }
     }
 
     // IncidentToMirror(ray, rayLevel, mirror, head, queue, rayLevelQ, father, ref tail);
-    private void IncidentToMirror(LogicalRay ray, uint rayLevel, MirrorMapElement mirror, int head, List<LogicalRay> queue, List<uint> rayLevelQ, List<int> father, ref int tail) {
+    private void IncidentToMirror(
+        LogicalRay ray, uint rayLevel, MirrorMapElement mirror, int head, List<LogicalRay> queue,
+        List<RayElement> rayElementQ, List<uint> rayLevelQ, List<int> father, ref int tail
+    ) {
 
         ERayType rayType;
         if (mirror.direction == EDirectionDiagnal4.TopLeft) {
@@ -560,16 +586,20 @@ public class BaseLevelController : MonoBehaviour {
         if (!raySet.Contains(key)) {
             raySet.Add(key);
 
-            InstantiateRayElement(ray, rayLevel);
-            InstantiateRayElement(new_ray, rayLevel);
+            var rayE = InstantiateRayElement(ray, rayLevel);
+            var rayFE = InstantiateRayElement(new_ray, rayLevel);
 
-            PushbackRay(new_ray, rayLevel, head, queue, rayLevelQ, father, ref tail);
+            rayElementQ[head] = rayE;
+            PushbackRay(new_ray, rayFE, rayLevel, head, queue, rayElementQ, rayLevelQ, father, ref tail);
         } else {
             // Debug.Log("Ray already exists: " + new_ray);
         }
     }
 
-    private void IncidentToOutgoingAndRefract(LogicalRay ray, uint rayLevel, uint bubbleThickness, int head, List<LogicalRay> queue, List<uint> rayLevelQ, List<int> father, ref int tail) {
+    private void IncidentToOutgoingAndRefract(
+        LogicalRay ray, uint rayLevel, uint bubbleThickness, int head, List<LogicalRay> queue,
+        List<RayElement> rayElementQ, List<uint> rayLevelQ, List<int> father, ref int tail
+    ) {
         var new_forward_ray = new LogicalRay {
             position = ray.position,
             rayType = RayTools.NextRayType(ray.rayType),
@@ -595,27 +625,32 @@ public class BaseLevelController : MonoBehaviour {
             raySet.Add(key_forward);
             raySet.Add(key_refraction);
 
-            InstantiateRayElement(ray, rayLevel);
-            InstantiateRayElement(new_forward_ray, rayLevel);
-            InstantiateRayElement(new_refraction_ray_1, rayLevel + bubbleThickness);
-            InstantiateRayElement(new_refraction_ray_2, rayLevel + bubbleThickness);
+            var rayE = InstantiateRayElement(ray, rayLevel);
+            var rayFE = InstantiateRayElement(new_forward_ray, rayLevel);
+            var rayRE1 = InstantiateRayElement(new_refraction_ray_1, rayLevel + bubbleThickness);
+            var rayRE2 = InstantiateRayElement(new_refraction_ray_2, rayLevel + bubbleThickness);
 
-            PushbackRay(new_forward_ray, rayLevel, head, queue, rayLevelQ, father, ref tail);
-            PushbackRay(new_refraction_ray_1, rayLevel + bubbleThickness, head, queue, rayLevelQ, father, ref tail);
-            PushbackRay(new_refraction_ray_2, rayLevel + bubbleThickness, head, queue, rayLevelQ, father, ref tail);
+            rayElementQ[head] = rayE;
+            PushbackRay(new_forward_ray, rayFE, rayLevel, head, queue, rayElementQ, rayLevelQ, father, ref tail);
+            PushbackRay(new_refraction_ray_1, rayRE1, rayLevel + bubbleThickness, head, queue, rayElementQ, rayLevelQ, father, ref tail);
+            PushbackRay(new_refraction_ray_2, rayRE2, rayLevel + bubbleThickness, head, queue, rayElementQ, rayLevelQ, father, ref tail);
         } else {
             // Debug.Log("Ray already exists: " + new_forward_ray);
         }
     }
 
-    private void PushbackRay(LogicalRay ray, uint rayLevel, int head, List<LogicalRay> queue, List<uint> rayLevelQ, List<int> father, ref int tail) {
+    private void PushbackRay(
+        LogicalRay ray, RayElement rayElement, uint rayLevel, int head, List<LogicalRay> queue, List<RayElement> rayElementQ,
+        List<uint> rayLevelQ, List<int> father, ref int tail
+    ) {
         queue.Add(ray);
+        rayElementQ.Add(rayElement);
         rayLevelQ.Add(rayLevel);
         father.Add(head);
         tail += 1;
     }
 
-    private void InstantiateRayElement(LogicalRay ray, uint rayLevel) {
+    private RayElement InstantiateRayElement(LogicalRay ray, uint rayLevel) {
         var rayElement = Instantiate(
             rayPrefab,
             new Vector3(ray.position.x, ray.position.y, 0),
@@ -628,10 +663,12 @@ public class BaseLevelController : MonoBehaviour {
         rayElementComponent.position = ray.position;
         rayElementComponent.rayType = ray.rayType;
         rayElementComponent.rayForwardDirection = ray.rayForwardDirection;
-        rayElementComponent.isMatch = false;
+        rayElementComponent.isMatched = false;
         rayElementComponent.rayLevel = rayLevel;
 
         rayElementComponent.UpdateRenderInfo();
+
+        return rayElementComponent;
     }
 
     #endregion
