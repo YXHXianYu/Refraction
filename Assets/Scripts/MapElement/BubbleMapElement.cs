@@ -94,13 +94,14 @@ public class BubbleMapElement : BaseMapElement {
             Debug.LogError("SpriteRenderer not found on this GameObject.");
         }
         _centerPosXiD = Shader.PropertyToID("_CenterPosX");
-        Debug.Log("Shader _CenterPosYid:" + _centerPosXiD);
         _centerPosYiD = Shader.PropertyToID("_CenterPosY");
         _outlineColorXiD = Shader.PropertyToID("_OutlineColorX");
         _outlineColorYiD = Shader.PropertyToID("_OutlineColorY");
+        UpdateMaterial();
     }
 
     private void Update() {
+        // TODO 更新泡泡的光线
         UpdateMaterial();
     }
 
@@ -108,8 +109,10 @@ public class BubbleMapElement : BaseMapElement {
         var mat = _spriteRenderer.material;
         mat.SetFloat(_centerPosXiD, transform.position.x);
         mat.SetFloat(_centerPosYiD, transform.position.y);
-        mat.SetColor(_outlineColorXiD, ColorTool.GetColor(bubbleXRay));
+        mat.SetColor(_outlineColorXiD,  ColorTool.GetColor(bubbleXRay));
+        // Debug.Log("OutlineColorX: " + mat.GetColor(_outlineColorXiD));
         mat.SetColor(_outlineColorYiD, ColorTool.GetColor(bubbleYRay));
+        
         // mat.SetColor("_OutlineColorX", Color.clear);
         // mat.SetColor("_OutlineColorY", Color.clear);
     }

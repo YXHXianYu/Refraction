@@ -1,4 +1,4 @@
-﻿Shader "Sprites/SpriteOutline"
+﻿Shader "Sprites/BubbleOutline"
 {
     Properties
     {
