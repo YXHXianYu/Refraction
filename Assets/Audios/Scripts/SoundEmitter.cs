@@ -44,6 +44,7 @@ public class SoundEmitter : MonoBehaviour {
         audioSource.outputAudioMixerGroup = data.mixerGroup;
         audioSource.loop = data.loop;
         audioSource.playOnAwake = data.playOnAwake;
+        audioSource.pitch = 1;
     }
 
     public void ApplyRandomPitch(float min = -0.05f, float max = 0.05f) {

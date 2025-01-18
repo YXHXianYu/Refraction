@@ -340,3 +340,10 @@ MonoBehaviour:
   lightTransmittanceType: 0
   direction: 0
   debugText: {fileID: 4948640035852166960}
+  extractSoundData:
+    clips:
+    - {fileID: 8300000, guid: 9852014bc3fe9a642bcce45a19413460, type: 3}
+    mixerGroup: {fileID: -1734451431321000027, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0

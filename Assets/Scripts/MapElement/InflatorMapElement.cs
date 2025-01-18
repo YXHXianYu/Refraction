@@ -11,6 +11,9 @@ public class InflatorMapElement : BaseMapElement {
 
     public InflatorMapElement(): base(EMapElementType.Inflator) {}
 
+    // Audio
+    public SoundData inflateSoundData;
+
     private void Update() {
         UpdateSelectionType();
         UpdateRenderInfo();
@@ -65,7 +68,14 @@ public class InflatorMapElement : BaseMapElement {
     }
 
     private void InflatBubble() {
-        levelController.ApplyInflator(position);
+        var result = levelController.ApplyInflator(position);
+        if (result.isSuc) {
+            // PLAY AUDIO: inflate
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(inflateSoundData)
+                .WithRandomPitch(true)
+                .Play();
+        }
     }
 
     private bool isDragging = false;

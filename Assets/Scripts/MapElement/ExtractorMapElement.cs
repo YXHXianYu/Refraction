@@ -12,6 +12,9 @@ public class ExtractorMapElement : BaseMapElement {
 
     public ExtractorMapElement(): base(EMapElementType.Extractor) {}
 
+    // Audio
+    public SoundData extractSoundData;
+
     private void Update() {
         UpdateSelectionType();
         UpdateRenderInfo();
@@ -66,7 +69,14 @@ public class ExtractorMapElement : BaseMapElement {
     }
 
     private void ExtractBubble() {
-        levelController.ApplyExtractor(position);
+        var result = levelController.ApplyExtractor(position);
+        if (result.isSuc) {
+            // PLAY AUDIO: extract
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(extractSoundData)
+                .WithRandomPitch(true)
+                .Play();
+        }
     }
 
     private bool isDragging = false;

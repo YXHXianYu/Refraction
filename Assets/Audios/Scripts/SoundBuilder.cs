@@ -4,7 +4,7 @@ public class SoundBuilder {
     readonly SoundManager soundManager;
     SoundData soundData;
     Vector3 position = Vector3.zero;
-    bool randomPitch;
+    bool randomPitch = false;
 
     public SoundBuilder(SoundManager manager) {
         soundManager = manager;
