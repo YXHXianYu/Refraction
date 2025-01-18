@@ -11,7 +11,8 @@ public class BaseLevelController : MonoBehaviour {
 
     // MARK: Public
 
-    public Vector2Int levelSize;
+    public Vector2Int levelSizeBL;
+    public Vector2Int levelSizeTR;
     public uint gasCount;
 
     [SerializeField]
@@ -69,12 +70,25 @@ public class BaseLevelController : MonoBehaviour {
             min_x = Mathf.Min(min_x, pos.x);
             min_y = Mathf.Min(min_y, pos.y);
         }
-        if (!(min_x == 0 && min_y == 0 && max_x == levelSize.x - 1 && max_y == levelSize.y - 1)) {
-            Debug.LogError("Map size is not correct. levelSize: " + levelSize + "; max_x/y: " + max_x + "/" + max_y + "; min_x/y: " + min_x + "/" + min_y);
+        if (!(
+            min_x == levelSizeBL.x
+            && min_y == levelSizeBL.y
+            && max_x == levelSizeTR.x
+            && max_y == levelSizeTR.y
+        )) {
+            Debug.LogError("Map size is not correct. BottomLeft: " + levelSizeBL + "; TopRight: " + levelSizeTR + "; But got: [" + min_x + ", " + min_y + "] - [" + max_x + ", " + max_y + "]");
         }
     }
 
     // MARK: Update Funcs
+
+    private bool IsInsideLevel(Vector2Int pos) {
+        return pos.x >= levelSizeBL.x && pos.x <= levelSizeTR.x && pos.y >= levelSizeBL.y && pos.y <= levelSizeTR.y;
+    }
+
+    private bool IsInsideLevel(int x, int y) {
+        return x >= levelSizeBL.x && x <= levelSizeTR.x && y >= levelSizeBL.y && y <= levelSizeTR.y;
+    }
 
     protected virtual void Update() {
         UpdateValves();
@@ -132,7 +146,7 @@ public class BaseLevelController : MonoBehaviour {
         var target = new Vector2Int(-1, -1);
         for (uint i = 0; i < 4; i++) {
             var tmp = new Vector2Int(source.x + dx[i], source.y + dy[i]);
-            if (tmp.x < 0 || tmp.x >= levelSize.x || tmp.y < 0 || tmp.y >= levelSize.y) continue;
+            if (!IsInsideLevel(tmp)) continue;
             if (!mapElements.ContainsKey(tmp)) {
                 target = tmp;
                 break;
@@ -256,7 +270,8 @@ public class BaseLevelController : MonoBehaviour {
                 var cx = cur.x + dx[i];
                 var cy = cur.y + dy[i];
 
-                if (cx < 0 || cx >= levelSize.x || cy < 0 || cy >= levelSize.y) continue;
+                
+                if (!IsInsideLevel(cx, cy)) continue;
 
                 var next = new Vector2Int(cx, cy);
                 if (visited.Contains(next)) continue;

@@ -77,13 +77,13 @@ public class BubbleMapElement : BaseMapElement {
 
     public void UpdateRenderInfo() {
         debugText.text = bubbleSize + "|" + bubbleThickness;
-        if (selectionType == EOnSelectionType.Selected) {
-            debugText.text += "|S";
-        } else if (selectionType == EOnSelectionType.Hover) {
-            debugText.text += "|H";
-        } else {
-            debugText.text += "|U";
-        }
+        // if (selectionType == EOnSelectionType.Selected) {
+        //     debugText.text += "|S";
+        // } else if (selectionType == EOnSelectionType.Hover) {
+        //     debugText.text += "|H";
+        // } else {
+        //     debugText.text += "|U";
+        // }
     }
 
     private void UpdateMaterial() {

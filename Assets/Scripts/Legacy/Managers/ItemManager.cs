@@ -66,7 +66,7 @@ public class ItemManager : Singleton<ItemManager> {
 
     private void LoadItemsToScene() {
         // generate item parent
-        SceneManager.SetActiveScene(targetScene);
+        // SceneManager.SetActiveScene(targetScene);
         itemParent = new GameObject("ItemParent").transform;
         itemParent.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 

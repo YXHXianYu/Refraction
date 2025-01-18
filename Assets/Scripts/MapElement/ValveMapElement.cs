@@ -32,6 +32,6 @@ public class ValveMapElement : BaseMapElement {
     }
 
     private void UpdateRenderInfo() {
-        debugText.text = "V|>=" + sizeNeedToOpen + "|<=" + maxSizeCouldPass + "|" + (isOpen ? "Op" : "Cl");
+        debugText.text = ">=" + sizeNeedToOpen + "|<=" + maxSizeCouldPass; // + "|" + (isOpen ? "Op" : "Cl");
     }
 }
