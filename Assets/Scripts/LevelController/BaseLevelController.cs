@@ -30,7 +30,7 @@ public class BaseLevelController : MonoBehaviour {
     private void InitialMapElements() {
         var elements = mapElementsParent.GetComponentsInChildren<BaseMapElement>();
         mapElements = new Dictionary<Vector2Int, BaseMapElement>();
-        var elementsStr = "";
+        // var elementsStr = "";
         foreach (var element in elements) {
             var pos_x = (int)(element.transform.position.x + 0.5);
             var pos_y = (int)(element.transform.position.y + 0.5);
@@ -40,9 +40,9 @@ public class BaseLevelController : MonoBehaviour {
             element.SetLevelController(this);
 
             mapElements.Add(pos, element);
-            elementsStr += " [" + pos + ": " + element.GetMapElementType() + "]";
+            // elementsStr += " [" + pos + ": " + element.GetMapElementType() + "]";
         }
-        Debug.Log("Level is initialized with " + elements.Length + " elements. Elements: " + elementsStr);
+        // Debug.Log("Level is initialized with " + elements.Length + " elements. Elements: " + elementsStr);
 
         CheckMapSize();
     }
@@ -378,6 +378,14 @@ public class BaseLevelController : MonoBehaviour {
         }
         isMapChanged = false;
 
+        // reset bubbles
+        foreach (var element in mapElements.Values) {
+            if (element is BubbleMapElement bubble) {
+                bubble.BubbleXRay = -1;
+                bubble.BubbleYRay = -1;
+            }
+        }
+
         // remove old rays
         foreach (Transform child in rayParent.transform) {
             Destroy(child.gameObject);
@@ -425,6 +433,16 @@ public class BaseLevelController : MonoBehaviour {
                     } else if (element is BubbleMapElement bubble) {
                         IncidentToOutgoingAndRefract(ray, rayLevel, bubble.BubbleThickness, head, queue, rayLevelQ, father, ref tail);
 
+                        if (ray.rayForwardDirection == EDirection4.Top || ray.rayForwardDirection == EDirection4.Bottom) {
+                            bubble.BubbleXRay = (int)(rayLevel + bubble.BubbleThickness);
+                            bubble.BubbleYRay = (int)rayLevel;
+                        } else if (ray.rayForwardDirection == EDirection4.Left || ray.rayForwardDirection == EDirection4.Right) {
+                            bubble.BubbleXRay = (int)rayLevel;
+                            bubble.BubbleYRay = (int)(rayLevel + bubble.BubbleThickness);
+                        } else {
+                            Assert.IsTrue(false, "Invalid ray forward direction: " + ray.rayForwardDirection);
+                        }
+
                     } else if (element is ValveMapElement valve) {
 
                         if (valve.isOpen && valve.isGameLogicActive) { // can pass
@@ -463,7 +481,7 @@ public class BaseLevelController : MonoBehaviour {
 
                     PushbackRay(new_ray, rayLevel, head, queue, rayLevelQ, father, ref tail);
                 } else {
-                    Debug.Log("Ray already exists: " + new_ray);
+                    // Debug.Log("Ray already exists: " + new_ray);
                 }
             }
         }
@@ -487,7 +505,7 @@ public class BaseLevelController : MonoBehaviour {
 
             PushbackRay(new_ray, rayLevel, head, queue, rayLevelQ, father, ref tail);
         } else {
-            Debug.Log("Ray already exists: " + new_ray);
+            // Debug.Log("Ray already exists: " + new_ray);
         }
     }
 
@@ -548,7 +566,7 @@ public class BaseLevelController : MonoBehaviour {
 
             PushbackRay(new_ray, rayLevel, head, queue, rayLevelQ, father, ref tail);
         } else {
-            Debug.Log("Ray already exists: " + new_ray);
+            // Debug.Log("Ray already exists: " + new_ray);
         }
     }
 
@@ -587,7 +605,7 @@ public class BaseLevelController : MonoBehaviour {
             PushbackRay(new_refraction_ray_1, rayLevel + bubbleThickness, head, queue, rayLevelQ, father, ref tail);
             PushbackRay(new_refraction_ray_2, rayLevel + bubbleThickness, head, queue, rayLevelQ, father, ref tail);
         } else {
-            Debug.Log("Ray already exists: " + new_forward_ray);
+            // Debug.Log("Ray already exists: " + new_forward_ray);
         }
     }
 

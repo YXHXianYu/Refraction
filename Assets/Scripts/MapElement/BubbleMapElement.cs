@@ -10,11 +10,19 @@ public class BubbleMapElement : BaseMapElement {
 
     public uint BubbleSize {
         get { return bubbleSize; }
-        set { bubbleSize = value; UpdateRenderInfo(); }
+        set { bubbleSize = value; }
     }
     public uint BubbleThickness {
         get { return bubbleThickness; }
-        set { bubbleThickness = value; UpdateRenderInfo(); }
+        set { bubbleThickness = value; }
+    }
+    public int BubbleXRay {
+        get { return bubbleXRay; }
+        set { bubbleXRay = value; }
+    }
+    public int BubbleYRay {
+        get { return bubbleYRay; }
+        set { bubbleYRay = value; }
     }
     
     [SerializeField]
@@ -23,8 +31,10 @@ public class BubbleMapElement : BaseMapElement {
     private uint bubbleThickness = 1;
     
     // -1 means no ray pass; 0~inf means where the ray pass
-    [SerializeField] private int bubbleXRay = -1; // Left and Right
-    [SerializeField] private int bubbleYRay = -1; // Top and Down
+    [SerializeField]
+    private int bubbleXRay = -1; // Left and Right
+    [SerializeField]
+    private int bubbleYRay = -1; // Top and Down
     
     // Shader Util
     private SpriteRenderer _spriteRenderer;
@@ -39,8 +49,45 @@ public class BubbleMapElement : BaseMapElement {
     }
 
     public void UpdateRenderInfo() {
-        debugText.text = bubbleSize.ToString() + "/" + bubbleThickness.ToString();
+        debugText.text = bubbleSize + "/" + bubbleThickness;
     }
+
+    private void Start() {
+        UpdateRenderInfo();
+
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        if (_spriteRenderer == null) {
+            Debug.LogError("SpriteRenderer not found on this GameObject.");
+        }
+        _centerPosXiD = Shader.PropertyToID("_CenterPosX");
+        _centerPosYiD = Shader.PropertyToID("_CenterPosY");
+        _outlineColorXiD = Shader.PropertyToID("_OutlineColorX");
+        _outlineColorYiD = Shader.PropertyToID("_OutlineColorY");
+        UpdateMaterial();
+    }
+
+    private void Update() {
+        UpdateMaterial();
+    }
+
+    private void UpdateMaterial() {
+        var mat = _spriteRenderer.material;
+        mat.SetFloat(_centerPosXiD, transform.position.x);
+        mat.SetFloat(_centerPosYiD, transform.position.y);
+        mat.SetColor(_outlineColorXiD,  ColorTool.GetColor(bubbleXRay));
+        // Debug.Log("OutlineColorX: " + mat.GetColor(_outlineColorXiD));
+        mat.SetColor(_outlineColorYiD, ColorTool.GetColor(bubbleYRay));
+        
+        // mat.SetColor("_OutlineColorX", Color.clear);
+        // mat.SetColor("_OutlineColorY", Color.clear);
+    }
+
+    private void UpdateAnimation() {
+        
+    }
+
+    #region Event
+
     public void OnPointerClick(PointerEventData eventData) {
     }
 
@@ -71,6 +118,7 @@ public class BubbleMapElement : BaseMapElement {
         var target = new Vector2Int((int)(world_pos.x + 0.5f), (int)(world_pos.y + 0.5f));
 
         if (source == target) {
+            transform.position = new Vector3((int)(startPosition.x + 0.5f), (int)(startPosition.y + 0.5f), 0);
             return;
         }
 
@@ -86,38 +134,5 @@ public class BubbleMapElement : BaseMapElement {
         }
     }
 
-    private void Start() {
-        UpdateRenderInfo();
-
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        if (_spriteRenderer == null) {
-            Debug.LogError("SpriteRenderer not found on this GameObject.");
-        }
-        _centerPosXiD = Shader.PropertyToID("_CenterPosX");
-        _centerPosYiD = Shader.PropertyToID("_CenterPosY");
-        _outlineColorXiD = Shader.PropertyToID("_OutlineColorX");
-        _outlineColorYiD = Shader.PropertyToID("_OutlineColorY");
-        UpdateMaterial();
-    }
-
-    private void Update() {
-        // TODO 更新泡泡的光线
-        UpdateMaterial();
-    }
-
-    private void UpdateMaterial() {
-        var mat = _spriteRenderer.material;
-        mat.SetFloat(_centerPosXiD, transform.position.x);
-        mat.SetFloat(_centerPosYiD, transform.position.y);
-        mat.SetColor(_outlineColorXiD,  ColorTool.GetColor(bubbleXRay));
-        // Debug.Log("OutlineColorX: " + mat.GetColor(_outlineColorXiD));
-        mat.SetColor(_outlineColorYiD, ColorTool.GetColor(bubbleYRay));
-        
-        // mat.SetColor("_OutlineColorX", Color.clear);
-        // mat.SetColor("_OutlineColorY", Color.clear);
-    }
-
-    private void UpdateAnimation() {
-        
-    }
+    #endregion
 }
