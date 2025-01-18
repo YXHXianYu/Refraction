@@ -2147,6 +2147,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BubbleMapElement (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7290400604203583658, guid: 38d81f1cdb07ae8408ad0bdfea396ac5, type: 3}
+      propertyPath: bubbleSize
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

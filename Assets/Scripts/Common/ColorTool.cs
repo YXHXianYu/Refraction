@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Common {
     public class ColorTool {
         // TODO
-        private static Dictionary<int, Color> _colors = new Dictionary<int, Color> {
+        private static readonly Dictionary<int, Color> _colors = new Dictionary<int, Color> {
                 { -1, Color.clear},
                 { 0, Color.white},
                 { 1, new Color(0xaf,0xa3,0xdb)},
@@ -18,7 +18,11 @@ namespace Common {
         };
 
         public static Color GetColor(int colorid) {
-            return _colors[colorid];
+            if (!_colors.ContainsKey(colorid)) {
+                return Color.clear;
+            } else {
+                return _colors[colorid];
+            }
         }
     }
 }

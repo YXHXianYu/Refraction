@@ -48,13 +48,7 @@ public class BubbleMapElement : BaseMapElement {
     public BubbleMapElement(): base(EMapElementType.Bubble) {
     }
 
-    public void UpdateRenderInfo() {
-        debugText.text = bubbleSize + "/" + bubbleThickness;
-    }
-
     private void Start() {
-        UpdateRenderInfo();
-
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_spriteRenderer == null) {
             Debug.LogError("SpriteRenderer not found on this GameObject.");
@@ -63,11 +57,15 @@ public class BubbleMapElement : BaseMapElement {
         _centerPosYiD = Shader.PropertyToID("_CenterPosY");
         _outlineColorXiD = Shader.PropertyToID("_OutlineColorX");
         _outlineColorYiD = Shader.PropertyToID("_OutlineColorY");
-        UpdateMaterial();
     }
 
     private void Update() {
+        UpdateRenderInfo();
         UpdateMaterial();
+    }
+
+    public void UpdateRenderInfo() {
+        debugText.text = bubbleSize + "/" + bubbleThickness;
     }
 
     private void UpdateMaterial() {
@@ -88,8 +86,8 @@ public class BubbleMapElement : BaseMapElement {
 
     #region Event
 
-    public void OnPointerClick(PointerEventData eventData) {
-    }
+    public const float DOUBLE_CLICK_TIME = 0.3f;
+    private float lastClickTime = -DOUBLE_CLICK_TIME;
 
     private bool isDragging = false;
     private Vector2Int startPosition;
@@ -97,6 +95,13 @@ public class BubbleMapElement : BaseMapElement {
     public void OnMouseDown() {
         isDragging = true;
         startPosition = position;
+
+        if (Time.time - lastClickTime < DOUBLE_CLICK_TIME) {
+            OnDoubleClick();
+            lastClickTime = -DOUBLE_CLICK_TIME;
+        } else {
+            lastClickTime = Time.time;
+        }
     }
 
     public void OnMouseDrag() {
@@ -133,6 +138,16 @@ public class BubbleMapElement : BaseMapElement {
             transform.position = new Vector3((int)(target.x + 0.5f), (int)(target.y + 0.5f), 0);
         }
     }
+
+    private void OnDoubleClick() {
+        var result = levelController.SplitBubble(position);
+        if (result.isSuc) {
+            Debug.Log("泡泡分裂成功");
+        } else {
+            Debug.Log("泡泡分裂失败：" + result.errMsg);
+        }
+    }
+
 
     #endregion
 }
