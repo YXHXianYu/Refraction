@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5747775240984883376, guid: 411d46af421920f4e9397c0702c8a401, type: 3}
       propertyPath: m_Name
-      value: BaseWallMapElement_TLR
+      value: WallMapElement_TLR
       objectReference: {fileID: 0}
     - target: {fileID: 7135160810921979271, guid: 411d46af421920f4e9397c0702c8a401, type: 3}
       propertyPath: m_Sprite
