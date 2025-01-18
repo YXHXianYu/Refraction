@@ -10,8 +10,11 @@ public class RayReceiverMapElement : BaseMapElement {
 
     public TextMeshPro debugText;
 
+    [SerializeField]
+    private GameObject rayActive;
+
     // Audio
-    public bool prevIsRayReceived;
+    private bool prevIsRayReceived = false;
     public SoundData enableSoundData;
     public SoundData disableSoundData;
 
@@ -30,12 +33,17 @@ public class RayReceiverMapElement : BaseMapElement {
                 SoundManager.Instance.CreateSound()
                     .WithSoundData(enableSoundData)
                     .Play();
+                // Cover
+                rayActive.SetActive(true);                
+
             } else {
                 debugText.text = "Rcv|" + targetRayLevel + "|U";
                 // PLAY AUDIO: disable
                 SoundManager.Instance.CreateSound()
                     .WithSoundData(disableSoundData)
                     .Play();
+                // Cover
+                rayActive.SetActive(false);
             }
         }
     }

@@ -178,7 +178,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -206,7 +206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7172163579338602499
 Transform:
   m_ObjectHideFlags: 0
@@ -421,7 +421,7 @@ MonoBehaviour:
   targetRayLevel: 0
   isRayReceived: 0
   debugText: {fileID: 4625766331586710778}
-  prevIsRayReceived: 0
+  rayActive: {fileID: 5918930120405156764}
   enableSoundData:
     clips:
     - {fileID: 8300000, guid: 3e9bbc11c6c1c0645a9394728c8dc45d, type: 3}
