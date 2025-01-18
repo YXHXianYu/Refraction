@@ -91,7 +91,7 @@ PrefabInstance:
     - target: {fileID: 7867315620397630772, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+      objectReference: {fileID: 2100000, guid: f575532399ec71646bbce2d7499937f0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -128,10 +128,9 @@ MonoBehaviour:
   animatorController: {fileID: 9100000, guid: ae9c62985de9bcf4281fd6eb43546fa0, type: 2}
   bubbleSize: 0
   bubbleThickness: 0
-  bubbleLeftRayLevel: -1
-  bubbleRightRayLevel: -1
-  bubbleTopRayLevel: -1
-  bubbleBottomRayLevel: -1
+  enableShader: 0
+  bubbleXRay: -1
+  bubbleYRay: -1
 --- !u!95 &4533632929169831592
 Animator:
   serializedVersion: 5
