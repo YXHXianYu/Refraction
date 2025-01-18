@@ -9,6 +9,8 @@ public class RayReceiverMapElement : BaseMapElement {
     public bool isRayReceived;
 
     public TextMeshPro debugText;
+    
+    [SerializeField] private GameObject rayActive;
 
     public RayReceiverMapElement(): base(EMapElementType.RayReceiver) {}
 
@@ -19,8 +21,10 @@ public class RayReceiverMapElement : BaseMapElement {
     private void UpdateRenderInfo() {
         if (isRayReceived) {
             debugText.text = "Rcv|" + targetRayLevel + "|R";
+            rayActive.SetActive(true);
         } else {
             debugText.text = "Rcv|" + targetRayLevel + "|U";
+            rayActive.SetActive(false);
         }
     }
 }
