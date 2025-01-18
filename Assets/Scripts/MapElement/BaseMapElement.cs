@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BaseMapElement : MonoBehaviour {
     /// <summary>
@@ -21,7 +22,7 @@ public class BaseMapElement : MonoBehaviour {
     /// <summary>
     /// 是否已被选中
     /// </summary>
-    public bool onSelected;
+    public EOnSelectionType selectionType = EOnSelectionType.Unselected;
     
     /// <summary>
     /// 光传输过该格子后的类型
@@ -39,6 +40,11 @@ public class BaseMapElement : MonoBehaviour {
     /// </summary>
     public EMapElementType mapElementType;
 
+    /// <summary>
+    /// 绑定到该物体上的Animator
+    /// </summary>
+    public Animator animator;
+    
     /// <summary>
     /// 构造函数
     /// </summary>

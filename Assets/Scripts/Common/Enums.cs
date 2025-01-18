@@ -39,3 +39,9 @@ public enum EMapElementType {
     Mirror,
     Ray
 }
+
+public enum EOnSelectionType {
+    Unselected,
+    Selected,
+    Hover
+}
