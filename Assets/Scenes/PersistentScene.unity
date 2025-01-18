@@ -198,9 +198,9 @@ MonoBehaviour:
   bgmSource: {fileID: 483460888}
   ambientSource: {fileID: 833323982}
   sceneAudioList:
-  - sceneName: 01.Field
-    bgmClip: {fileID: 8300000, guid: 522a3df575dd3f346887975d12e2e284, type: 3}
-    ambientClip: {fileID: 8300000, guid: 4a9e05b7e6118ea4fb2d151727712400, type: 3}
+  - sceneName: PersistentScene
+    bgmClip: {fileID: 8300000, guid: d1a7f519efa19204aa210487ee064002, type: 3}
+    ambientClip: {fileID: 0}
 --- !u!4 &302597904
 Transform:
   m_ObjectHideFlags: 0
@@ -244,7 +244,7 @@ AudioSource:
   m_GameObject: {fileID: 483460887}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 8718560875163400459, guid: 6922b900e03bf704398a06f5aed53f5f, type: 2}
+  OutputAudioMixerGroup: {fileID: 8369808719955925341, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -454,7 +454,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 7.725
+  orthographic size: 6.616667
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -651,7 +651,7 @@ AudioSource:
   m_GameObject: {fileID: 833323981}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 1401820514605391717, guid: 6922b900e03bf704398a06f5aed53f5f, type: 2}
+  OutputAudioMixerGroup: {fileID: -5842368484949098765, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

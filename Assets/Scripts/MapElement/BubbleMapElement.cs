@@ -45,6 +45,11 @@ public class BubbleMapElement : BaseMapElement {
 
     public TextMeshPro debugText;
 
+    // Sound
+    public SoundData selectSoundData;
+    public SoundData movementSoundData;
+    public SoundData splitSoundData;
+
     public BubbleMapElement(): base(EMapElementType.Bubble) {
     }
 
@@ -133,6 +138,15 @@ public class BubbleMapElement : BaseMapElement {
     private Vector2Int startPosition;
 
     public void OnMouseDown() {
+        // PLAY SOUND: selectSoundData
+        // OnSelect
+        if (!isDragging) {
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(selectSoundData)
+                .WithRandomPitch(true)
+                .Play();
+        }
+
         isDragging = true;
         startPosition = position;
 
@@ -176,6 +190,11 @@ public class BubbleMapElement : BaseMapElement {
         } else {
             position = target;
             transform.position = new Vector3((int)(target.x + 0.5f), (int)(target.y + 0.5f), 0);
+
+            // PLAY SOUND: selectSoundData
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(movementSoundData)
+                .Play();
         }
     }
 
@@ -183,6 +202,10 @@ public class BubbleMapElement : BaseMapElement {
         var result = levelController.SplitBubble(position);
         if (result.isSuc) {
             Debug.Log("泡泡分裂成功");
+            // PLAY SOUND: splitSoundData
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(splitSoundData)
+                .Play();
         } else {
             Debug.Log("泡泡分裂失败：" + result.errMsg);
         }

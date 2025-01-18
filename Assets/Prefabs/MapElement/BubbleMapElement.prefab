@@ -152,12 +152,37 @@ MonoBehaviour:
   isSelectable: 1
   selectionType: 0
   lightTransmittanceType: 2
-  animatorController: {fileID: 9100000, guid: ae9c62985de9bcf4281fd6eb43546fa0, type: 2}
   bubbleSize: 2
   bubbleThickness: 2
   bubbleXRay: -1
   bubbleYRay: -1
   debugText: {fileID: 247735068198984866}
+  selectSoundData:
+    clips:
+    - {fileID: 8300000, guid: 62264b8ed480c77499e9b5b06b5057d2, type: 3}
+    mixerGroup: {fileID: -3032691135105031896, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0
+  movementSoundData:
+    clips:
+    - {fileID: 8300000, guid: 4f487d3953e49e245a3ab075642bda4e, type: 3}
+    - {fileID: 8300000, guid: 94c0f48c54764bd4e9f231e7ee9d769e, type: 3}
+    - {fileID: 8300000, guid: 6f5526c57c809c3439e0a8f94d89b59f, type: 3}
+    - {fileID: 8300000, guid: 015d75cb89b93b34dae380bd0781ba7e, type: 3}
+    mixerGroup: {fileID: -2564195148789969736, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0
+  splitSoundData:
+    clips:
+    - {fileID: 8300000, guid: d3f31fc74eaa342c9982984798d00c54, type: 3}
+    - {fileID: 8300000, guid: b9af7bbd676ec443bb7cee6b03b0240d, type: 3}
+    - {fileID: 8300000, guid: 01d5ae0cfcbec4c5e81fd5d552af2e84, type: 3}
+    mixerGroup: {fileID: -7990423967950505222, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0
 --- !u!95 &4533632929169831592
 Animator:
   serializedVersion: 5
