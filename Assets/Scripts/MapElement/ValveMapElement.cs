@@ -17,6 +17,18 @@ public class ValveMapElement : BaseMapElement {
 
     private void Update() {
         UpdateRenderInfo();
+        UpdateAnimation();
+    }
+    
+    private void UpdateAnimation() {
+        foreach (var animator in Animators) {
+            if (isOpen) {
+                animator.SetBool("isOpen", true);
+            }
+            else {
+                animator.SetBool("isOpen", false);
+            }
+        }
     }
 
     private void UpdateRenderInfo() {
