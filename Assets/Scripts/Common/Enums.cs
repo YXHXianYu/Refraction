@@ -45,3 +45,12 @@ public enum EOnSelectionType {
     Selected,
     Hover
 }
+public enum EWallType {
+    TopBottom,
+    LeftRight,
+    TopLeftBottom,
+    TopRightBottom,
+    TopLeftRight,
+    BottomLeftRight,
+    TopBottomLeftRight
+}

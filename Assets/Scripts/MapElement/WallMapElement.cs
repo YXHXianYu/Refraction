@@ -4,7 +4,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class WallMapElement : BaseMapElement {
-    public EDirection2 direction;
+    public EWallType wallType;
 
     public WallMapElement(): base(EMapElementType.Wall) {
     }

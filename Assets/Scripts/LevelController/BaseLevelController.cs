@@ -37,22 +37,28 @@ public class BaseLevelController : MonoBehaviour {
 
     private void UpdateMouseControl() {
         if (Input.GetMouseButtonDown(0)) {
-            Debug.Log("Mouse clicked");
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out var hit)) {
-                var pos = new Vector2Int((int)(hit.point.x + 0.5), (int)(hit.point.y + 0.5));
-                if (mapElements.ContainsKey(pos)) {
-                    var element = mapElements[pos];
-                    Debug.Log("Clicked on " + pos + ": " + element.mapElementType);
-                    if (element is ValveMapElement valve) {
-                        if (valve.isOpen) {
-                            valve.CloseValve();
-                        } else {
-                            valve.OpenValve();
-                        }
-                    }
-                }
+            var mouse_pos = new Vector3(
+                Input.mousePosition.x,
+                Input.mousePosition.y,
+                Camera.main.transform.position.z
+            );
+            var world_pos = Camera.main.ScreenToWorldPoint(mouse_pos);
+
+            var pos = new Vector2Int((int)(world_pos.x + 0.5), (int)(world_pos.y + 0.5));
+            if (mapElements.ContainsKey(pos)) {
+                var element = mapElements[pos];
+                Debug.Log("Mouse clicked, " + pos + ": " + element.mapElementType);
+                MapElementIsClicked(element);
+            } else {
+                Debug.Log("Mouse clicked, but no element found at " + pos);
             }
+        }
+    }
+
+    private void MapElementIsClicked(BaseMapElement element) {
+        Debug.Log("Map element is clicked: " + element.mapElementType);
+        if (element is ValveMapElement valve) {
+            // TODO: 
         }
     }
 }
