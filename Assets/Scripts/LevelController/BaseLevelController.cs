@@ -129,7 +129,7 @@ public class BaseLevelController : MonoBehaviour {
         var bubble = mapElements[source] as BubbleMapElement;
         if (!bubble) return new Result(false, "在起始位置找不到气泡哦。");
 
-        if (bubble.bubbleSize <= 1) return new Result(false, "气泡大小不足，无法分裂。");
+        if (bubble.BubbleSize <= 1) return new Result(false, "气泡大小不足，无法分裂。");
 
         var dx = new int[] {1, -1, 0, 0};
         var dy = new int[] {0, 0, -1, 1};
@@ -147,7 +147,7 @@ public class BaseLevelController : MonoBehaviour {
         if (target.x == -1) return new Result(false, "周围没有空位，无法分裂。");
 
         // 修改旧泡泡
-        bubble.bubbleSize -= 1;
+        bubble.BubbleSize -= 1;
 
         // 增加并初始化新泡泡
         var newBubble = Instantiate(
@@ -188,12 +188,12 @@ public class BaseLevelController : MonoBehaviour {
         if (!bubble) return new Result(false, "在充气机方向找不到气泡哦。");
 
         if (gasCount <= 0) return new Result(false, "气体数量不足，无法充气。");
-        if (bubble.bubbleThickness <= 1) return new Result(false, "气泡厚度不足，无法充气。");
+        if (bubble.BubbleThickness <= 1) return new Result(false, "气泡厚度不足，无法充气。");
 
         gasCount -= 1;
 
-        bubble.bubbleSize += 1;
-        bubble.bubbleThickness -= 1;
+        bubble.BubbleSize += 1;
+        bubble.BubbleThickness -= 1;
 
         isMapChanged = true;
         return new Result(true, "");
@@ -223,12 +223,12 @@ public class BaseLevelController : MonoBehaviour {
         var bubble = mapElements[bubblePos] as BubbleMapElement;
         if (!bubble) return new Result(false, "在抽气机方向找不到气泡哦。");
 
-        if (bubble.bubbleSize <= 1) return new Result(false, "气泡大小不足，无法抽气。");
+        if (bubble.BubbleSize <= 1) return new Result(false, "气泡大小不足，无法抽气。");
 
         gasCount += 1;
 
-        bubble.bubbleSize -= 1;
-        bubble.bubbleThickness += 1;
+        bubble.BubbleSize -= 1;
+        bubble.BubbleThickness += 1;
 
         isMapChanged = true;
         return new Result(true, "");
@@ -306,7 +306,7 @@ public class BaseLevelController : MonoBehaviour {
                     var bubble = mapElements[bubblePos] as BubbleMapElement;
                     Assert.IsTrue(bubble, "Bubble is not found at " + bubblePos);
 
-                    if (bubble.bubbleSize >= valve.sizeNeedToOpen) {
+                    if (bubble.BubbleSize >= valve.sizeNeedToOpen) {
                         valve.isOpen = true;
                         return new Result(true, "");
 
@@ -423,7 +423,7 @@ public class BaseLevelController : MonoBehaviour {
                         InstantiateRayElement(ray, rayLevel);
 
                     } else if (element is BubbleMapElement bubble) {
-                        IncidentToOutgoingAndRefract(ray, rayLevel, bubble.bubbleThickness, head, queue, rayLevelQ, father, ref tail);
+                        IncidentToOutgoingAndRefract(ray, rayLevel, bubble.BubbleThickness, head, queue, rayLevelQ, father, ref tail);
 
                     } else if (element is ValveMapElement valve) {
 

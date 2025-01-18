@@ -3,13 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using Common;
-using UnityEngine;
+using TMPro;using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class BubbleMapElement : BaseMapElement {
+
+    public uint BubbleSize {
+        get { return bubbleSize; }
+        set { bubbleSize = value; UpdateRenderInfo(); }
+    }
+    public uint BubbleThickness {
+        get { return bubbleThickness; }
+        set { bubbleThickness = value; UpdateRenderInfo(); }
+    }
     
-    public uint bubbleSize;
-    public uint bubbleThickness;
+    [SerializeField]
+    private uint bubbleSize = 1;
+    [SerializeField]
+    private uint bubbleThickness = 1;
     
     // -1 means no ray pass; 0~inf means where the ray pass
     [SerializeField] private int bubbleXRay = -1; // Left and Right
@@ -22,10 +33,14 @@ public class BubbleMapElement : BaseMapElement {
     private int _outlineColorXiD;
     private int _outlineColorYiD;
 
+    public TextMeshPro debugText;
+
     public BubbleMapElement(): base(EMapElementType.Bubble) {
     }
 
-
+    public void UpdateRenderInfo() {
+        debugText.text = bubbleSize.ToString() + "/" + bubbleThickness.ToString();
+    }
     public void OnPointerClick(PointerEventData eventData) {
     }
 
@@ -72,6 +87,8 @@ public class BubbleMapElement : BaseMapElement {
     }
 
     private void Start() {
+        UpdateRenderInfo();
+
         _spriteRenderer = GetComponent<SpriteRenderer>();
         if (_spriteRenderer == null) {
             Debug.LogError("SpriteRenderer not found on this GameObject.");

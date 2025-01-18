@@ -60,6 +60,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3020830605921828662, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020830605921828662, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3490527080480012209, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       propertyPath: m_text
       value: Bubble
@@ -103,6 +111,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4533632929169831592}
   m_SourcePrefab: {fileID: 100100000, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+--- !u!114 &247735068198984866 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3490527080480012209, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+  m_PrefabInstance: {fileID: 3675208161075931923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2880754409382252780 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1511670738016451583, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
@@ -126,11 +145,12 @@ MonoBehaviour:
   selectionType: 0
   lightTransmittanceType: 2
   animatorController: {fileID: 9100000, guid: ae9c62985de9bcf4281fd6eb43546fa0, type: 2}
-  bubbleSize: 0
-  bubbleThickness: 0
+  bubbleSize: 2
+  bubbleThickness: 2
   enableShader: 0
   bubbleXRay: -1
   bubbleYRay: -1
+  debugText: {fileID: 247735068198984866}
 --- !u!95 &4533632929169831592
 Animator:
   serializedVersion: 5
