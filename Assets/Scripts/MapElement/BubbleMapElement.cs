@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using Common;
-using TMPro;using UnityEngine;
+using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Assertions;
 
 public class BubbleMapElement : BaseMapElement {
 
@@ -60,12 +62,21 @@ public class BubbleMapElement : BaseMapElement {
     }
 
     private void Update() {
+        UpdateSelectionType();
         UpdateRenderInfo();
         UpdateMaterial();
     }
 
     public void UpdateRenderInfo() {
-        debugText.text = bubbleSize + "/" + bubbleThickness;
+        debugText.text = bubbleSize + "|" + bubbleThickness;
+
+        if (selectionType == EOnSelectionType.Selected) {
+            debugText.text += "|S";
+        } else if (selectionType == EOnSelectionType.Hover) {
+            debugText.text += "|H";
+        } else {
+            debugText.text += "|U";
+        }
     }
 
     private void UpdateMaterial() {
@@ -84,10 +95,28 @@ public class BubbleMapElement : BaseMapElement {
         
     }
 
+    private void UpdateSelectionType() {
+        Assert.IsTrue(isSelectable, "BubbleMapElement must be selectable.");
+
+        var mouseWorldPos = MouseTools.GetMouseWorldPosition();
+        bool isInCurrentElement =
+            mouseWorldPos.x < transform.position.x - 0.5f
+            || mouseWorldPos.x > transform.position.x + 0.5f
+            || mouseWorldPos.y < transform.position.y - 0.5f
+            || mouseWorldPos.y > transform.position.y + 0.5f;
+
+        if (isInCurrentElement) {
+            selectionType = EOnSelectionType.Unselected;
+        } else if (isDragging) {
+            selectionType = EOnSelectionType.Selected;
+        } else {
+            selectionType = EOnSelectionType.Hover;
+        }
+    }
+
     #region Event
 
-    public const float DOUBLE_CLICK_TIME = 0.3f;
-    private float lastClickTime = -DOUBLE_CLICK_TIME;
+    private float lastClickTime = -OurSettings.DOUBLE_CLICK_TIME;
 
     private bool isDragging = false;
     private Vector2Int startPosition;
@@ -96,9 +125,9 @@ public class BubbleMapElement : BaseMapElement {
         isDragging = true;
         startPosition = position;
 
-        if (Time.time - lastClickTime < DOUBLE_CLICK_TIME) {
+        if (Time.time - lastClickTime < OurSettings.DOUBLE_CLICK_TIME) {
             OnDoubleClick();
-            lastClickTime = -DOUBLE_CLICK_TIME;
+            lastClickTime = -OurSettings.DOUBLE_CLICK_TIME;
         } else {
             lastClickTime = Time.time;
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,16 +11,15 @@ public class ValveMapElement : BaseMapElement {
     public uint maxSizeCouldPass;
     public uint sizeNeedToOpen;
 
-    public void OpenValve() {
-        // TODO: Implement this method
-        Debug.LogError("ValveMapElement.OpenValve() not implemented");
+    public TextMeshPro debugText;
+
+    public ValveMapElement(): base(EMapElementType.Valve) {}
+
+    private void Update() {
+        UpdateRenderInfo();
     }
 
-    public void CloseValve() {
-        // TODO: Implement this method
-        Debug.LogError("ValveMapElement.CloseValve() not implemented");
-    }
-
-    public ValveMapElement(): base(EMapElementType.Valve) {
+    private void UpdateRenderInfo() {
+        debugText.text = "Vlv|" + (isOpen ? "Open" : "Close");
     }
 }

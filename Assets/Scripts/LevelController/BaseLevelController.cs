@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements.Experimental;
 
 public class BaseLevelController : MonoBehaviour {
@@ -73,6 +74,7 @@ public class BaseLevelController : MonoBehaviour {
 
     private void Update() {
         UpdateMouseControl();
+        UpdateValves();
         UpdateRays();
     }
 
@@ -106,6 +108,10 @@ public class BaseLevelController : MonoBehaviour {
 
     #region Scene Controller
 
+    public void ResetCurrentLevel() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public Result MoveBubble(Vector2Int source, Vector2Int target) {
         var res = IsBubbleMovable(source, target);
         if (!res.isSuc) return res;
@@ -120,7 +126,7 @@ public class BaseLevelController : MonoBehaviour {
         // bubble.transform.position = new Vector3(target.x, target.y, 0);
 
         isMapChanged = true;
-        return UpdateValves(target);
+        return new Result(true, "");
     }
 
     public Result SplitBubble(Vector2Int source) {
@@ -282,43 +288,36 @@ public class BaseLevelController : MonoBehaviour {
         return new Result(false, "气泡无法到达目标位置唔。");
     }
 
-    private Result UpdateValves(Vector2Int bubblePos) {
+    private void UpdateValves() {
         foreach (var element in mapElements.Values) {
             if (element is ValveMapElement valve) {
+                valve.isOpen = false;
+
                 if (!valve.isGameLogicActive) continue;
                 
                 var pos = valve.position;
-                var target = new Vector2Int(-1, -1);
+                var bubblePos = new Vector2Int(-1, -1);
 
                 if (valve.bubbleDirection == EDirectionDiagnal4.TopLeft) {
-                    target = new Vector2Int(pos.x - 1, pos.y + 1);
+                    bubblePos = new Vector2Int(pos.x - 1, pos.y + 1);
                 } else if (valve.bubbleDirection == EDirectionDiagnal4.TopRight) {
-                    target = new Vector2Int(pos.x + 1, pos.y + 1);
+                    bubblePos = new Vector2Int(pos.x + 1, pos.y + 1);
                 } else if (valve.bubbleDirection == EDirectionDiagnal4.BottomLeft) {
-                    target = new Vector2Int(pos.x - 1, pos.y - 1);
+                    bubblePos = new Vector2Int(pos.x - 1, pos.y - 1);
                 } else if (valve.bubbleDirection == EDirectionDiagnal4.BottomRight) {
-                    target = new Vector2Int(pos.x + 1, pos.y - 1);
+                    bubblePos = new Vector2Int(pos.x + 1, pos.y - 1);
                 } else {
                     Assert.IsTrue(false, "Invalid valve direction: " + valve.bubbleDirection);
                 }
 
-                if (target == bubblePos) {
-                    var bubble = mapElements[bubblePos] as BubbleMapElement;
-                    Assert.IsTrue(bubble, "Bubble is not found at " + bubblePos);
+                if (!mapElements.ContainsKey(bubblePos)) continue;
 
-                    if (bubble.BubbleSize >= valve.sizeNeedToOpen) {
-                        valve.isOpen = true;
-                        return new Result(true, "");
+                var bubble = mapElements[bubblePos] as BubbleMapElement;
+                if (!bubble) continue;
 
-                    } else {
-                        valve.isOpen = false;
-                        return new Result(false, "气泡大小不足，无法打开阀门。");
-                    }
-                }
+                valve.isOpen = bubble.BubbleSize >= valve.sizeNeedToOpen;
             }
         }
-
-        return new Result(true, "");
     }
 
     #endregion

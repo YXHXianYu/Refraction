@@ -72,6 +72,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Bubble
       objectReference: {fileID: 0}
+    - target: {fileID: 3490527080480012209, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_fontSize
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3490527080480012209, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3600531152693844526, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       propertyPath: m_Size.x
       value: 3.6

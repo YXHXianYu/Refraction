@@ -202,6 +202,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: -7047803883997181402}
   m_SourcePrefab: {fileID: 100100000, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+--- !u!114 &4948640035852166960 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3490527080480012209, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+  m_PrefabInstance: {fileID: 8421113403767705729}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6230938261219327857 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
@@ -231,6 +242,7 @@ MonoBehaviour:
   lightTransmittanceType: 0
   animatorController: {fileID: 9100000, guid: 5917c12e1ac671a4bac0eeb4a4d52a10, type: 2}
   direction: 0
+  debugText: {fileID: 4948640035852166960}
 --- !u!95 &-7047803883997181402
 Animator:
   serializedVersion: 5
