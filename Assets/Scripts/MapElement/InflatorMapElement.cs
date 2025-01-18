@@ -14,6 +14,7 @@ public class InflatorMapElement : BaseMapElement {
     private void Update() {
         UpdateSelectionType();
         UpdateRenderInfo();
+        UpdateAnimation();
     }
 
     private void UpdateRenderInfo() {
@@ -23,6 +24,24 @@ public class InflatorMapElement : BaseMapElement {
             debugText.text = "Inflt|Hov";
         } else {
             debugText.text = "Inflt|Uns";
+        }
+    }
+    
+    private void UpdateAnimation() {
+        foreach (var animator in Animators) {
+            switch (selectionType) {
+                case EOnSelectionType.Hover:
+                    animator.SetBool("onHover", true);
+                    break;
+                case EOnSelectionType.Selected:
+                    animator.SetBool("onHover", false);
+                    animator.SetBool("isSelected", true);
+                    break;
+                case EOnSelectionType.Unselected:
+                    animator.SetBool("onHover", false);
+                    animator.SetBool("isSelected", false);
+                    break;
+            }
         }
     }
 
