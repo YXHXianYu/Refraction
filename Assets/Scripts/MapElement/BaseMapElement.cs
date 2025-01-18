@@ -12,7 +12,17 @@ public class BaseMapElement : MonoBehaviour {
     /// 游戏逻辑上是否激活（用于在特定时刻激活Valve等）
     /// </summary>
     public bool isGameLogicActive;
-
+    
+    /// <summary>
+    /// 是否可被选中
+    /// </summary>
+    public bool isSelectable;
+    
+    /// <summary>
+    /// 是否已被选中
+    /// </summary>
+    public bool onSelected;
+    
     /// <summary>
     /// 光传输过该格子后的类型
     /// 

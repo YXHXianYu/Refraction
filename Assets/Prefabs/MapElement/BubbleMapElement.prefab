@@ -81,3 +81,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6814b47d200d564998148c75c78caf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position: {x: 0, y: 0}
+  isGameLogicActive: 0
+  isSelectable: 1
+  onSelected: 0
+  lightTransmittanceType: 2
+  mapElementType: 0
+  bubbleSize: 0
+  bubbleThickness: 0

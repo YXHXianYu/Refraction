@@ -91,6 +91,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
   isGameLogicActive: 0
+  isSelectable: 1
+  onSelected: 0
   lightTransmittanceType: 0
   mapElementType: 1
   direction: 0
