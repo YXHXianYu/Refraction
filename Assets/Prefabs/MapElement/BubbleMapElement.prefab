@@ -13,6 +13,14 @@ PrefabInstance:
       value: BubbleMapElement
       objectReference: {fileID: 0}
     - target: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -105,14 +113,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
-  isGameLogicActive: 0
+  isGameLogicActive: 1
   isSelectable: 1
   selectionType: 0
   lightTransmittanceType: 2
-  mapElementType: 0
   animatorController: {fileID: 9100000, guid: ae9c62985de9bcf4281fd6eb43546fa0, type: 2}
   bubbleSize: 0
   bubbleThickness: 0
+  bubbleLeftRayLevel: -1
+  bubbleRightRayLevel: -1
+  bubbleTopRayLevel: -1
+  bubbleBottomRayLevel: -1
 --- !u!95 &4533632929169831592
 Animator:
   serializedVersion: 5

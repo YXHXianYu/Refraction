@@ -54,3 +54,10 @@ public enum EWallType {
     BottomLeftRight,
     TopBottomLeftRight
 }
+
+public enum ERayType {
+    TopCenter,
+    BottomCenter,
+    LeftCenter,
+    RightCenter,
+}

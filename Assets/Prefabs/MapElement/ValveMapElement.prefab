@@ -82,10 +82,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
-  isGameLogicActive: 0
+  isGameLogicActive: 1
+  isSelectable: 0
+  selectionType: 0
   lightTransmittanceType: 1
-  mapElementType: 3
-  direction: 0
+  animatorController: {fileID: 0}
+  valveDirection: 0
+  bubbleDirection: 0
   isOpen: 0
   maxSizeCouldPass: 0
   sizeNeedToOpen: 0

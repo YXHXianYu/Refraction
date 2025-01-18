@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RaySourceMapElement : BaseMapElement {
     public EDirection4 direction;
-    public uint targetRayLevel;
+    public uint initialRayLevel;
 
     public RaySourceMapElement(): base(EMapElementType.RaySource) {
     }

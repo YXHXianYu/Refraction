@@ -22,7 +22,7 @@ public class GameTimeUI : MonoBehaviour {
 
     private void OnEnable() {
         eventListener = (args) => { UpdateGameTimeUI(); };
-        DefaultEventEmitter.Instance.On("Tick", eventListener);
+        // DefaultEventEmitter.Instance.On("Tick", eventListener);
     }
 
     private void Start() {
@@ -30,7 +30,7 @@ public class GameTimeUI : MonoBehaviour {
     }
 
     private void OnDisable() {
-        DefaultEventEmitter.Instance?.Off("Tick", eventListener);
+        // DefaultEventEmitter.Instance?.Off("Tick", eventListener);
     }
 
     private void UpdateGameTimeUI() {

@@ -29,7 +29,7 @@ public class TimeManager : Singleton<TimeManager> {
     private void Tick() {
         UpdateTime();
 
-        DefaultEventEmitter.Instance.Emit("Tick");
+        // DefaultEventEmitter.Instance.Emit("Tick");
     }
 
     public void ResetTime() {

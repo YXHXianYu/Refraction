@@ -22,11 +22,11 @@ public class PlayerAnimatorOverride : MonoBehaviour {
 
     private void OnEnable() {
         eventListener = (args) => { EventSelectPlayerBackpackSlot((ItemDetails)args[0], (bool)args[1]); };
-        DefaultEventEmitter.Instance.On("Select Player Backpack Slot", eventListener);
+        // DefaultEventEmitter.Instance.On("Select Player Backpack Slot", eventListener);
     }
 
     private void OnDisable() {
-        DefaultEventEmitter.Instance?.Off("Select Player Backpack Slot", eventListener);
+        // DefaultEventEmitter.Instance?.Off("Select Player Backpack Slot", eventListener);
     }
 
     private void EventSelectPlayerBackpackSlot(ItemDetails itemDetails, bool isSelected) {

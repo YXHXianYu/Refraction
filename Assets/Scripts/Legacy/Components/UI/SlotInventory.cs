@@ -98,12 +98,13 @@ public class SlotInventory :
         UIManager.Instance.SetSelectedHighlight(highlight);
         if (slotType.Equals(SlotType.PlayerBackpack)) {
             var item = GetPlayerBackpackItemBySlotIndex();
-            if (item != null)
-                DefaultEventEmitter.Instance.Emit(
-                    "Select Player Backpack Slot",
-                    InventoryManager.Instance.GetItemDetailsById(item.id),
-                    highlight.activeSelf
-                );
+            if (item != null) {
+                // DefaultEventEmitter.Instance.Emit(
+                //     "Select Player Backpack Slot",
+                //     InventoryManager.Instance.GetItemDetailsById(item.id),
+                //     highlight.activeSelf
+                // );
+            }
         }
     }
 

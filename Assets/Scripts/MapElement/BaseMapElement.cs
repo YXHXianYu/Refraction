@@ -12,7 +12,7 @@ public class BaseMapElement : MonoBehaviour {
     /// <summary>
     /// 游戏逻辑上是否激活（用于在特定时刻激活Valve等）
     /// </summary>
-    public bool isGameLogicActive;
+    public bool isGameLogicActive = true;
     
     /// <summary>
     /// 是否可被选中
@@ -23,6 +23,11 @@ public class BaseMapElement : MonoBehaviour {
     /// 是否已被选中
     /// </summary>
     public EOnSelectionType selectionType = EOnSelectionType.Unselected;
+
+    /// <summary>
+    /// 该地图元素的类型
+    /// </summary>
+    private EMapElementType mapElementType;
     
     /// <summary>
     /// 光传输过该格子后的类型
@@ -33,23 +38,26 @@ public class BaseMapElement : MonoBehaviour {
     /// * Bubble: 泡泡
     /// * Mirror: 镜子
     /// </summary>
-    public ELightTransmittanceType lightTransmittanceType;
-
-    /// <summary>
-    /// 该地图元素的类型
-    /// </summary>
-    public EMapElementType mapElementType;
+    public ELightTransmittanceType lightTransmittanceType; // maybe could be deleted?
 
     /// <summary>
     /// 绑定到该物体上的Animator
     /// </summary>
     public RuntimeAnimatorController animatorController;
-    
+
     /// <summary>
     /// 构造函数
     /// </summary>
     public BaseMapElement(EMapElementType mapElementType) {
         this.mapElementType = mapElementType;
         lightTransmittanceType = EnumTool.GetLightTransmittanceType(mapElementType);
+    }
+
+    public EMapElementType GetMapElementType() {
+        return mapElementType;
+    }
+
+    public ELightTransmittanceType GetLightTransmittanceType() {
+        return lightTransmittanceType;
     }
 }

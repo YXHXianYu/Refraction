@@ -93,11 +93,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 0, y: 0}
-  isGameLogicActive: 0
+  isGameLogicActive: 1
   isSelectable: 1
   selectionType: 0
   lightTransmittanceType: 0
-  mapElementType: 1
   animatorController: {fileID: 9100000, guid: be61f003394939947b490ddedd5b9e0c, type: 2}
   direction: 0
 --- !u!95 &-5688644825566307852
