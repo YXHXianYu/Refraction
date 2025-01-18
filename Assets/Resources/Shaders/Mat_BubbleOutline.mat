@@ -30,10 +30,10 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
-    - _CenterPosX: 0
-    - _CenterPosY: 0
+    - _CenterPosX: 0.5
+    - _CenterPosY: 0.5
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColorX: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColorY: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColorX: {r: 1, g: 0, b: 0, a: 0}
+    - _OutlineColorY: {r: 0, g: 0.024354935, b: 1, a: 0}
   m_BuildTextureStacks: []

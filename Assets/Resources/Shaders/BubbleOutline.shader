@@ -7,8 +7,8 @@
         [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
         _OutlineColorX("OutlineColorX", Color) = (1,1,1,1)
         _OutlineColorY("OutlineColorY", Color) = (1,1,1,1)
-        _CenterPosX("CenterPosX", Float) = 0
-        _CenterPosY("CenterPosY", Float) = 0
+        _CenterPosX("CenterPosX", Float) = 0.5
+        _CenterPosY("CenterPosY", Float) = 0.5
     }
 
     SubShader
@@ -97,9 +97,9 @@
                 fixed4 mixedColorX = lerp(_OutlineColorX, c, mixFactorX);
                 fixed4 mixedColorY = lerp(_OutlineColorY, c, mixFactorY);
                 // 最终颜色插值，考虑四个角的影响
-                fixed4 finalColor = lerp(mixedColorX, mixedColorY, 0.5); 
-                c = lerp(finalColor, c, 0);
-                return c;
+                fixed4 finalColor = lerp(mixedColorX, mixedColorY, 0.5);
+                finalColor.rgb = pow(finalColor.rgb, 1.2); // 对颜色进行伽马校正
+                return finalColor;
             }
             ENDCG
         }

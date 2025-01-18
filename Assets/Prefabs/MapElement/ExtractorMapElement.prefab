@@ -114,11 +114,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       propertyPath: m_LocalPosition.x
@@ -240,7 +240,6 @@ MonoBehaviour:
   isSelectable: 1
   selectionType: 0
   lightTransmittanceType: 0
-  animatorController: {fileID: 9100000, guid: 5917c12e1ac671a4bac0eeb4a4d52a10, type: 2}
   direction: 0
   debugText: {fileID: 4948640035852166960}
 --- !u!95 &-7047803883997181402

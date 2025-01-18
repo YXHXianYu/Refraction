@@ -108,7 +108,6 @@ MonoBehaviour:
   isSelectable: 1
   selectionType: 0
   lightTransmittanceType: 0
-  animatorController: {fileID: 9100000, guid: be61f003394939947b490ddedd5b9e0c, type: 2}
   direction: 0
   debugText: {fileID: 938755868151231506}
 --- !u!95 &-5688644825566307852

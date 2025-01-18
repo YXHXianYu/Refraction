@@ -42,14 +42,20 @@ public class BaseMapElement : MonoBehaviour {
     public ELightTransmittanceType lightTransmittanceType; // maybe could be deleted?
 
     /// <summary>
-    /// 绑定到该物体上的Animator
-    /// </summary>
-    public RuntimeAnimatorController animatorController;
-
-    /// <summary>
     /// 该元素所在的关卡控制器
     /// </summary>
     protected BaseLevelController levelController;
+    
+    // MARK: Animation
+    protected Animator[] Animators;
+    
+    protected virtual void Awake() {
+        AwakeAnimation();
+    }
+    
+    protected virtual void AwakeAnimation() {
+        Animators = GetComponentsInChildren<Animator>();
+    }
 
     /// <summary>
     /// 构造函数

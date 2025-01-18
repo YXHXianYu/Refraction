@@ -12,11 +12,11 @@ public class BubbleMapElement : BaseMapElement {
 
     public uint BubbleSize {
         get { return bubbleSize; }
-        set { bubbleSize = value; }
+        set { bubbleSize = value; UpdateRenderInfo(); }
     }
     public uint BubbleThickness {
         get { return bubbleThickness; }
-        set { bubbleThickness = value; }
+        set { bubbleThickness = value; UpdateRenderInfo(); }
     }
     public int BubbleXRay {
         get { return bubbleXRay; }
@@ -40,8 +40,6 @@ public class BubbleMapElement : BaseMapElement {
     
     // Shader Util
     private SpriteRenderer _spriteRenderer;
-    private int _centerPosXiD;
-    private int _centerPosYiD;
     private int _outlineColorXiD;
     private int _outlineColorYiD;
 
@@ -51,12 +49,15 @@ public class BubbleMapElement : BaseMapElement {
     }
 
     private void Start() {
+        InitializeShader();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void InitializeShader() {
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (_spriteRenderer == null) {
             Debug.LogError("SpriteRenderer not found on this GameObject.");
         }
-        _centerPosXiD = Shader.PropertyToID("_CenterPosX");
-        _centerPosYiD = Shader.PropertyToID("_CenterPosY");
         _outlineColorXiD = Shader.PropertyToID("_OutlineColorX");
         _outlineColorYiD = Shader.PropertyToID("_OutlineColorY");
     }
@@ -64,7 +65,9 @@ public class BubbleMapElement : BaseMapElement {
     private void Update() {
         UpdateSelectionType();
         UpdateRenderInfo();
-        UpdateMaterial();
+        // TODO: Fix Shader
+        // UpdateMaterial();
+        UpdateAnimation();
     }
 
     public void UpdateRenderInfo() {
@@ -81,18 +84,26 @@ public class BubbleMapElement : BaseMapElement {
 
     private void UpdateMaterial() {
         var mat = _spriteRenderer.material;
-        mat.SetFloat(_centerPosXiD, transform.position.x);
-        mat.SetFloat(_centerPosYiD, transform.position.y);
         mat.SetColor(_outlineColorXiD,  ColorTool.GetColor(bubbleXRay));
-        // Debug.Log("OutlineColorX: " + mat.GetColor(_outlineColorXiD));
         mat.SetColor(_outlineColorYiD, ColorTool.GetColor(bubbleYRay));
-        
-        // mat.SetColor("_OutlineColorX", Color.clear);
-        // mat.SetColor("_OutlineColorY", Color.clear);
     }
 
     private void UpdateAnimation() {
-        
+        foreach (var animator in Animators) {
+            switch (selectionType) {
+                case EOnSelectionType.Hover:
+                    animator.SetBool("onHover", true);
+                    break;
+                case EOnSelectionType.Selected:
+                    animator.SetBool("onHover", false);
+                    animator.SetBool("isSelected", true);
+                    break;
+                case EOnSelectionType.Unselected:
+                    animator.SetBool("onHover", false);
+                    animator.SetBool("isSelected", false);
+                    break;
+            }
+        }
     }
 
     private void UpdateSelectionType() {
@@ -177,6 +188,6 @@ public class BubbleMapElement : BaseMapElement {
         }
     }
 
-
     #endregion
+
 }
