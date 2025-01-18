@@ -311,7 +311,7 @@ MonoBehaviour:
   inflateSoundData:
     clips:
     - {fileID: 8300000, guid: 88585bc9d5e84f2409b40e0eaff7b205, type: 3}
-    mixerGroup: {fileID: -6848428618490655141, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
+    mixerGroup: {fileID: -8392768422430233098, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
     loop: 0
     playOnAwake: 0
     frequentSound: 0

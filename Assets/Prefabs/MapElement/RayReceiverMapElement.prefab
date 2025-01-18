@@ -425,14 +425,14 @@ MonoBehaviour:
   enableSoundData:
     clips:
     - {fileID: 8300000, guid: 3e9bbc11c6c1c0645a9394728c8dc45d, type: 3}
-    mixerGroup: {fileID: 474191513430427660, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
+    mixerGroup: {fileID: -8620400320227090058, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
     loop: 0
     playOnAwake: 0
     frequentSound: 0
   disableSoundData:
     clips:
     - {fileID: 8300000, guid: d02e425ad6c9d1b43b43e6ca4ca2ce0e, type: 3}
-    mixerGroup: {fileID: 474191513430427660, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
+    mixerGroup: {fileID: -8620400320227090058, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
     loop: 0
     playOnAwake: 0
     frequentSound: 0
