@@ -1209,6 +1209,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4829198393211475255, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 3747153991197367284, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
 --- !u!4 &502204515 stripped
 Transform:
@@ -2167,6 +2170,14 @@ PrefabInstance:
     - target: {fileID: 2880754409382252780, guid: 38d81f1cdb07ae8408ad0bdfea396ac5, type: 3}
       propertyPath: m_Name
       value: BubbleMapElement
+      objectReference: {fileID: 0}
+    - target: {fileID: 5484557276725727259, guid: 38d81f1cdb07ae8408ad0bdfea396ac5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5484557276725727259, guid: 38d81f1cdb07ae8408ad0bdfea396ac5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7290400604203583658, guid: 38d81f1cdb07ae8408ad0bdfea396ac5, type: 3}
       propertyPath: bubbleSize

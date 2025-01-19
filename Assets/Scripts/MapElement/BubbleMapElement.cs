@@ -44,6 +44,8 @@ public class BubbleMapElement : BaseMapElement {
     private int _outlineColorYiD;
 
     public TextMeshPro debugText;
+    public GameObject spriteObject;
+    private float _initSize = 0.25f;
 
     // Sound
     public SoundData selectSoundData;
@@ -70,11 +72,25 @@ public class BubbleMapElement : BaseMapElement {
     private void Update() {
         UpdateSelectionType();
         UpdateRenderInfo();
+        UpdateDisplaySize();
         // TODO: Fix Shader
         // UpdateMaterial();
         UpdateAnimation();
     }
 
+    private void UpdateDisplaySize() {
+        // TODO: Update Size Display
+        /*Vector3 sizeTransform = new Vector3(_initSize, _initSize, 1);
+        if (bubbleSize == 1) {
+            sizeTransform = new Vector3(0.15f, 0.15f, 0);
+        }
+        else {
+            sizeTransform += (bubbleSize - 2) * new Vector3(0.1f, 0.1f, 0);
+        }
+        spriteObject.transform.localScale = sizeTransform;
+        debugText.text += "BubbleDisplaySize: " + spriteObject.transform.localScale;*/
+    }
+    
     public void UpdateRenderInfo() {
         debugText.text = bubbleSize + "|" + bubbleThickness;
         // if (selectionType == EOnSelectionType.Selected) {

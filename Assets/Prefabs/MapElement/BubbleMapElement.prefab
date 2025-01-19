@@ -272,6 +272,7 @@ MonoBehaviour:
   bubbleXRay: -1
   bubbleYRay: -1
   debugText: {fileID: 247735068198984866}
+  spriteObject: {fileID: 2986221334468362442}
   selectSoundData:
     clips:
     - {fileID: 8300000, guid: 62264b8ed480c77499e9b5b06b5057d2, type: 3}

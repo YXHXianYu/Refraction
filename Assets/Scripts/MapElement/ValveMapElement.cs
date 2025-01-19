@@ -12,6 +12,7 @@ public class ValveMapElement : BaseMapElement {
     public uint sizeNeedToOpen;
 
     public TextMeshPro debugText;
+    public TextMeshPro hatchText;
 
     public ValveMapElement(): base(EMapElementType.Valve) {}
 
@@ -32,6 +33,7 @@ public class ValveMapElement : BaseMapElement {
     }
 
     private void UpdateRenderInfo() {
-        debugText.text = ">=" + sizeNeedToOpen + "|<=" + maxSizeCouldPass; // + "|" + (isOpen ? "Op" : "Cl");
+        debugText.text = "<=" + maxSizeCouldPass; // + "|" + (isOpen ? "Op" : "Cl");
+        hatchText.text = ">=" + sizeNeedToOpen;
     }
 }
