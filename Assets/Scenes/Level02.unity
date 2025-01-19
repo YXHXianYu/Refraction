@@ -1402,7 +1402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3044906776959808697, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: targetRayLevel
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5878575403896078278, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1455,7 +1455,7 @@ PrefabInstance:
     - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 58e5b93e5f286e944be15b3f928088e4, type: 3}
+      objectReference: {fileID: 21300000, guid: 652ad2c09b9c6084881fb35ae803ad8a, type: 3}
     - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -1506,11 +1506,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3044906776959808697, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: direction
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3044906776959808697, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: targetRayLevel
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5878575403896078278, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1563,7 +1563,7 @@ PrefabInstance:
     - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 58e5b93e5f286e944be15b3f928088e4, type: 3}
+      objectReference: {fileID: 21300000, guid: 652ad2c09b9c6084881fb35ae803ad8a, type: 3}
     - target: {fileID: 7453120728457731350, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -1960,7 +1960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4890411314437362028, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       propertyPath: maxSizeCouldPass
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5591187133397875883, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       propertyPath: m_Name
