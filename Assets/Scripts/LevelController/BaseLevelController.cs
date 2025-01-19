@@ -32,7 +32,7 @@ public class BaseLevelController : MonoBehaviour {
 
     // MARK: Start Funcs
 
-    private void Start() {
+    protected virtual void Start() {
         InitialMapElements();
         InitialRayDS();
     }
@@ -47,6 +47,9 @@ public class BaseLevelController : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.T)) {
             StartCoroutine(LoadLevelChooseScene());
+        }
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            QuitGame();
         }
     }
 
@@ -97,6 +100,14 @@ public class BaseLevelController : MonoBehaviour {
         return isLevelPassed;
     }
 
+    public void QuitGame() {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
     private Dictionary<Vector2Int, BaseMapElement> mapElements;
     private void InitialMapElements() {
         var elements = mapElementsParent.GetComponentsInChildren<BaseMapElement>();
@@ -138,7 +149,7 @@ public class BaseLevelController : MonoBehaviour {
             min_x = Mathf.Min(min_x, pos.x);
             min_y = Mathf.Min(min_y, pos.y);
         }
-        
+
         levelSizeBL = new Vector2Int(min_x, min_y);
         levelSizeTR = new Vector2Int(max_x, max_y);
     }
@@ -146,7 +157,9 @@ public class BaseLevelController : MonoBehaviour {
     #region Level Controller
 
     protected IEnumerator DisableGameLogicInAllMapElements() {
-        // var coroutines = new List<IEnumerator>();
+        if (mapElementsParent == null || mapElements.Count == 0) {
+            yield break;
+        }
 
         var stopDuration = 1.0f;
         var fadeDuration = 1.0f;
