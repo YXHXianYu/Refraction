@@ -11,7 +11,8 @@
 我们基于这些机制，设计了7个精巧的关卡，分别对应了彩虹的七种颜色 —— 红橙黄绿蓝靛紫，希望每个玩家都能从中感受到解谜的乐趣！
 
 发行版包含 Windows、MacOS（Apple Silicon 或 Intel 架构）、Android 和 iOS* 版本。
-* 需要自签名侧载
+
+\* *需要自签名侧载*
 
 ### EN
 
@@ -22,7 +23,8 @@ Each bubble have different **sizes** and **thickness**. Large bubbles can open v
 We have designed 7 exquisite levels based on these mechanisms, corresponding to the seven colors of the rainbow - red, orange, yellow, green, blue, indigo, and purple. We hope that every player can feel the joy of puzzle-solving from them!
 
 The distribution includes Windows, MacOS (Apple Silicon or Intel architecture), Android and iOS* versions.
-* needs self-signing and sideload
+
+\* *needs self-signing and sideload*
 
 ## Links 链接
 
