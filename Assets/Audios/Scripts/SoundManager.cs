@@ -99,4 +99,20 @@ public class SoundData {
     public bool loop;
     public bool playOnAwake;
     public bool frequentSound;
+
+    public SoundData(List<AudioClip> cilps, AudioMixerGroup mixerGroup = null, bool loop = false, bool playOnAwake = false, bool frequentSound = false) {
+        this.clips = cilps;
+        this.mixerGroup = mixerGroup;
+        this.loop = loop;
+        this.playOnAwake = playOnAwake;
+        this.frequentSound = frequentSound;
+    }
+
+    public SoundData(AudioClip cilps, AudioMixerGroup mixerGroup = null, bool loop = false, bool playOnAwake = false, bool frequentSound = false) {
+        this.clips = new List<AudioClip> { cilps };
+        this.mixerGroup = mixerGroup;
+        this.loop = loop;
+        this.playOnAwake = playOnAwake;
+        this.frequentSound = frequentSound;
+    }
 }

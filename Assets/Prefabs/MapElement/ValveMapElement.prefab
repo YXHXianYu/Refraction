@@ -548,6 +548,20 @@ MonoBehaviour:
   sizeNeedToOpen: 1
   debugText: {fileID: 7574417368481067237}
   hatchText: {fileID: 4929104577398255197}
+  openSoundData:
+    clips:
+    - {fileID: 8300000, guid: 499f865b195cf184198b4dc6674926d2, type: 3}
+    mixerGroup: {fileID: 0}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0
+  closeSoundData:
+    clips:
+    - {fileID: 8300000, guid: 41612532d2e49874f8f945fa29199fc9, type: 3}
+    mixerGroup: {fileID: 0}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0
 --- !u!114 &7574417368481067237 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3490527080480012209, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}

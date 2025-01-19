@@ -422,17 +422,22 @@ MonoBehaviour:
   isRayReceived: 0
   debugText: {fileID: 4625766331586710778}
   rayActive: {fileID: 5918930120405156764}
-  enableSoundData:
-    clips:
-    - {fileID: 8300000, guid: 3e9bbc11c6c1c0645a9394728c8dc45d, type: 3}
-    mixerGroup: {fileID: -8620400320227090058, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
-    loop: 0
-    playOnAwake: 0
-    frequentSound: 0
-  disableSoundData:
-    clips:
-    - {fileID: 8300000, guid: d02e425ad6c9d1b43b43e6ca4ca2ce0e, type: 3}
-    mixerGroup: {fileID: -8620400320227090058, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
-    loop: 0
-    playOnAwake: 0
-    frequentSound: 0
+  enableAudioClips:
+  - {fileID: 8300000, guid: 6b14415c3003b8f4f9a95d07d58a1dff, type: 3}
+  - {fileID: 8300000, guid: dbf51bf5493e38e43a865525e22046aa, type: 3}
+  - {fileID: 8300000, guid: de8969123ba50b948a12ad18bd826522, type: 3}
+  - {fileID: 8300000, guid: 7861b2795beecc24e915372ebb2c35b1, type: 3}
+  - {fileID: 8300000, guid: 81604c3f698ccc741a6cf57baa45a942, type: 3}
+  - {fileID: 8300000, guid: 3865cc45759b9d34b8dd7a2a66bb9c83, type: 3}
+  - {fileID: 8300000, guid: 583791a980740964b9241741ae970674, type: 3}
+  - {fileID: 8300000, guid: fdec28cbf1d47c44da2d7abd869dc7fd, type: 3}
+  disableAudioClips:
+  - {fileID: 8300000, guid: 5a4447fd52d6a6e458e02e44cec9cc99, type: 3}
+  - {fileID: 8300000, guid: b1cea56cd76d765499dca59b87605b6b, type: 3}
+  - {fileID: 8300000, guid: c1d7971722c1e9741a623126e0c14dca, type: 3}
+  - {fileID: 8300000, guid: f8315210402954745bd84c854e893108, type: 3}
+  - {fileID: 8300000, guid: 92f2704014d754440bf3e44520e8bcb4, type: 3}
+  - {fileID: 8300000, guid: ded0be63626865c44ad8e75513b9603f, type: 3}
+  - {fileID: 8300000, guid: ffa6f0665a816f24bb2e796f5bb990a5, type: 3}
+  - {fileID: 8300000, guid: 3d1f961d211577a43822b560d5657f86, type: 3}
+  mixerGroup: {fileID: -8620400320227090058, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}

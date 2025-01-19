@@ -16,9 +16,34 @@ public class ValveMapElement : BaseMapElement {
 
     public ValveMapElement(): base(EMapElementType.Valve) {}
 
+    // Audio
+    private bool prevIsOpen = false;
+    public SoundData openSoundData;
+    public SoundData closeSoundData;
+
     private void Update() {
+        if (prevIsOpen != isOpen) {
+            prevIsOpen = isOpen;
+            OnUpdateIsOpen();
+        }
+    }
+
+    private void OnUpdateIsOpen() {
         UpdateRenderInfo();
         UpdateAnimation();
+
+        // PLAY SOUND: open/close
+        if (isOpen) {
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(openSoundData)
+                .WithRandomPitch(true)
+                .Play();
+        } else {
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(closeSoundData)
+                .WithRandomPitch(true)
+                .Play();
+        }
     }
     
     private void UpdateAnimation() {

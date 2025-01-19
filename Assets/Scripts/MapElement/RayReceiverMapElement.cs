@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class RayReceiverMapElement : BaseMapElement {
     public EDirection4 direction;
@@ -15,10 +17,18 @@ public class RayReceiverMapElement : BaseMapElement {
 
     // Audio
     private bool prevIsRayReceived = false;
-    public SoundData enableSoundData;
-    public SoundData disableSoundData;
+    public List<AudioClip> enableAudioClips = new();
+    public List<AudioClip> disableAudioClips = new();
+    public AudioMixerGroup mixerGroup;
+    private List<SoundData> enableSoundDatas;
+    private List<SoundData> disableSoundDatas;
 
     public RayReceiverMapElement(): base(EMapElementType.RayReceiver) {}
+
+    private void Start() {
+        enableSoundDatas = enableAudioClips.Select(x => new SoundData(x)).ToList();
+        disableSoundDatas = disableAudioClips.Select(x => new SoundData(x)).ToList();
+    }
 
     private void Update() {
         UpdateRenderInfo();
@@ -31,7 +41,7 @@ public class RayReceiverMapElement : BaseMapElement {
                 debugText.text = "Rcv|" + targetRayLevel + "|R";
                 // PLAY AUDIO: enable
                 SoundManager.Instance.CreateSound()
-                    .WithSoundData(enableSoundData)
+                    .WithSoundData(enableSoundDatas[(int)targetRayLevel])
                     .Play();
                 // Cover
                 rayActive.SetActive(true);                
@@ -40,7 +50,7 @@ public class RayReceiverMapElement : BaseMapElement {
                 debugText.text = "Rcv|" + targetRayLevel + "|U";
                 // PLAY AUDIO: disable
                 SoundManager.Instance.CreateSound()
-                    .WithSoundData(disableSoundData)
+                    .WithSoundData(disableSoundDatas[(int)targetRayLevel])
                     .Play();
                 // Cover
                 rayActive.SetActive(false);
