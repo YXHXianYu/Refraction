@@ -536,6 +536,7 @@ public class BaseLevelController : MonoBehaviour {
         if (!raySet.Contains(key)) {
             raySet.Add(key);
 
+            
             var rayE = InstantiateRayElement(ray, rayLevel);
             var rayFE = InstantiateRayElement(new_ray, rayLevel);
 

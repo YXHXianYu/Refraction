@@ -397,6 +397,9 @@ MonoBehaviour:
   debugTextRight: {fileID: 3467270516319330614}
   debugTextTop: {fileID: 2615435423218411504}
   debugTextBottom: {fileID: 612646524110402187}
+  _spriteRenderer: {fileID: 929409184480906678}
+  _spriteLibrary: {fileID: 2598799518450252133}
+  _spriteObject: {fileID: 6240900476448252050}
 --- !u!1 &4665481252957691169
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,7 +583,7 @@ GameObject:
   - component: {fileID: 2598799518450252133}
   - component: {fileID: 929409184480906678}
   m_Layer: 0
-  m_Name: Texture
+  m_Name: Sprites
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -596,7 +599,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5312105525211430524}
