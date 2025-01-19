@@ -14,8 +14,6 @@ public class BaseLevelController : MonoBehaviour {
 
     // MARK: Public
 
-    public Vector2Int levelSizeBL;
-    public Vector2Int levelSizeTR;
     public uint gasCount;
 
     [SerializeField]
@@ -117,10 +115,14 @@ public class BaseLevelController : MonoBehaviour {
         }
         // Debug.Log("Level is initialized with " + elements.Length + " elements. Elements: " + elementsStr);
 
-        CheckMapSize();
+        GetMapSize();
     }
 
-    private void CheckMapSize() {
+
+    private Vector2Int levelSizeBL;
+    private Vector2Int levelSizeTR;
+
+    private void GetMapSize() {
         if (mapElements == null) {
             Debug.LogWarning("MapElements is null, but CheckMapSize is called.");
         }
@@ -136,14 +138,9 @@ public class BaseLevelController : MonoBehaviour {
             min_x = Mathf.Min(min_x, pos.x);
             min_y = Mathf.Min(min_y, pos.y);
         }
-        if (!(
-            min_x == levelSizeBL.x
-            && min_y == levelSizeBL.y
-            && max_x == levelSizeTR.x
-            && max_y == levelSizeTR.y
-        )) {
-            Debug.LogError("Map size is not correct. BottomLeft: " + levelSizeBL + "; TopRight: " + levelSizeTR + "; But got: [" + min_x + ", " + min_y + "] - [" + max_x + ", " + max_y + "]");
-        }
+        
+        levelSizeBL = new Vector2Int(min_x, min_y);
+        levelSizeTR = new Vector2Int(max_x, max_y);
     }
 
     #region Level Controller

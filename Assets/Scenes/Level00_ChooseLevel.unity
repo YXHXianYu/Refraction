@@ -2596,6 +2596,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5973920766965617851, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
   m_PrefabInstance: {fileID: 1107782332}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1107782334 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3044906776959808697, guid: a74f8ac50645ea344a8521f5dbfffde2, type: 3}
+  m_PrefabInstance: {fileID: 1107782332}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2be94c43182efea438f27586d9392516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1128417271
 GameObject:
   m_ObjectHideFlags: 0
@@ -2721,16 +2732,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c21bc341224531e47b47a3ef6f33e063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSizeBL: {x: 0, y: 0}
-  levelSizeTR: {x: 14, y: 9}
   gasCount: 7
   mapElementsParent: {fileID: 280885259}
   rayPrefab: {fileID: 4177923176204779389, guid: b08b469e362135a4c966f7b80443ae80, type: 3}
   currentLevelSceneName: Level00_ChooseLevel
+  nextLevelSceneName: 
   levelChooseSceneName: Level00_ChooseLevel
   levelList:
   - rayReceiver: {fileID: 667866760}
     levelName: Level01
+  - rayReceiver: {fileID: 1107782334}
+    levelName: Level02
   - rayReceiver: {fileID: 338611939}
     levelName: Level06
 --- !u!1001 &1228848555
@@ -4264,6 +4276,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4829198393211475255, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
+    - targetCorrespondingSourceObject: {fileID: 3747153991197367284, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}

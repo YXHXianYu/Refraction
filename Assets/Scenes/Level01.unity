@@ -1723,13 +1723,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae111b101f9663e4eb2d74862bc133e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSizeBL: {x: 3, y: 1}
-  levelSizeTR: {x: 11, y: 8}
   gasCount: 0
   mapElementsParent: {fileID: 280885259}
   rayPrefab: {fileID: 4177923176204779389, guid: b08b469e362135a4c966f7b80443ae80, type: 3}
   currentLevelSceneName: Level01
-  nextLevelSceneName: 
+  nextLevelSceneName: Level02
   levelChooseSceneName: Level00_ChooseLevel
 --- !u!1001 &1406149383
 PrefabInstance:
