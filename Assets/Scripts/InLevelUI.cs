@@ -8,12 +8,18 @@ public class InLevelUI : MonoBehaviour {
 
     public BaseLevelController levelController;
     public TextMeshProUGUI gasCountText;
+    public TextMeshProUGUI levelNameText;
     public Button menuButton;
     public Button restartButton;
 
+    private void Start() {
+        var t = levelController.currentLevelSceneName.ToUpper();
+        levelNameText.text = "#" + t[^1];
+    }
+
     public void ClickMenu() {
-        Debug.LogWarning("ClickMenu() is not implemented yet.");
-        // TODO: Implement ClickMenu()
+        restartButton.interactable = false;
+        StartCoroutine(levelController.LoadLevelChooseScene());
     }
 
     public void ClickRestart() {
