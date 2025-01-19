@@ -151,6 +151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 751c0dbbafba736498b91cf520292ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelClearSoundData:
+    clips:
+    - {fileID: 8300000, guid: 02914bc9df50d0a4b90ee3cb9bc45012, type: 3}
+    mixerGroup: {fileID: 8023658778898121086, guid: a1d2b5c5b26e6474cb32655f7a83d2bc, type: 2}
+    loop: 0
+    playOnAwake: 0
+    frequentSound: 0
   bgmSource: {fileID: 483460888}
   ambientSource: {fileID: 833323982}
   sceneAudioList:

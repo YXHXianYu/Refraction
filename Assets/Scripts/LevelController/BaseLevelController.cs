@@ -16,6 +16,12 @@ public class BaseLevelController : MonoBehaviour {
 
     public uint gasCount;
 
+    // Audio
+    // When is null, will use the levelClearSoundData field in the SceneAudioManager by default
+    // TODO: fix bug for override: "Object reference not set to an instance of an object
+    // TODO: see method UpdateIsLevelPassed
+    // public SoundData overrideLevelClearSoundData;
+
     [SerializeField]
     private GameObject mapElementsParent;
 
@@ -265,6 +271,18 @@ public class BaseLevelController : MonoBehaviour {
 
         isLevelPassed = true;
         Debug.Log("Level is passed!");
+        // PLAY AUDIO: level clear
+        // TODO: fix bug for override: "Object reference not set to an instance of an object
+        // TODO: see field overrideLevelClearSoundData
+        // if (overrideLevelClearSoundData && overrideLevelClearSoundData.clips.Count > 0) {
+        //     SoundManager.Instance.CreateSound()
+        //         .WithSoundData(overrideLevelClearSoundData)
+        //         .Play();
+        // } else {
+            SoundManager.Instance.CreateSound()
+                .WithSoundData(SceneAudioManager.Instance.levelClearSoundData)
+                .Play();
+        // }
 
         StartCoroutine(LoadNextLevel());
     }

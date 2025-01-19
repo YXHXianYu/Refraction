@@ -24,6 +24,10 @@ using UnityEngine.SceneManagement;
 /// TODO: between the enum and the clip.
 /// </summary>
 public class SceneAudioManager : Singleton<SceneAudioManager> {
+    // I just shitted the sound for levelControllers here
+    // (lazy to bind for all levelControllers)
+    public SoundData levelClearSoundData;
+
     public AudioSource bgmSource;
     public AudioSource ambientSource;
 

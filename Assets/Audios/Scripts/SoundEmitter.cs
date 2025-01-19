@@ -40,6 +40,11 @@ public class SoundEmitter : MonoBehaviour {
     public void Initialize(SoundData data) {
         Data = data;
         // audioSource.clip = data.clip;
+        if (data.clips.Count == 0) {
+            Debug.LogWarning("SoundData has no clips");
+            audioSource.clip = null;
+            return;
+        }
         audioSource.clip = data.clips[Random.Range(0, data.clips.Count)];
         audioSource.outputAudioMixerGroup = data.mixerGroup;
         audioSource.loop = data.loop;
