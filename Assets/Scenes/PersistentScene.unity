@@ -410,7 +410,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 6.1875
+  orthographic size: 5.15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -620,7 +620,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000076a23faf754278ac39665cded8c2b6a77b9aec2474f4a4b7362dfb33d2d9ed5cb82b7391df0fc0bdfea0cf8351d10a1
+  m_ApplyToSortingLayers: 00000000f754278a336d42cf
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0

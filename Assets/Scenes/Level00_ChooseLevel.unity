@@ -146,13 +146,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23584512}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1049641162}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 280885260}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &45231961
 PrefabInstance:
@@ -709,6 +709,7 @@ Transform:
   - {fileID: 1128417272}
   - {fileID: 143314432}
   - {fileID: 1489031361}
+  - {fileID: 23584513}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &297131190
@@ -2167,7 +2168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.25}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &805792470
@@ -2190,7 +2191,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lev1
+  m_text: Lvl1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4608,10 +4609,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4829198393211475255, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 3747153991197367284, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 3747153991197367284, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4829198393211475255, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
@@ -5377,4 +5378,3 @@ SceneRoots:
   m_Roots:
   - {fileID: 280885260}
   - {fileID: 1222576375}
-  - {fileID: 23584513}

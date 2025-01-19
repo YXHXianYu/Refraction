@@ -498,6 +498,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3020830605921828662, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3020830605921828662, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 3490527080480012209, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       propertyPath: m_text
       value: Valve
@@ -506,13 +514,13 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 8428533858663680387}
     - targetCorrespondingSourceObject: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
-      insertIndex: -1
+      insertIndex: 1
       addedObject: {fileID: 487477992053849846}
     - targetCorrespondingSourceObject: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
-      insertIndex: -1
+      insertIndex: 2
       addedObject: {fileID: 1021191257398773231}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1511670738016451583, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}

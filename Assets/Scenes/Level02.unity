@@ -570,6 +570,7 @@ Transform:
   - {fileID: 1128417272}
   - {fileID: 143314432}
   - {fileID: 1489031361}
+  - {fileID: 1177060466}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &286023170 stripped
@@ -1970,6 +1971,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ValveMapElement
       objectReference: {fileID: 0}
+    - target: {fileID: 8106847647318521954, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8194123331826003115, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8919406301155190948, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
@@ -2014,10 +2023,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4829198393211475255, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 3747153991197367284, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 3747153991197367284, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4829198393211475255, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
@@ -2631,7 +2640,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 280885260}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3925,4 +3934,3 @@ SceneRoots:
   m_Roots:
   - {fileID: 280885260}
   - {fileID: 1222576375}
-  - {fileID: 1177060466}

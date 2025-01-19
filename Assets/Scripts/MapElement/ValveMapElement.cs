@@ -26,10 +26,10 @@ public class ValveMapElement : BaseMapElement {
             prevIsOpen = isOpen;
             OnUpdateIsOpen();
         }
+        UpdateRenderInfo();
     }
 
     private void OnUpdateIsOpen() {
-        UpdateRenderInfo();
         UpdateAnimation();
 
         // PLAY SOUND: open/close
