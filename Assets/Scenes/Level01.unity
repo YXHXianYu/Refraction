@@ -1728,6 +1728,9 @@ MonoBehaviour:
   gasCount: 0
   mapElementsParent: {fileID: 280885259}
   rayPrefab: {fileID: 4177923176204779389, guid: b08b469e362135a4c966f7b80443ae80, type: 3}
+  currentLevelSceneName: Level01
+  nextLevelSceneName: 
+  levelChooseSceneName: Level00_ChooseLevel
 --- !u!1001 &1406149383
 PrefabInstance:
   m_ObjectHideFlags: 0

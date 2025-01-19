@@ -82,6 +82,8 @@ public class InflatorMapElement : BaseMapElement {
     private float lastClickTime = -OurSettings.DOUBLE_CLICK_TIME;
 
     public void OnMouseDown() {
+        if (!isGameLogicActive) return;
+        
         isDragging = true;
 
         if (Time.time - lastClickTime < OurSettings.DOUBLE_CLICK_TIME) {
@@ -93,10 +95,14 @@ public class InflatorMapElement : BaseMapElement {
     }
 
     public void OnMouseUp() {
+        if (!isGameLogicActive) return;
+        
         isDragging = false;
     }
 
     private void OnSingleClick() {
+        if (!isGameLogicActive) return;
+        
         InflatBubble();
     }
 }

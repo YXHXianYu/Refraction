@@ -11,8 +11,7 @@ public class RayReceiverAndLevel {
 
 public class LevelChooseLevelController : BaseLevelController {
 
-    [Header("Level Choose")]
-    public string levelChooseSceneName = "Level00_ChooseLevel";
+    [Header("Level Choose Level Controller")]
     public List<RayReceiverAndLevel> levelList = new List<RayReceiverAndLevel>();
 
     protected override void Update() {
@@ -23,12 +22,24 @@ public class LevelChooseLevelController : BaseLevelController {
             var levelName = rcvAndLevel.levelName;
             if (rayReceiver.isRayReceived) {
 
-                SceneManager.UnloadSceneAsync(levelChooseSceneName).completed += (asyncOperation) => {
-                    SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive);
-                };
+                StartCoroutine(LoadSelectedLevel(levelName));
+
                 return;
             }
         }
+    }
+
+    private IEnumerator LoadSelectedLevel(string levelName) {
+        
+        yield return DisableGameLogicInAllMapElements();
+        
+        SceneManager.UnloadSceneAsync(levelChooseSceneName).completed += (asyncOperation) => {
+            SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Additive).completed += (asyncOperation2) => {
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelName));
+            };
+        };
+        
+        Debug.Log("Current level is reset: " + levelName);
     }
 
 }

@@ -153,6 +153,8 @@ public class BubbleMapElement : BaseMapElement {
     private Vector2Int startPosition;
 
     public void OnMouseDown() {
+        if (!isGameLogicActive) return;
+
         // PLAY SOUND: selectSoundData
         // OnSelect
         if (!isDragging) {
@@ -174,6 +176,8 @@ public class BubbleMapElement : BaseMapElement {
     }
 
     public void OnMouseDrag() {
+        if (!isGameLogicActive) return;
+        
         if (!isDragging) {
             return;
         }
@@ -183,6 +187,8 @@ public class BubbleMapElement : BaseMapElement {
     }
 
     public void OnMouseUp() {
+        if (!isGameLogicActive) return;
+        
         isDragging = false;
 
         var world_pos = MouseTools.GetMouseWorldPosition();

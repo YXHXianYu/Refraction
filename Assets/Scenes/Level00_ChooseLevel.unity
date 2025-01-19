@@ -2726,6 +2726,7 @@ MonoBehaviour:
   gasCount: 7
   mapElementsParent: {fileID: 280885259}
   rayPrefab: {fileID: 4177923176204779389, guid: b08b469e362135a4c966f7b80443ae80, type: 3}
+  currentLevelSceneName: Level00_ChooseLevel
   levelChooseSceneName: Level00_ChooseLevel
   levelList:
   - rayReceiver: {fileID: 667866760}

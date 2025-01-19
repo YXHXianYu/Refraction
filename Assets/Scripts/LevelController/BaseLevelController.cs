@@ -1,13 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements.Experimental;
 
 public class BaseLevelController : MonoBehaviour {
 
     public const uint MAX_RAY_TRACING_COUNT = 1000;
+
+    public const uint MAX_RAY_LEVEL = 7;
 
     // MARK: Public
 
@@ -19,18 +22,81 @@ public class BaseLevelController : MonoBehaviour {
     private GameObject mapElementsParent;
 
     private bool isLevelPassed;
-    public bool GetIsLevelPassed() {
-        return isLevelPassed;
-    }
 
+    [Header("Ray Element Prefab")]
     // ray prefab
     public GameObject rayPrefab;
+
+    [Header("Level Choose")]
+    public string currentLevelSceneName = null;
+    public string nextLevelSceneName = null;
+    public string levelChooseSceneName = "Level00_ChooseLevel";
 
     // MARK: Start Funcs
 
     private void Start() {
         InitialMapElements();
         InitialRayDS();
+    }
+
+    protected virtual void Update() {
+        UpdateValves();
+        UpdateRays();
+        UpdateIsLevelPassed();
+
+        if (Input.GetKeyDown(KeyCode.R)) {
+            StartCoroutine(ResetCurrentLevel());
+        }
+        if (Input.GetKeyDown(KeyCode.T)) {
+            StartCoroutine(LoadLevelChooseScene());
+        }
+    }
+
+    public IEnumerator LoadLevelChooseScene() {
+
+        yield return DisableGameLogicInAllMapElements();
+
+        SceneManager.UnloadSceneAsync(currentLevelSceneName).completed += (asyncOperation) => {
+            SceneManager.LoadSceneAsync(levelChooseSceneName, LoadSceneMode.Additive).completed += (asyncOperation2) => {
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(levelChooseSceneName));
+            };
+        };
+
+        Debug.Log("Level choose scene is loaded: " + levelChooseSceneName);
+    }
+    
+    public IEnumerator ResetCurrentLevel() {
+
+        yield return DisableGameLogicInAllMapElements();
+
+        SceneManager.UnloadSceneAsync(currentLevelSceneName).completed += (asyncOperation) => {
+            SceneManager.LoadSceneAsync(currentLevelSceneName, LoadSceneMode.Additive).completed += (asyncOperation2) => {
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentLevelSceneName));
+            };
+        };
+
+        Debug.Log("Current level is reset: " + currentLevelSceneName);
+    }
+
+    public IEnumerator LoadNextLevel() {
+        if (nextLevelSceneName == null || nextLevelSceneName == "") {
+            Debug.LogWarning("Next level is not set.");
+            yield break;
+        }
+        
+        yield return DisableGameLogicInAllMapElements();
+
+        SceneManager.UnloadSceneAsync(currentLevelSceneName).completed += (asyncOperation) => {
+            SceneManager.LoadSceneAsync(nextLevelSceneName, LoadSceneMode.Additive).completed += (asyncOperation2) => {
+                SceneManager.SetActiveScene(SceneManager.GetSceneByName(nextLevelSceneName));
+            };
+        };
+
+        Debug.Log("Next level is loaded: " + nextLevelSceneName);
+    }
+
+    public bool GetIsLevelPassed() {
+        return isLevelPassed;
     }
 
     private Dictionary<Vector2Int, BaseMapElement> mapElements;
@@ -80,6 +146,82 @@ public class BaseLevelController : MonoBehaviour {
         }
     }
 
+    #region Level Controller
+
+    protected IEnumerator DisableGameLogicInAllMapElements() {
+        // var coroutines = new List<IEnumerator>();
+
+        var stopDuration = 1.0f;
+        var fadeDuration = 1.0f;
+        foreach (var element in mapElements.Values) {
+            element.DisableGameLogic();
+        }
+        yield return StartCoroutine(FadeMapElement(mapElementsParent, stopDuration, fadeDuration));
+
+        // yield return WaitForAllCoroutines(coroutines);
+    }
+
+    private float FadeTimeMapper(float x) { // x in [0, 1]
+        var t = x * Mathf.PI - Mathf.PI / 2; // [-pi/2, pi/2]
+        return (Mathf.Sin(t) + 1) / 2; // [0, 1]
+    }
+
+    private float Lerp(float x, float y, float t) {
+        return x + (y - x) * t;
+    }
+
+    private IEnumerator FadeMapElement(GameObject mapElement, float stopDuration, float fadeDuration) {
+        var spriteRenderers = mapElement.GetComponentsInChildren<SpriteRenderer>();
+        var textMeshPros = mapElement.GetComponentsInChildren<TextMeshPro>();
+
+        for (float time = 0; time < stopDuration; time += Time.deltaTime) {
+            yield return null;
+        }
+
+        for (float time = 0; time < fadeDuration; time += Time.deltaTime) {
+            for (var i = 0; i < spriteRenderers.Length; i++) {
+                if (!spriteRenderers[i]) continue;
+                var c = spriteRenderers[i].color;
+                spriteRenderers[i].color = new Color(c.r, c.g, c.b, Lerp(1, 0, FadeTimeMapper(time / fadeDuration)));
+            }
+            for (var i = 0; i < textMeshPros.Length; i++) {
+                if (!textMeshPros[i]) continue;
+                var c = textMeshPros[i].color;
+                textMeshPros[i].color = new Color(c.r, c.g, c.b, Lerp(1, 0, FadeTimeMapper(time / fadeDuration)));
+            }
+            yield return null;
+        }
+
+        for (var i = 0; i < spriteRenderers.Length; i++) {
+            if (!spriteRenderers[i]) continue;
+            spriteRenderers[i].color = new Color(1, 1, 1, 0);
+        }
+        for (var i = 0; i < textMeshPros.Length; i++) {
+            if (!textMeshPros[i]) continue;
+            textMeshPros[i].color = new Color(1, 1, 1, 0);
+        }
+    }
+
+    public IEnumerator WaitForAllCoroutines(List<IEnumerator> coroutines) {
+        var finishedCount = 0;
+        var total = coroutines.Count;
+
+        foreach (var routine in coroutines) {
+            StartCoroutine(RunRoutine(routine, () => finishedCount++));
+        }
+
+        while (finishedCount < total) {
+            yield return null;
+        }
+    }
+
+    private IEnumerator RunRoutine(IEnumerator routine, System.Action onComplete) {
+        yield return StartCoroutine(routine);
+        onComplete?.Invoke();
+    }
+
+    #endregion
+
     // MARK: Update Funcs
 
     private bool IsInsideLevel(Vector2Int pos) {
@@ -88,12 +230,6 @@ public class BaseLevelController : MonoBehaviour {
 
     private bool IsInsideLevel(int x, int y) {
         return x >= levelSizeBL.x && x <= levelSizeTR.x && y >= levelSizeBL.y && y <= levelSizeTR.y;
-    }
-
-    protected virtual void Update() {
-        UpdateValves();
-        UpdateRays();
-        UpdateIsLevelPassed();
     }
 
     private void UpdateIsLevelPassed() {
@@ -107,13 +243,11 @@ public class BaseLevelController : MonoBehaviour {
 
         isLevelPassed = true;
         Debug.Log("Level is passed!");
+
+        StartCoroutine(LoadNextLevel());
     }
 
     #region Scene Controller
-
-    public void ResetCurrentLevel() {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 
     public Result MoveBubble(Vector2Int source, Vector2Int target) {
         var res = IsBubbleMovable(source, target);
@@ -163,6 +297,7 @@ public class BaseLevelController : MonoBehaviour {
             bubble.gameObject, new Vector3(target.x, target.y, 0), Quaternion.identity
         ).GetComponent<BubbleMapElement>();
 
+        newBubble.transform.SetParent(mapElementsParent.transform);
         newBubble.position = target;
         newBubble.SetLevelController(this);
 
@@ -445,12 +580,14 @@ public class BaseLevelController : MonoBehaviour {
                     } else if (element is BubbleMapElement bubble) {
                         IncidentToOutgoingAndRefract(ray, rayLevel, bubble.BubbleThickness, head, queue, rayElementQ, rayLevelQ, father, ref tail);
 
+                        var nextRayLevel = Math.Min(rayLevel + bubble.BubbleThickness, MAX_RAY_LEVEL);
+
                         if (ray.rayForwardDirection == EDirection4.Top || ray.rayForwardDirection == EDirection4.Bottom) {
-                            bubble.BubbleXRay = (int)(rayLevel + bubble.BubbleThickness);
+                            bubble.BubbleXRay = (int)nextRayLevel;
                             bubble.BubbleYRay = (int)rayLevel;
                         } else if (ray.rayForwardDirection == EDirection4.Left || ray.rayForwardDirection == EDirection4.Right) {
                             bubble.BubbleXRay = (int)rayLevel;
-                            bubble.BubbleYRay = (int)(rayLevel + bubble.BubbleThickness);
+                            bubble.BubbleYRay = (int)nextRayLevel;
                         } else {
                             Assert.IsTrue(false, "Invalid ray forward direction: " + ray.rayForwardDirection);
                         }
@@ -641,15 +778,17 @@ public class BaseLevelController : MonoBehaviour {
             raySet.Add(key_forward);
             raySet.Add(key_refraction);
 
+            var nextRayLevel = Math.Min(rayLevel + bubbleThickness, MAX_RAY_LEVEL);
+
             var rayE = InstantiateRayElement(ray, rayLevel);
             var rayFE = InstantiateRayElement(new_forward_ray, rayLevel);
-            var rayRE1 = InstantiateRayElement(new_refraction_ray_1, rayLevel + bubbleThickness);
-            var rayRE2 = InstantiateRayElement(new_refraction_ray_2, rayLevel + bubbleThickness);
+            var rayRE1 = InstantiateRayElement(new_refraction_ray_1, nextRayLevel);
+            var rayRE2 = InstantiateRayElement(new_refraction_ray_2, nextRayLevel);
 
             rayElementQ[head] = rayE;
             PushbackRay(new_forward_ray, rayFE, rayLevel, head, queue, rayElementQ, rayLevelQ, father, ref tail);
-            PushbackRay(new_refraction_ray_1, rayRE1, rayLevel + bubbleThickness, head, queue, rayElementQ, rayLevelQ, father, ref tail);
-            PushbackRay(new_refraction_ray_2, rayRE2, rayLevel + bubbleThickness, head, queue, rayElementQ, rayLevelQ, father, ref tail);
+            PushbackRay(new_refraction_ray_1, rayRE1, nextRayLevel, head, queue, rayElementQ, rayLevelQ, father, ref tail);
+            PushbackRay(new_refraction_ray_2, rayRE2, nextRayLevel, head, queue, rayElementQ, rayLevelQ, father, ref tail);
         } else {
             // Debug.Log("Ray already exists: " + new_forward_ray);
         }

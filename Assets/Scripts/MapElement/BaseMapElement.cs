@@ -76,4 +76,8 @@ public class BaseMapElement : MonoBehaviour {
     public void SetLevelController(BaseLevelController levelController) {
         this.levelController = levelController;
     }
+
+    public void DisableGameLogic() {
+        isGameLogicActive = false;
+    }
 }
