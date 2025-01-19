@@ -1134,6 +1134,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1489031361}
     m_Modifications:
+    - target: {fileID: 4628474381562193909, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ae3aa806f2e96a24e81f3617f1d4de29, type: 3}
+    - target: {fileID: 4628474381562193909, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4890411314437362028, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       propertyPath: isOpen
       value: 1
@@ -1540,10 +1548,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1128417272}
     m_Modifications:
-    - target: {fileID: 3895871486221356667, guid: 411d46af421920f4e9397c0702c8a401, type: 3}
-      propertyPath: m_FlipX
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 665563525788650855, guid: fa8bb3b29c3785d4a821149d44f5826a, type: 3}
       propertyPath: m_Name
       value: BaseWallMapElement_LR (8)
@@ -1586,6 +1590,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4567623455272376680, guid: fa8bb3b29c3785d4a821149d44f5826a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3895871486221356667, guid: 411d46af421920f4e9397c0702c8a401, type: 3}
+      propertyPath: m_FlipX
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3722,10 +3730,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1128417272}
     m_Modifications:
-    - target: {fileID: 3895871486221356667, guid: 411d46af421920f4e9397c0702c8a401, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 665563525788650855, guid: ed7eafbe7991ddd44a2339a6a50e71d0, type: 3}
       propertyPath: m_Name
       value: BaseWallMapElement_TB (4)
@@ -3772,6 +3776,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4567623455272376680, guid: ed7eafbe7991ddd44a2339a6a50e71d0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3895871486221356667, guid: 411d46af421920f4e9397c0702c8a401, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.U2D.Animation;
 
 public class RayElement : MonoBehaviour {
     // data
@@ -26,8 +27,16 @@ public class RayElement : MonoBehaviour {
     public TextMeshPro debugTextRight;
     public TextMeshPro debugTextTop;
     public TextMeshPro debugTextBottom;
+    
+    private GameObject _textureObject;
+    private SpriteRenderer _textureRenderer;
+    private SpriteLibrary _spriteLibrary;
 
-
+    private void Start() {
+        _textureRenderer = _textureObject.GetComponent<SpriteRenderer>();
+        _spriteLibrary = _textureObject.GetComponent<SpriteLibrary>();
+    }
+    
     public void UpdateRenderInfo() {
         debugTextLeft.text = "";
         debugTextRight.text = "";
