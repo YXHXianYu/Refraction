@@ -35,7 +35,7 @@ public class TitleScreenController : BaseLevelController {
 
     private void UpdateTitleScreen() {
         if (Input.GetMouseButtonDown(0)) {
-            UpdateAnimation();
+            // UpdateAnimation();
             StartCoroutine(FadeOutToLevelChooseScene());
         }
     }
