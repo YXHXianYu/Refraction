@@ -1206,10 +1206,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4829198393211475255, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 3747153991197367284, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 3747153991197367284, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4829198393211475255, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 66d4acc4df9c8024a9ec10dba05473d3, type: 3}
@@ -2746,12 +2746,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae111b101f9663e4eb2d74862bc133e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelSizeBL: {x: 0, y: 0}
-  levelSizeTR: {x: 14, y: 9}
   gasCount: 0
   mapElementsParent: {fileID: 280885259}
   rayPrefab: {fileID: 4177923176204779389, guid: b08b469e362135a4c966f7b80443ae80, type: 3}
   currentLevelSceneName: Level06
+  nextLevelSceneName: Level07
   levelChooseSceneName: Level00_ChooseLevel
 --- !u!1001 &1228848555
 PrefabInstance:
