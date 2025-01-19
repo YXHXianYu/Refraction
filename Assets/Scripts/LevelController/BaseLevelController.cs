@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BaseLevelController : MonoBehaviour {
 
@@ -201,6 +202,8 @@ public class BaseLevelController : MonoBehaviour {
     protected IEnumerator FadeMapElement(GameObject mapElement, float stopDuration, float fadeDuration) {
         var spriteRenderers = mapElement.GetComponentsInChildren<SpriteRenderer>();
         var textMeshPros = mapElement.GetComponentsInChildren<TextMeshPro>();
+        var images = FindObjectsOfType<Image>();
+        var texts = FindObjectsOfType<TextMeshProUGUI>();
 
         for (float time = 0; time < stopDuration; time += Time.deltaTime) {
             yield return null;
@@ -217,6 +220,16 @@ public class BaseLevelController : MonoBehaviour {
                 var c = textMeshPros[i].color;
                 textMeshPros[i].color = new Color(c.r, c.g, c.b, Lerp(1, 0, FadeTimeMapper(time / fadeDuration)));
             }
+            for (var i = 0; i < images.Length; i++) {
+                if (!images[i]) continue;
+                var c = images[i].color;
+                images[i].color = new Color(c.r, c.g, c.b, Lerp(1, 0, FadeTimeMapper(time / fadeDuration)));
+            }
+            for (var i = 0; i < texts.Length; i++) {
+                if (!texts[i]) continue;
+                var c = texts[i].color;
+                texts[i].color = new Color(c.r, c.g, c.b, Lerp(1, 0, FadeTimeMapper(time / fadeDuration)));
+            }
             yield return null;
         }
 
@@ -227,6 +240,14 @@ public class BaseLevelController : MonoBehaviour {
         for (var i = 0; i < textMeshPros.Length; i++) {
             if (!textMeshPros[i]) continue;
             textMeshPros[i].color = new Color(1, 1, 1, 0);
+        }
+        for (var i = 0; i < images.Length; i++) {
+            if (!images[i]) continue;
+            images[i].color = new Color(1, 1, 1, 0);
+        }
+        for (var i = 0; i < texts.Length; i++) {
+            if (!texts[i]) continue;
+            texts[i].color = new Color(1, 1, 1, 0);
         }
     }
 
