@@ -6,10 +6,20 @@ public class TitleScreenController : BaseLevelController {
 
     [Header("Title Screen Controller")]
     public GameObject TitleScreenBackgroundParent;
+    
+    private Animator[] Animators;
 
     protected override void Start() {
         // Don't call base.Start() in TitleScreenController
         // base.Start();
+        var bubbleObj = GameObject.Find("Background_Title_Bubble");
+        Animators = bubbleObj.GetComponentsInChildren<Animator>();
+    }
+    
+    private void UpdateAnimation() {
+        foreach (var animator in Animators) {
+            animator.SetBool("isBoom", true);
+        }
     }
 
     protected override void Update() {
@@ -25,6 +35,7 @@ public class TitleScreenController : BaseLevelController {
 
     private void UpdateTitleScreen() {
         if (Input.GetMouseButtonDown(0)) {
+            UpdateAnimation();
             StartCoroutine(FadeOutToLevelChooseScene());
         }
     }
