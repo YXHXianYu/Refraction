@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -35,8 +36,6 @@ public class RayElement : MonoBehaviour {
     [SerializeField]
     private GameObject _spriteObject;
     
-    private string _currentCategory = "None"; // 默认类别
-    
     void UpdateSprite(string category, string label) {
         _spriteRenderer.sprite = _spriteLibrary.GetSprite(category, label);
     }
@@ -57,25 +56,48 @@ public class RayElement : MonoBehaviour {
             content = "→";
         }
         string spriteCategory = "";
-        var curScale = _spriteObject.transform.localScale;
         if (rayType == ERayType.LeftCenter) {
             debugTextLeft.text = content;
             spriteCategory = "Left";
-            _spriteObject.transform.localScale = curScale + new Vector3(0, -0.1f, 0);
+            if (!isMatched) {
+                _spriteObject.transform.localScale = new Vector3(0.2f, 0.1f, 1);
+            }
+            else {
+                _spriteObject.transform.localScale = new Vector3(0.2f, 0.2f, 1);
+            }
         } else if (rayType == ERayType.RightCenter) {
             debugTextRight.text = content;
             spriteCategory = "Right";
-            _spriteObject.transform.localScale = curScale + new Vector3(0, -0.1f, 0);
+            if (!isMatched) {
+                _spriteObject.transform.localScale = new Vector3(0.2f, 0.1f, 1);
+            }
+            else {
+                _spriteObject.transform.localScale = new Vector3(0.2f, 0.2f, 1);
+            }
         } else if (rayType == ERayType.TopCenter) {
             debugTextTop.text = content;
             spriteCategory = "Up";
-            _spriteObject.transform.localScale = curScale + new Vector3(-0.1f, 0, 0);
+            if (!isMatched) {
+                _spriteObject.transform.localScale = new Vector3(0.1f, 0.2f, 1);
+            }
+            else {
+                _spriteObject.transform.localScale = new Vector3(0.2f, 0.2f, 1);
+            }
         } else if (rayType == ERayType.BottomCenter) {
             debugTextBottom.text = content;
             spriteCategory = "Down";
-            _spriteObject.transform.localScale = curScale + new Vector3(-0.1f, 0, 0);
+            if (!isMatched) {
+                _spriteObject.transform.localScale = new Vector3(0.1f, 0.2f, 1);
+            }
+            else {
+                _spriteObject.transform.localScale = new Vector3(0.2f, 0.2f, 1);
+            }
         }
         UpdateSprite(spriteCategory, $"L{rayLevel}");
+    }
+
+    private void Update() {
+        UpdateRenderInfo();
     }
 
     // logical ray inner
