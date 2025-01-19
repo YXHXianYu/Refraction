@@ -3,6 +3,7 @@ Shader "Unlit/RayShader"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _spriteColor("spriteColor", Color) = "white" {}
     }
     SubShader
     {
@@ -49,15 +50,6 @@ Shader "Unlit/RayShader"
                 fixed4 col = tex2D(_MainTex, i.uv);
                 float flash = sin(_Time.y * 3.0) * 0.2 + 0.8;
                 col *= flash;
-
-                /*
-                // 添加通道偏移
-                float3 offset = float3(0.01, 0.05, 0.0); // X轴偏移，可根据需要调整
-                fixed4 rCol = tex2D(_MainTex, i.uv + offset.xy); // R通道偏移
-                fixed4 gCol = tex2D(_MainTex, i.uv); // G通道正常
-                fixed4 bCol = tex2D(_MainTex, i.uv - offset.xy); // B通道偏移
-                col = fixed4(rCol.r, gCol.g, bCol.b, col.a);
-                */
                 
                 return col;
             }
