@@ -121,7 +121,19 @@ public class BaseLevelController : MonoBehaviour {
             element.position = pos;
             element.SetLevelController(this);
 
-            mapElements.Add(pos, element);
+            if (mapElements.ContainsKey(pos)) {
+                if (mapElements[pos] is WallMapElement) {
+                    Debug.LogWarning("Duplicated map element at " + pos + ". The old one is WallMapElement and remove the old one.");
+                    mapElements.Remove(pos);
+                    mapElements.Add(pos, element);
+                } else if (element is WallMapElement) {
+                    Debug.LogWarning("Duplicated map element at " + pos + ". The new one is WallMapElement and remove the new one.");
+                } else {
+                    Debug.LogError("Duplicated map element at " + pos + ". The old one is " + mapElements[pos].GetMapElementType() + " and the new one is " + element.GetMapElementType() + ". Please fix it!");
+                }
+            } else {
+                mapElements.Add(pos, element);
+            }
             // elementsStr += " [" + pos + ": " + element.GetMapElementType() + "]";
         }
         // Debug.Log("Level is initialized with " + elements.Length + " elements. Elements: " + elementsStr);
