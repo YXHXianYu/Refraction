@@ -60,37 +60,37 @@ public class RayElement : MonoBehaviour {
             debugTextLeft.text = content;
             spriteCategory = "Left";
             if (!isMatched) {
-                _spriteObject.transform.localScale = new Vector3(0.2f, 0.1f, 1);
+                _spriteObject.transform.localScale = new Vector3(0.205f, 0.1f, 1);
             }
             else {
-                _spriteObject.transform.localScale = new Vector3(0.2f, 0.2f, 1);
+                _spriteObject.transform.localScale = new Vector3(0.205f, 0.2f, 1);
             }
         } else if (rayType == ERayType.RightCenter) {
             debugTextRight.text = content;
             spriteCategory = "Right";
             if (!isMatched) {
-                _spriteObject.transform.localScale = new Vector3(0.2f, 0.1f, 1);
+                _spriteObject.transform.localScale = new Vector3(0.205f, 0.1f, 1);
             }
             else {
-                _spriteObject.transform.localScale = new Vector3(0.2f, 0.2f, 1);
+                _spriteObject.transform.localScale = new Vector3(0.205f, 0.2f, 1);
             }
         } else if (rayType == ERayType.TopCenter) {
             debugTextTop.text = content;
             spriteCategory = "Up";
             if (!isMatched) {
-                _spriteObject.transform.localScale = new Vector3(0.1f, 0.2f, 1);
+                _spriteObject.transform.localScale = new Vector3(0.1f, 0.205f, 1);
             }
             else {
-                _spriteObject.transform.localScale = new Vector3(0.2f, 0.2f, 1);
+                _spriteObject.transform.localScale = new Vector3(0.2f, 0.205f, 1);
             }
         } else if (rayType == ERayType.BottomCenter) {
             debugTextBottom.text = content;
             spriteCategory = "Down";
             if (!isMatched) {
-                _spriteObject.transform.localScale = new Vector3(0.1f, 0.2f, 1);
+                _spriteObject.transform.localScale = new Vector3(0.1f, 0.205f, 1);
             }
             else {
-                _spriteObject.transform.localScale = new Vector3(0.2f, 0.2f, 1);
+                _spriteObject.transform.localScale = new Vector3(0.2f, 0.205f, 1);
             }
         }
         UpdateSprite(spriteCategory, $"L{rayLevel}");
