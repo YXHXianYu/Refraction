@@ -173,8 +173,8 @@ public class BaseLevelController : MonoBehaviour {
             yield break;
         }
 
-        var stopDuration = 1.0f;
-        var fadeDuration = 1.0f;
+        var stopDuration = 0.5f;
+        var fadeDuration = 1.5f;
         foreach (var element in mapElements.Values) {
             element.DisableGameLogic();
         }
@@ -192,7 +192,7 @@ public class BaseLevelController : MonoBehaviour {
         return x + (y - x) * t;
     }
 
-    private IEnumerator FadeMapElement(GameObject mapElement, float stopDuration, float fadeDuration) {
+    protected IEnumerator FadeMapElement(GameObject mapElement, float stopDuration, float fadeDuration) {
         var spriteRenderers = mapElement.GetComponentsInChildren<SpriteRenderer>();
         var textMeshPros = mapElement.GetComponentsInChildren<TextMeshPro>();
 
