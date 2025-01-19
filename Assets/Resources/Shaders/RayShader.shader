@@ -47,7 +47,7 @@ Shader "Unlit/RayShader"
             fixed4 frag(v2f i) : SV_Target {
                 // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
-                float flash = sin(_Time.y * 3.0) * 0.3 + 0.7;
+                float flash = sin(_Time.y * 3.0) * 0.2 + 0.8;
                 col *= flash;
 
                 /*

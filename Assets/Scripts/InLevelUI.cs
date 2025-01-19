@@ -18,7 +18,7 @@ public class InLevelUI : MonoBehaviour {
     }
 
     public void ClickMenu() {
-        restartButton.interactable = false;
+        menuButton.interactable = false;
         StartCoroutine(levelController.LoadLevelChooseScene());
     }
 
