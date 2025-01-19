@@ -26,8 +26,8 @@ public class RayReceiverMapElement : BaseMapElement {
     public RayReceiverMapElement(): base(EMapElementType.RayReceiver) {}
 
     private void Start() {
-        enableSoundDatas = enableAudioClips.Select(x => new SoundData(x)).ToList();
-        disableSoundDatas = disableAudioClips.Select(x => new SoundData(x)).ToList();
+        enableSoundDatas = enableAudioClips.Select(x => new SoundData(x, mixerGroup)).ToList();
+        disableSoundDatas = disableAudioClips.Select(x => new SoundData(x, mixerGroup)).ToList();
     }
 
     private void Update() {
