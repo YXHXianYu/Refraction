@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2602969818135429695
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9071711476217823518}
+  m_Layer: 0
+  m_Name: HatchControl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9071711476217823518
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2602969818135429695}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 487477992053849846}
+  m_Father: {fileID: 8919406301155190948}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3747153991197367284
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,12 +398,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6818274662764431361}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3, y: -0.2, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.3000002, y: -0.20000005, z: 0}
   m_LocalScale: {x: 0.5, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8919406301155190948}
+  m_Father: {fileID: 9071711476217823518}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &35774965648797659
 Animator:
@@ -518,10 +550,10 @@ PrefabInstance:
       addedObject: {fileID: 8428533858663680387}
     - targetCorrespondingSourceObject: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       insertIndex: 1
-      addedObject: {fileID: 487477992053849846}
-    - targetCorrespondingSourceObject: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
-      insertIndex: 2
       addedObject: {fileID: 1021191257398773231}
+    - targetCorrespondingSourceObject: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9071711476217823518}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1511670738016451583, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       insertIndex: -1
