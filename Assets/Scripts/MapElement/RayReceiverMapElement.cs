@@ -45,6 +45,7 @@ public class RayReceiverMapElement : BaseMapElement {
                     .Play();
                 // Cover
                 rayActive.SetActive(true);                
+                rayActive.transform.SetParent(transform);
 
             } else {
                 debugText.text = "Rcv|" + targetRayLevel + "|U";
@@ -54,6 +55,7 @@ public class RayReceiverMapElement : BaseMapElement {
                     .Play();
                 // Cover
                 rayActive.SetActive(false);
+                rayActive.transform.SetParent(transform);
             }
         }
     }
