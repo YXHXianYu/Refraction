@@ -354,8 +354,6 @@ public class BaseLevelController : MonoBehaviour {
         bubble.BubbleSize -= 1;
         var animator = bubble.animationObject.GetComponent<Animator>();
         animator.enabled = false;
-        animator.SetBool("IsSelected", false);
-        animator.SetBool("OnHover", false);
         animator.Play("UnSelected");
         bubble.animationObject.transform.localScale = new Vector3(0.25f, 0.25f, 1);
         
