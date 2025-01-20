@@ -27,43 +27,31 @@ jobs:
         targetPlatform:
           - StandaloneOSX
           # - StandaloneWindows # Who uses 32-bit anymore?
-          - StandaloneWindows64
-          - StandaloneLinux64
-          - iOS
-          - Android
+          # - StandaloneWindows64
+          # - StandaloneLinux64
+          # - iOS
+          # - Android
         include:
           - targetPlatform: StandaloneOSX
             name: universal-macos
-          - targetPlatform: StandaloneWindows64
-            name: x86_64-windows
-          - targetPlatform: StandaloneLinux64
-            name: x86_64-linux
-          - targetPlatform: iOS
-            name: ios
-            if: env.preview == 'false' && env.pre-release == 'false'
-          - targetPlatform: Android
-            name: android
+            suffix: .app
+          # - targetPlatform: StandaloneWindows64
+          #   name: x86_64-windows
+          #   suffix: .zip
+          # - targetPlatform: StandaloneLinux64
+          #   name: x86_64-linux
+          #   suffix: .tar.gz
+          # - targetPlatform: iOS
+          #   name: ios
+          #   suffix: .ipa
+          #   if: env.preview == 'false' && env.pre-release == 'false'
+          # - targetPlatform: Android
+          #   name: android
+          #   suffix: .apk
     steps:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      # # Git LFS
-      # - name: Create LFS file list
-      #   run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-      # - name: Restore LFS cache
-      #   uses: actions/cache@v3
-      #   id: lfs-cache
-      #   with:
-      #     path: .git/lfs
-      #     key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      # - name: Git LFS Pull
-      #   run: |
-      #     git lfs pull
-      #     git add .
-      #     git reset --hard
 
       - name: Initialize version
         shell: bash
@@ -124,27 +112,32 @@ jobs:
           echo 'Build Step Exit Code ${{ steps.devBuildStep.outputs.engineExitCode }}'
 
       - run: mkdir dist
-      - if: matrix.targetPlatform == 'Android'
-        run: |
-          cp build/Android/Android.apk dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.apk
-          echo "dist-name=REFRACTION-${{ env.version }}-${{ matrix.name }}.apk" >> $GITHUB_ENV
-      - if: matrix.targetPlatform == 'StandaloneWindows64'
-        run: |
-          7z a -r dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip build/StandaloneWindows64
-          echo "dist-name=REFRACTION-${{ env.version }}-${{ matrix.name }}.zip" >> $GITHUB_ENV
-      - if: matrix.targetPlatform == 'StandaloneLinux64'
-        run: |
-          tar cJf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.xz build/StandaloneLinux64
-          echo "dist-name=REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.xz" >> $GITHUB_ENV
-      - if: matrix.targetPlatform == 'iOS'
-        run: |
-          cp -r build/iOS dist/REFRACTION-${{ env.version }}-${{ matrix.name }}
-          echo "dist-name=REFRACTION-${{ env.version }}-${{ matrix.name }}" >> $GITHUB_ENV
-      
+      # - if: matrix.targetPlatform == 'Android'
+      #   run: |
+      #     cp build/Android/Android.apk dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.apk
+      # - if: matrix.targetPlatform == 'StandaloneWindows64'
+      #   run: |
+      #     cd build/StandaloneWindows64
+      #     7z a -r dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
+      # - if: matrix.targetPlatform == 'StandaloneOSX'
+      #   run: |
+      #     cp -r build/StandaloneOSX/StandaloneOSX.app dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.app
+      # - if: matrix.targetPlatform == 'StandaloneLinux64'
+      #   run: |
+      #     tar -czvf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.gz build/StandaloneLinux64
+      # - if: matrix.targetPlatform == 'iOS'
+      #   run: |
+      #     cp -r build/iOS dist/REFRACTION-${{ env.version }}-${{ matrix.name }}
+
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.dist-name }}
-          path: dist/${{ env.dist-name }}
+          name: Build ${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+      
+      # - uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ${{ env.dist-name }}
+      #     path: dist/REFRACTION-${{ env.dist-name }}-${{ matrix.name }}${{ matrix.suffix }}
   # release:
   #   name: Release
   #   needs: [ buildForAllSupportedPlatforms ]
