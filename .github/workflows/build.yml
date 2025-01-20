@@ -1,9 +1,9 @@
 name: Build
 on:
-  # push:
-  #   branches: [ main ]
-  #   tags:
-  #     - '[0-9]+.[0-9]+.[0-9]+**' # this one will trigger a release
+  push:
+    # branches: [ main ]
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+**' # this one will trigger a release
   # pull_request:
   #   branches: [ main ]
   workflow_dispatch:
@@ -24,35 +24,30 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - targetPlatform: StandaloneOSX
-          #   platform: macos-latest
-          #   suffix: .app
-          # - targetPlatform: StandaloneWindows64
-          #   name: x86_64-windows
-          #   suffix: .zip
-          # - targetPlatform: StandaloneLinux64
-          #   name: x86_64-linux
-          #   suffix: .tar.gz
-          - targetPlatform: iOS
-            name: ios
-            suffix: ''
-            # if: env.preview == 'false' && env.pre-release == 'false'
-          # - targetPlatform: Android
-          #   name: android
-          #   suffix: .apk
+          - targetPlatform: StandaloneOSX
+            platform: macos-latest
+            suffix: .app
+          - targetPlatform: StandaloneWindows64
+            name: x86_64-windows
+            suffix: .zip
+          - targetPlatform: StandaloneLinux64
+            name: x86_64-linux
+            suffix: .tar.gz
+          - targetPlatform: Android
+            name: android
+            suffix: .apk
     steps:
-      # Checkout
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # - name: Initialize version
-      #   shell: bash
-      #   run: |
-      #     if [[ $GITHUB_REF == refs/tags/* ]]; then
-      #       echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-      #     else
-      #       echo "version=dev${GITHUB_SHA::7}" >> $GITHUB_ENV
-      #     fi
+      # For preview version it will be dev{SHA} otherwise it will be the tag
+      - name: Initialize version env
+        shell: bash
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          else
+            echo "version=dev${GITHUB_SHA::7}" >> $GITHUB_ENV
+          fi
 
       # Cache
       - uses: actions/cache@v3
@@ -76,7 +71,6 @@ jobs:
           versioning: ${{ env.preview != 'true' && 'Tag' || 'Custom' }}
           version: ${{ env.preview == 'true' && env.version || '' }}
           customParameters: -CompressWithLz4
-
       - run: |
           echo 'Project Version ${{ steps.buildStep.outputs.buildVersion }}'
           echo 'Android Version Code ${{ steps.buildStep.outputs.androidVersionCode }}'
@@ -84,13 +78,6 @@ jobs:
 
       - run: mkdir dist
 
-      # - name: Create dmg
-      #   if: matrix.targetPlatform == 'StandaloneOSX'
-      #   uses: L-Super/create-dmg-actions@v1.0.3
-      #   with:
-      #     dmg_name: 'REFRACTION-${{ env.version }}-${{ matrix.name }}'
-      #     src_dir: 'build/StandaloneOSX/StandaloneOSX.app'
-        
       - if: matrix.targetPlatform == 'StandaloneOSX'
         run: |
           cp -r build/StandaloneOSX/StandaloneOSX.app dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.app
@@ -101,64 +88,40 @@ jobs:
       - if: matrix.targetPlatform == 'StandaloneLinux64'
         run: |
           tar -czvf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.gz build/StandaloneLinux64
-      - if: matrix.targetPlatform == 'iOS'
-        run: |
-          cp -r build/iOS dist/REFRACTION-${{ env.version }}-${{ matrix.name }}
       - if: matrix.targetPlatform == 'Android'
         run: |
           cp build/Android/Android.apk dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.apk
-
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: Build ${{ matrix.targetPlatform }}
-      #     path: build/${{ matrix.targetPlatform }}
       
       - uses: actions/upload-artifact@v4
         with:
           name: REFRACTION-${{ env.version }}-${{ matrix.name }}${{ matrix.suffix }}
           path: dist/REFRACTION-${{ env.version }}-${{ matrix.name }}${{ matrix.suffix }}
-  # release:
-  #   name: Release
-  #   needs: [ buildForAllSupportedPlatforms ]
-  #   if: startsWith(github.ref, 'refs/tags/')
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout sources
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
-  #         lfs: true
-      
-  #     - uses: actions/download-artifact@v4
+  release:
+    name: Release
+    needs: [ buildForAllSupportedPlatforms ]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
 
-  #     - name: Build archive
-  #       shell: bash
-  #       run: |
-  #         set -ex
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        if: env.preview == 'false'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/*
+          file_glob: true
+          tag: ${{ github.ref_name }}
+          release_name: "Release v${{ github.ref_name }}"
+          prerelease: ${{ env.pre-release }}
+          body: ""
+          overwrite: true
+          draft: true
 
-  #         source="$(pwd)"
-  #         cd "$(mktemp -d)"
-  #         mv $source/bin-* .
-  #         mkdir dist
-
-  #         for dir in bin-* ; do
-  #             platform=${dir#"bin-"}
-  #             if [[ $platform =~ "windows" ]]; then
-  #                 exe=".exe"
-  #             fi
-  #             pkgname=ice-${{ env.version }}-$platform
-  #             mkdir -p $pkgname
-  #             mv bin-$platform/ice$exe $pkgname
-  #             chmod +x $pkgname/ice$exe
-
-  #             if [ "$exe" = "" ]; then
-  #                 tar cJf dist/$pkgname.tar.xz $pkgname
-  #             else
-  #                 7z a -r dist/$pkgname.zip $pkgname
-  #             fi
-  #         done
-
-  #         mv dist $source/
-
-  #     - name: 
+      # - name: Create dmg
+      #   if: matrix.targetPlatform == 'StandaloneOSX'
+      #   uses: L-Super/create-dmg-actions@v1.0.3
+      #   with:
+      #     dmg_name: 'REFRACTION-${{ env.version }}-${{ matrix.name }}'
+      #     src_dir: 'build/StandaloneOSX/StandaloneOSX.app'
 
