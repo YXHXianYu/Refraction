@@ -24,18 +24,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - targetPlatform: StandaloneOSX
-            platform: macos-latest
-            suffix: .app
+          # - targetPlatform: StandaloneOSX
+          #   platform: macos-latest
+          #   suffix: .app
           - targetPlatform: StandaloneWindows64
             name: x86_64-windows
             suffix: .zip
-          - targetPlatform: StandaloneLinux64
-            name: x86_64-linux
-            suffix: .tar.gz
-          - targetPlatform: Android
-            name: android
-            suffix: .apk
+          # - targetPlatform: StandaloneLinux64
+          #   name: x86_64-linux
+          #   suffix: .tar.gz
+          # - targetPlatform: Android
+          #   name: android
+          #   suffix: .apk
     steps:
       - uses: actions/checkout@v4
 
@@ -83,6 +83,8 @@ jobs:
           cp -r build/StandaloneOSX/StandaloneOSX.app dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.app
       - if: matrix.targetPlatform == 'StandaloneWindows64'
         run: |
+          set -ex
+          ls build -la
           cd build/StandaloneWindows64
           7z a -r ../dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
       - if: matrix.targetPlatform == 'StandaloneLinux64'
