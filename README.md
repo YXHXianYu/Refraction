@@ -29,7 +29,8 @@ The distribution includes Windows, MacOS (Apple Silicon or Intel architecture), 
 ## Links 链接
 
 * Bilibili视频链接(DEMO video)：https://www.bilibili.com/video/BV1THwreoE1i
-* GmHub链接(GGJ 2025 Chinese homesite)：https://www.gmhub.com/game/6715
+* GmHub链接(GGJ 2025 Chinese Site Website)：https://www.gmhub.com/game/6715
+* Global Game Jam Website: https://globalgamejam.org/games/2025/refraction-9
 * 百度云盘链接(Download link for Chinese users)：https://pan.baidu.com/s/1llVEdnA23FupFINfC6Tb0A?pwd=2333【提取码：2333】
 * Github Release: https://github.com/YXHXianYu/Refraction/releases
 
