@@ -80,7 +80,7 @@ public class BubbleMapElement : BaseMapElement {
 
     private void UpdateDisplaySize() {
         // TODO: Update Size Display
-        /*Vector3 sizeTransform = new Vector3(_initSize, _initSize, 1);
+        Vector3 sizeTransform = new Vector3(_initSize, _initSize, 1);
         if (bubbleSize == 1) {
             sizeTransform = new Vector3(0.15f, 0.15f, 0);
         }
@@ -88,7 +88,7 @@ public class BubbleMapElement : BaseMapElement {
             sizeTransform += (bubbleSize - 2) * new Vector3(0.1f, 0.1f, 0);
         }
         spriteObject.transform.localScale = sizeTransform;
-        debugText.text += "BubbleDisplaySize: " + spriteObject.transform.localScale;*/
+        // debugText.text += "BubbleDisplaySize: " + spriteObject.transform.localScale;
     }
     
     public void UpdateRenderInfo() {
