@@ -24,18 +24,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - targetPlatform: StandaloneOSX
-          #   name: universal-macos
-          #   suffix: .app
+          - targetPlatform: StandaloneOSX
+            name: universal-macos
+            suffix: .app
           - targetPlatform: StandaloneWindows64
             name: x86_64-windows
             suffix: .zip
-          # - targetPlatform: StandaloneLinux64
-          #   name: x86_64-linux
-          #   suffix: .tar.gz
-          # - targetPlatform: Android
-          #   name: android
-          #   suffix: .apk
+          - targetPlatform: StandaloneLinux64
+            name: x86_64-linux
+            suffix: .tar.gz
+          - targetPlatform: Android
+            name: android
+            suffix: .apk
     steps:
       - uses: actions/checkout@v4
 
@@ -84,12 +84,7 @@ jobs:
       - if: matrix.targetPlatform == 'StandaloneWindows64'
         run: |
           set -ex
-          ls build -la
-          cd build/StandaloneWindows64
-          ls -la
-          ls ../ -la
-          7z a -r REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
-          cp REFRACTION-${{ env.version }}-${{ matrix.name }}.zip ../dist
+          7z a -r ../../dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
       - if: matrix.targetPlatform == 'StandaloneLinux64'
         run: |
           tar -czvf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.gz build/StandaloneLinux64
