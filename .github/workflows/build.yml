@@ -15,42 +15,29 @@ env:
   preview: ${{ !startsWith(github.ref, 'refs/tags/') }}
   pre-release: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
   version: 0.0.0
-  dist-name: x
 
 jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        targetPlatform:
-          - StandaloneOSX
-          # - StandaloneWindows # Who uses 32-bit anymore?
-          # - StandaloneWindows64
-          # - StandaloneLinux64
-          # - iOS
-          # - Android
         include:
-          - targetPlatform: StandaloneOSX
-            platform: macos-latest
-            name: universal-macos
-            suffix: .dmg
+          # - targetPlatform: StandaloneOSX
+          #   platform: macos-latest
+          #   suffix: .app
           # - targetPlatform: StandaloneWindows64
-          #   platform: ubuntu-latest
           #   name: x86_64-windows
           #   suffix: .zip
           # - targetPlatform: StandaloneLinux64
-          #   platform: ubuntu-latest
           #   name: x86_64-linux
           #   suffix: .tar.gz
           - targetPlatform: iOS
-            platform: macos-latest
             name: ios
             suffix: ''
             # if: env.preview == 'false' && env.pre-release == 'false'
           # - targetPlatform: Android
-          #   platform: ubuntu-latest
           #   name: android
           #   suffix: .apk
     steps:
@@ -97,16 +84,16 @@ jobs:
 
       - run: mkdir dist
 
-      - name: Create dmg
-        if: matrix.targetPlatform == 'StandaloneOSX'
-        uses: L-Super/create-dmg-actions@v1.0.3
-        with:
-          dmg_name: 'REFRACTION-${{ env.version }}-${{ matrix.name }}'
-          src_dir: 'build/StandaloneOSX/StandaloneOSX.app'
+      # - name: Create dmg
+      #   if: matrix.targetPlatform == 'StandaloneOSX'
+      #   uses: L-Super/create-dmg-actions@v1.0.3
+      #   with:
+      #     dmg_name: 'REFRACTION-${{ env.version }}-${{ matrix.name }}'
+      #     src_dir: 'build/StandaloneOSX/StandaloneOSX.app'
         
       - if: matrix.targetPlatform == 'StandaloneOSX'
         run: |
-          cp -r REFRACTION-${{ env.version }}-${{ matrix.name }}.dmg dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.dmg
+          cp -r build/StandaloneOSX/StandaloneOSX.app dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.app
       - if: matrix.targetPlatform == 'StandaloneWindows64'
         run: |
           cd build/StandaloneWindows64
@@ -128,8 +115,8 @@ jobs:
       
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.dist-name }}
-          path: dist/REFRACTION-${{ env.dist-name }}-${{ matrix.name }}${{ matrix.suffix }}
+          name: REFRACTION-${{ env.version }}-${{ matrix.name }}${{ matrix.suffix }}
+          path: dist/REFRACTION-${{ env.version }}-${{ matrix.name }}${{ matrix.suffix }}
   # release:
   #   name: Release
   #   needs: [ buildForAllSupportedPlatforms ]
