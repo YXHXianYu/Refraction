@@ -20,7 +20,7 @@ env:
 jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform }}
     strategy:
       fail-fast: false
       matrix:
@@ -33,21 +33,26 @@ jobs:
           # - Android
         include:
           - targetPlatform: StandaloneOSX
+            platform: macos-latest
             name: universal-macos
             suffix: .dmg
-          - targetPlatform: StandaloneWindows64
-            name: x86_64-windows
-            suffix: .zip
-          - targetPlatform: StandaloneLinux64
-            name: x86_64-linux
-            suffix: .tar.gz
-          # - targetPlatform: iOS
-          #   name: ios
-          #   suffix: .ipa
-          #   if: env.preview == 'false' && env.pre-release == 'false'
-          - targetPlatform: Android
-            name: android
-            suffix: .apk
+          # - targetPlatform: StandaloneWindows64
+          #   platform: ubuntu-latest
+          #   name: x86_64-windows
+          #   suffix: .zip
+          # - targetPlatform: StandaloneLinux64
+          #   platform: ubuntu-latest
+          #   name: x86_64-linux
+          #   suffix: .tar.gz
+          - targetPlatform: iOS
+            platform: macos-latest
+            name: ios
+            suffix: ''
+            # if: env.preview == 'false' && env.pre-release == 'false'
+          # - targetPlatform: Android
+          #   platform: ubuntu-latest
+          #   name: android
+          #   suffix: .apk
     steps:
       # Checkout
       - name: Checkout repository
@@ -72,8 +77,7 @@ jobs:
       - if: matrix.targetPlatform == 'Android'
         uses: jlumbroso/free-disk-space@v1.3.1
 
-      - name: Build for release
-        if: env.preview != 'true'
+      - name: Build
         id: buildStep
         uses: game-ci/unity-builder@v4
         env:
@@ -82,59 +86,40 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: ${{ matrix.targetPlatform }}
-          versioning: Tag
+          versioning: ${{ env.preview != 'true' && 'Tag' || 'Custom' }}
+          version: ${{ env.preview == 'true' && env.version || '' }}
           customParameters: -CompressWithLz4
 
-      - if: env.preview != 'true'
-        run: |
+      - run: |
           echo 'Project Version ${{ steps.buildStep.outputs.buildVersion }}'
           echo 'Android Version Code ${{ steps.buildStep.outputs.androidVersionCode }}'
           echo 'Build Step Exit Code ${{ steps.buildStep.outputs.engineExitCode }}'
 
-      - name: Build for dev
-        id: devBuildStep
-        if: env.preview == 'true'
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: ${{ matrix.targetPlatform }}
-          versioning: Custom
-          version: ${{ env.version }}
-          customParameters: -CompressWithLz4
-      
-      - if: env.preview == 'true'
-        run: |
-          echo 'Project Version ${{ steps.devBuildStep.outputs.buildVersion }}'
-          echo 'Android Version Code ${{ steps.devBuildStep.outputs.androidVersionCode }}'
-          echo 'Build Step Exit Code ${{ steps.devBuildStep.outputs.engineExitCode }}'
-
       - run: mkdir dist
 
-      - if: matrix.targetPlatform == 'StandaloneOSX'
+      - name: Create dmg
+        if: matrix.targetPlatform == 'StandaloneOSX'
         uses: L-Super/create-dmg-actions@v1.0.3
         with:
           dmg_name: 'REFRACTION-${{ env.version }}-${{ matrix.name }}'
           src_dir: 'build/StandaloneOSX/StandaloneOSX.app'
+        
       - if: matrix.targetPlatform == 'StandaloneOSX'
         run: |
           cp -r REFRACTION-${{ env.version }}-${{ matrix.name }}.dmg dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.dmg
-
-      - if: matrix.targetPlatform == 'Android'
-        run: |
-          cp build/Android/Android.apk dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.apk
       - if: matrix.targetPlatform == 'StandaloneWindows64'
         run: |
           cd build/StandaloneWindows64
-          7z a -r dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
+          7z a -r ../dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
       - if: matrix.targetPlatform == 'StandaloneLinux64'
         run: |
           tar -czvf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.gz build/StandaloneLinux64
       - if: matrix.targetPlatform == 'iOS'
         run: |
           cp -r build/iOS dist/REFRACTION-${{ env.version }}-${{ matrix.name }}
+      - if: matrix.targetPlatform == 'Android'
+        run: |
+          cp build/Android/Android.apk dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.apk
 
       # - uses: actions/upload-artifact@v4
       #   with:
