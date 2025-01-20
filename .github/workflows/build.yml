@@ -14,7 +14,7 @@ env:
   # activated if the CI run was triggered by events other than pushed tags
   preview: ${{ !startsWith(github.ref, 'refs/tags/') }}
   pre-release: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
-  version: dev
+  version: 0.0.0
   dist-name: x
 
 jobs:
@@ -34,33 +34,33 @@ jobs:
         include:
           - targetPlatform: StandaloneOSX
             name: universal-macos
-            suffix: .app
-          # - targetPlatform: StandaloneWindows64
-          #   name: x86_64-windows
-          #   suffix: .zip
-          # - targetPlatform: StandaloneLinux64
-          #   name: x86_64-linux
-          #   suffix: .tar.gz
+            suffix: .dmg
+          - targetPlatform: StandaloneWindows64
+            name: x86_64-windows
+            suffix: .zip
+          - targetPlatform: StandaloneLinux64
+            name: x86_64-linux
+            suffix: .tar.gz
           # - targetPlatform: iOS
           #   name: ios
           #   suffix: .ipa
           #   if: env.preview == 'false' && env.pre-release == 'false'
-          # - targetPlatform: Android
-          #   name: android
-          #   suffix: .apk
+          - targetPlatform: Android
+            name: android
+            suffix: .apk
     steps:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Initialize version
-        shell: bash
-        run: |
-          if [[ $GITHUB_REF == refs/tags/* ]]; then
-            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-          else
-            echo "version=dev${GITHUB_SHA::7}" >> $GITHUB_ENV
-          fi
+      # - name: Initialize version
+      #   shell: bash
+      #   run: |
+      #     if [[ $GITHUB_REF == refs/tags/* ]]; then
+      #       echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      #     else
+      #       echo "version=dev${GITHUB_SHA::7}" >> $GITHUB_ENV
+      #     fi
 
       # Cache
       - uses: actions/cache@v3
@@ -112,32 +112,39 @@ jobs:
           echo 'Build Step Exit Code ${{ steps.devBuildStep.outputs.engineExitCode }}'
 
       - run: mkdir dist
-      # - if: matrix.targetPlatform == 'Android'
-      #   run: |
-      #     cp build/Android/Android.apk dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.apk
-      # - if: matrix.targetPlatform == 'StandaloneWindows64'
-      #   run: |
-      #     cd build/StandaloneWindows64
-      #     7z a -r dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
-      # - if: matrix.targetPlatform == 'StandaloneOSX'
-      #   run: |
-      #     cp -r build/StandaloneOSX/StandaloneOSX.app dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.app
-      # - if: matrix.targetPlatform == 'StandaloneLinux64'
-      #   run: |
-      #     tar -czvf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.gz build/StandaloneLinux64
-      # - if: matrix.targetPlatform == 'iOS'
-      #   run: |
-      #     cp -r build/iOS dist/REFRACTION-${{ env.version }}-${{ matrix.name }}
 
-      - uses: actions/upload-artifact@v4
+      - if: matrix.targetPlatform == 'StandaloneOSX'
+        uses: L-Super/create-dmg-actions@v1.0.3
         with:
-          name: Build ${{ matrix.targetPlatform }}
-          path: build/${{ matrix.targetPlatform }}
-      
+          dmg_name: 'REFRACTION-${{ env.version }}-${{ matrix.name }}'
+          src_dir: 'build/StandaloneOSX/StandaloneOSX.app'
+      - if: matrix.targetPlatform == 'StandaloneOSX'
+        run: |
+          cp -r REFRACTION-${{ env.version }}-${{ matrix.name }}.dmg dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.dmg
+
+      - if: matrix.targetPlatform == 'Android'
+        run: |
+          cp build/Android/Android.apk dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.apk
+      - if: matrix.targetPlatform == 'StandaloneWindows64'
+        run: |
+          cd build/StandaloneWindows64
+          7z a -r dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
+      - if: matrix.targetPlatform == 'StandaloneLinux64'
+        run: |
+          tar -czvf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.gz build/StandaloneLinux64
+      - if: matrix.targetPlatform == 'iOS'
+        run: |
+          cp -r build/iOS dist/REFRACTION-${{ env.version }}-${{ matrix.name }}
+
       # - uses: actions/upload-artifact@v4
       #   with:
-      #     name: ${{ env.dist-name }}
-      #     path: dist/REFRACTION-${{ env.dist-name }}-${{ matrix.name }}${{ matrix.suffix }}
+      #     name: Build ${{ matrix.targetPlatform }}
+      #     path: build/${{ matrix.targetPlatform }}
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.dist-name }}
+          path: dist/REFRACTION-${{ env.dist-name }}-${{ matrix.name }}${{ matrix.suffix }}
   # release:
   #   name: Release
   #   needs: [ buildForAllSupportedPlatforms ]
