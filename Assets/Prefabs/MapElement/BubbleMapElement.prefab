@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2986221334468362442}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1271568749090620643}
+  m_Father: {fileID: 8544699951495218571}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8244796728893685577
 SpriteRenderer:
@@ -106,6 +106,38 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &5630734095443388201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8544699951495218571}
+  m_Layer: 0
+  m_Name: DisplayFather
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8544699951495218571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5630734095443388201}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5484557276725727259}
+  m_Father: {fileID: 1271568749090620643}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3675208161075931923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223,7 +255,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2496528372952526832, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5484557276725727259}
+      addedObject: {fileID: 8544699951495218571}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1511670738016451583, guid: 4fa38483060015f4cb5912d683b92d72, type: 3}
       insertIndex: -1
@@ -272,7 +304,7 @@ MonoBehaviour:
   bubbleXRay: -1
   bubbleYRay: -1
   debugText: {fileID: 247735068198984866}
-  spriteObject: {fileID: 2986221334468362442}
+  spriteObject: {fileID: 5630734095443388201}
   selectSoundData:
     clips:
     - {fileID: 8300000, guid: 62264b8ed480c77499e9b5b06b5057d2, type: 3}
