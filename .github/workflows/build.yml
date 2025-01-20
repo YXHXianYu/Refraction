@@ -1,48 +1,195 @@
 name: Build
 on:
+  # push:
+  #   branches: [ main ]
+  #   tags:
+  #     - '[0-9]+.[0-9]+.[0-9]+**' # this one will trigger a release
+  # pull_request:
+  #   branches: [ main ]
   workflow_dispatch:
 
+env:
+  # Preview mode: Publishes the build output as a CI artifact instead of creating
+  # a release, allowing for manual inspection of the output. This mode is
+  # activated if the CI run was triggered by events other than pushed tags
+  preview: ${{ !startsWith(github.ref, 'refs/tags/') }}
+  pre-release: ${{ contains(github.ref, 'alpha') || contains(github.ref, 'beta') }}
+  version: dev
+  dist-name: x
+
 jobs:
-  build:
-    name: Build
+  buildForAllSupportedPlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneOSX
+          # - StandaloneWindows # Who uses 32-bit anymore?
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - iOS
+          - Android
+        include:
+          - targetPlatform: StandaloneOSX
+            name: universal-macos
+          - targetPlatform: StandaloneWindows64
+            name: x86_64-windows
+          - targetPlatform: StandaloneLinux64
+            name: x86_64-linux
+          - targetPlatform: iOS
+            name: ios
+            if: env.preview == 'false' && env.pre-release == 'false'
+          - targetPlatform: Android
+            name: android
     steps:
+      - name: Skip iOS if preview or pre-release
+        run: echo "Skipping iOS build in preview mode."
+      
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
+
+        # Git LFS
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v3
+        id: lfs-cache
         with:
-          lfs: true
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+
+      - name: Initialize version
+        shell: bash
+        run: |
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          else
+            echo "version=dev${GITHUB_SHA::7}" >> $GITHUB_ENV
+          fi
 
       # Cache
       - uses: actions/cache@v3
         with:
           path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
+          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: Library-
+      
+      - if: matrix.targetPlatform == 'Android'
+        uses: jlumbroso/free-disk-space@v1.3.1
 
-      # Test
-      # - name: Run tests
-      #   uses: game-ci/unity-test-runner@v4
-      #   env:
-      #     UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-      #     UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-      #     UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-      #   with:
-      #     githubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      # Build
-      - name: Build project
+      - name: Build for release
+        if: env.preview != 'true'
+        id: buildStep
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: StandaloneWindows64
+          targetPlatform: ${{ matrix.targetPlatform }}
+          versioning: Tag
+          customParameters: -CompressWithLz4
 
-      # Output
-      - uses: actions/upload-artifact@v3
+      - if: env.preview != 'true'
+        run: |
+          echo 'Project Version ${{ steps.buildStep.outputs.buildVersion }}'
+          echo 'Android Version Code ${{ steps.buildStep.outputs.androidVersionCode }}'
+          echo 'Build Step Exit Code ${{ steps.buildStep.outputs.engineExitCode }}'
+
+      - name: Build for dev
+        id: devBuildStep
+        if: env.preview == 'true'
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          name: Build
-          path: build
+          targetPlatform: ${{ matrix.targetPlatform }}
+          versioning: Custom
+          version: ${{ env.version }}
+          customParameters: -CompressWithLz4
+      
+      - if: env.preview == 'true'
+        run: |
+          echo 'Project Version ${{ steps.devBuildStep.outputs.buildVersion }}'
+          echo 'Android Version Code ${{ steps.devBuildStep.outputs.androidVersionCode }}'
+          echo 'Build Step Exit Code ${{ steps.devBuildStep.outputs.engineExitCode }}'
+
+      - run: mkdir dist
+      - if: matrix.targetPlatform == 'Android'
+        run: |
+          cp build/Android/Android.apk dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.apk
+          echo "dist-name=REFRACTION-${{ env.version }}-${{ matrix.name }}.apk" >> $GITHUB_ENV
+      - if: matrix.targetPlatform == 'StandaloneWindows64'
+        run: |
+          7z a -r dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip build/StandaloneWindows64
+          echo "dist-name=REFRACTION-${{ env.version }}-${{ matrix.name }}.zip" >> $GITHUB_ENV
+      - if: matrix.targetPlatform == 'StandaloneLinux64'
+        run: |
+          tar cJf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.xz build/StandaloneLinux64
+          echo "dist-name=REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.xz" >> $GITHUB_ENV
+      - if: matrix.targetPlatform == 'iOS'
+        run: |
+          cp -r build/iOS dist/REFRACTION-${{ env.version }}-${{ matrix.name }}
+          echo "dist-name=REFRACTION-${{ env.version }}-${{ matrix.name }}" >> $GITHUB_ENV
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.dist-name }}
+          path: dist/${{ env.dist-name }}
+  # release:
+  #   name: Release
+  #   needs: [ buildForAllSupportedPlatforms ]
+  #   if: startsWith(github.ref, 'refs/tags/')
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #         lfs: true
+      
+  #     - uses: actions/download-artifact@v4
+
+  #     - name: Build archive
+  #       shell: bash
+  #       run: |
+  #         set -ex
+
+  #         source="$(pwd)"
+  #         cd "$(mktemp -d)"
+  #         mv $source/bin-* .
+  #         mkdir dist
+
+  #         for dir in bin-* ; do
+  #             platform=${dir#"bin-"}
+  #             if [[ $platform =~ "windows" ]]; then
+  #                 exe=".exe"
+  #             fi
+  #             pkgname=ice-${{ env.version }}-$platform
+  #             mkdir -p $pkgname
+  #             mv bin-$platform/ice$exe $pkgname
+  #             chmod +x $pkgname/ice$exe
+
+  #             if [ "$exe" = "" ]; then
+  #                 tar cJf dist/$pkgname.tar.xz $pkgname
+  #             else
+  #                 7z a -r dist/$pkgname.zip $pkgname
+  #             fi
+  #         done
+
+  #         mv dist $source/
+
+  #     - name: 
+
