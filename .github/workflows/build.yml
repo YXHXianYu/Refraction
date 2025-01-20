@@ -25,7 +25,7 @@ jobs:
       matrix:
         include:
           # - targetPlatform: StandaloneOSX
-          #   platform: macos-latest
+          #   name: universal-macos
           #   suffix: .app
           - targetPlatform: StandaloneWindows64
             name: x86_64-windows
@@ -86,7 +86,10 @@ jobs:
           set -ex
           ls build -la
           cd build/StandaloneWindows64
-          7z a -r ../dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
+          ls -la
+          ls ../ -la
+          7z a -r REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
+          cp REFRACTION-${{ env.version }}-${{ matrix.name }}.zip ../dist
       - if: matrix.targetPlatform == 'StandaloneLinux64'
         run: |
           tar -czvf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.gz build/StandaloneLinux64
