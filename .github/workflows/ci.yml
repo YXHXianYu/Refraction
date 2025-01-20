@@ -8,6 +8,9 @@ on:
   #   branches: [ main ]
   workflow_dispatch:
 
+permissions: 
+  contents: write
+
 env:
   # Preview mode: Publishes the build output as a CI artifact instead of creating
   # a release, allowing for manual inspection of the output. This mode is
@@ -26,7 +29,7 @@ jobs:
         include:
           - targetPlatform: StandaloneOSX
             name: universal-macos
-            suffix: .app
+            suffix: .app.tar.gz
           - targetPlatform: StandaloneWindows64
             name: x86_64-windows
             suffix: .zip
@@ -80,21 +83,26 @@ jobs:
 
       - if: matrix.targetPlatform == 'StandaloneOSX'
         run: |
-          cp -r build/StandaloneOSX/StandaloneOSX.app dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.app
+          set -ex
+          cd build/StandaloneOSX
+          tar -czvf ../../dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.app.tar.gz StandaloneOSX.app
       - if: matrix.targetPlatform == 'StandaloneWindows64'
         run: |
           set -ex
+          cd build/StandaloneWindows64
           7z a -r ../../dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.zip .
       - if: matrix.targetPlatform == 'StandaloneLinux64'
         run: |
-          tar -czvf dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.gz build/StandaloneLinux64
+          set -ex
+          cd build/StandaloneLinux64
+          tar -czvf ../../dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.tar.gz .
       - if: matrix.targetPlatform == 'Android'
         run: |
           cp build/Android/Android.apk dist/REFRACTION-${{ env.version }}-${{ matrix.name }}.apk
       
       - uses: actions/upload-artifact@v4
         with:
-          name: REFRACTION-${{ env.version }}-${{ matrix.name }}${{ matrix.suffix }}
+          name: REFRACTION-${{ env.version }}-${{ matrix.name }}
           path: dist/REFRACTION-${{ env.version }}-${{ matrix.name }}${{ matrix.suffix }}
   release:
     name: Release
@@ -103,6 +111,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
+
+      - shell: bash
+        run: |
+          set -ex
+
+          mkdir dist
+          for dir in REFRACTION-* ; do
+            cp $dir/* dist/
+          done
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
@@ -116,7 +133,6 @@ jobs:
           prerelease: ${{ env.pre-release }}
           body: ""
           overwrite: true
-          draft: true
 
       # - name: Create dmg
       #   if: matrix.targetPlatform == 'StandaloneOSX'
