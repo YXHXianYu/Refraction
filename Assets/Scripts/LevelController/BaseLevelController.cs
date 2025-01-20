@@ -350,9 +350,15 @@ public class BaseLevelController : MonoBehaviour {
 
         if (target.x == -1) return new Result(false, "周围没有空位，无法分裂。");
 
-        // 修改旧泡泡
+        // 修改旧泡泡，暂停动画
         bubble.BubbleSize -= 1;
-
+        var animator = bubble.animationObject.GetComponent<Animator>();
+        animator.enabled = false;
+        animator.SetBool("IsSelected", false);
+        animator.SetBool("OnHover", false);
+        animator.Play("UnSelected");
+        bubble.animationObject.transform.localScale = new Vector3(0.25f, 0.25f, 1);
+        
         // 增加并初始化新泡泡
         var newBubble = Instantiate(
             bubble.gameObject, new Vector3(target.x, target.y, 0), Quaternion.identity
@@ -365,6 +371,11 @@ public class BaseLevelController : MonoBehaviour {
         mapElements.Add(target, newBubble);
 
         isMapChanged = true;
+        
+        // 恢复动画
+        animator.enabled = true;
+        newBubble.animationObject.GetComponent<Animator>().enabled = true;
+        
         return new Result(true, "");
     }
 
