@@ -44,29 +44,26 @@ jobs:
           - targetPlatform: Android
             name: android
     steps:
-      - name: Skip iOS if preview or pre-release
-        run: echo "Skipping iOS build in preview mode."
-      
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
 
-        # Git LFS
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+      # # Git LFS
+      # - name: Create LFS file list
+      #   run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
 
-      - name: Restore LFS cache
-        uses: actions/cache@v3
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+      # - name: Restore LFS cache
+      #   uses: actions/cache@v3
+      #   id: lfs-cache
+      #   with:
+      #     path: .git/lfs
+      #     key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
 
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
+      # - name: Git LFS Pull
+      #   run: |
+      #     git lfs pull
+      #     git add .
+      #     git reset --hard
 
       - name: Initialize version
         shell: bash
