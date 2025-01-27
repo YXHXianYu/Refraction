@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4376408508882962129}
   - component: {fileID: 4657736569417726767}
   - component: {fileID: 3467270516319330614}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DebugTextRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 7080336850511353306}
   - component: {fileID: 4453905021694979464}
   - component: {fileID: 612646524110402187}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DebugTextBottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5312105525211430524}
   - component: {fileID: -5317097258514632641}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RayElement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -411,7 +411,7 @@ GameObject:
   - component: {fileID: 8550413519571631460}
   - component: {fileID: 8925192664513690064}
   - component: {fileID: 9132937221125388205}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DebugTextLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 6634017634882763717}
   - component: {fileID: 2598799518450252133}
   - component: {fileID: 929409184480906678}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprites
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -638,7 +638,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 4ca12df9be106e44c830652e9a668ebc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -681,7 +681,7 @@ GameObject:
   - component: {fileID: 1627040298560060677}
   - component: {fileID: 3285984456601396827}
   - component: {fileID: 2615435423218411504}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DebugTextTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}

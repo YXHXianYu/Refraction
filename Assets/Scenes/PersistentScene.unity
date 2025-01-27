@@ -801,7 +801,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: cbadf81377c91c44ab0c9d4ee46207dc, type: 2}
   m_TargetDisplay: 0
@@ -1259,8 +1259,8 @@ MonoBehaviour:
   samplerScale: 1
   colorThreshold: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   bloomColor: {r: 1, g: 1, b: 1, a: 1}
-  bloomFactor: 0.5
-  _Material: {fileID: 0}
+  bloomFactor: 0.662
+  _Material: {fileID: 2100000, guid: 71f8d99509ef19647a9b2fecaabe96ce, type: 2}
   m_R: {fileID: 8400000, guid: cbadf81377c91c44ab0c9d4ee46207dc, type: 2}
 --- !u!1 &548911029
 GameObject:
