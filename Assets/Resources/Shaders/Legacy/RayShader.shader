@@ -50,7 +50,7 @@ Shader "Unlit/RayShader"
                 fixed4 col = tex2D(_MainTex, i.uv);
                 float flash = sin(_Time.y * 3.0) * 0.2 + 0.8;
                 col *= flash;
-                
+
                 return col;
             }
             ENDCG
