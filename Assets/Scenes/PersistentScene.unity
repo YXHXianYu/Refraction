@@ -1034,7 +1034,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5.3
+  orthographic size: 5.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1902,6 +1902,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2041277039}
   - component: {fileID: 2041277040}
+  - component: {fileID: 2041277041}
   m_Layer: 0
   m_Name: 2D Virtual Camera
   m_TagString: Untagged
@@ -1947,7 +1948,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1865881461}
   m_Lens:
     FieldOfView: 34
-    OrthographicSize: 5.3
+    OrthographicSize: 5.6
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -1964,6 +1965,22 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 3083618}
+--- !u!114 &2041277041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2041277038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 076b98d1f7588934ea89a5e06e51e86c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCamera: {fileID: 2041277040}
+  initialOrthographicSize: 5.6
+  minAspectRatio: 1.7
+  ratioScaleCoefficient: 1.3
 --- !u!1 &2057537887
 GameObject:
   m_ObjectHideFlags: 0
