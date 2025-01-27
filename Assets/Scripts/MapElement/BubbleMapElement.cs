@@ -45,7 +45,7 @@ public class BubbleMapElement : BaseMapElement {
 
     public TextMeshPro debugText;
     public GameObject spriteObject;
-    private float _initSize = 0.25f;
+    public GameObject animationObject;
 
     // Sound
     public SoundData selectSoundData;
@@ -79,16 +79,11 @@ public class BubbleMapElement : BaseMapElement {
     }
 
     private void UpdateDisplaySize() {
-        // TODO: Update Size Display
-        /*Vector3 sizeTransform = new Vector3(_initSize, _initSize, 1);
-        if (bubbleSize == 1) {
-            sizeTransform = new Vector3(0.15f, 0.15f, 0);
-        }
-        else {
-            sizeTransform += (bubbleSize - 2) * new Vector3(0.1f, 0.1f, 0);
-        }
+        // Update Size Display
+        Vector3 sizeTransform = new Vector3(0.8f, 0.8f, 1f);
+        sizeTransform += (bubbleSize - 1) * new Vector3(0.1f, 0.1f, 0);
         spriteObject.transform.localScale = sizeTransform;
-        debugText.text += "BubbleDisplaySize: " + spriteObject.transform.localScale;*/
+        // debugText.text += "BubbleDisplaySize: " + spriteObject.transform.localScale;
     }
     
     public void UpdateRenderInfo() {
